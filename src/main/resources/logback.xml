@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <!-- Timestamp property for file naming -->
+    <timestamp key="bySecond" datePattern="yyyy-MM-dd-HH-mm-ss"/>
+
     <!-- Console appender with colored output -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -9,9 +12,9 @@
 
     <!-- File appender for persistent logs -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/tinyrest.log</file>
+        <file>logs/tinyrest-${bySecond:-startup}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/tinyrest.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/tinyrest-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
             <maxFileSize>10MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>100MB</totalSizeCap>
@@ -23,9 +26,9 @@
 
     <!-- Request/Response appender for HTTP traffic -->
     <appender name="HTTP_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/tinyrest-http.log</file>
+        <file>logs/tinyrest-http-${bySecond}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/tinyrest-http.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/tinyrest-http-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
             <maxFileSize>5MB</maxFileSize>
             <maxHistory>14</maxHistory>
             <totalSizeCap>50MB</totalSizeCap>
@@ -43,9 +46,9 @@
 
     <!-- Hot reload appender -->
     <appender name="HOTRELOAD_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/tinyrest-hotreload.log</file>
+        <file>logs/tinyrest-hotreload-${bySecond}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/tinyrest-hotreload.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/tinyrest-hotreload-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
             <maxFileSize>2MB</maxFileSize>
             <maxHistory>7</maxHistory>
             <totalSizeCap>10MB</totalSizeCap>
@@ -57,9 +60,9 @@
 
     <!-- Record/Replay appender -->
     <appender name="RECORDER_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/tinyrest-recorder.log</file>
+        <file>logs/tinyrest-recorder-${bySecond}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/tinyrest-recorder.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/tinyrest-recorder-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
             <maxFileSize>5MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>50MB</totalSizeCap>
@@ -71,9 +74,9 @@
 
     <!-- Performance appender -->
     <appender name="PERFORMANCE_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/tinyrest-performance.log</file>
+        <file>logs/tinyrest-performance-${bySecond}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/tinyrest-performance.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/tinyrest-performance-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
             <maxFileSize>5MB</maxFileSize>
             <maxHistory>14</maxHistory>
             <totalSizeCap>25MB</totalSizeCap>
@@ -85,9 +88,9 @@
 
     <!-- Security appender -->
     <appender name="SECURITY_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/tinyrest-security.log</file>
+        <file>logs/tinyrest-security-${bySecond}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/tinyrest-security.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/tinyrest-security-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
             <maxFileSize>2MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>20MB</totalSizeCap>
