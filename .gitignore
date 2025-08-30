@@ -36,3 +36,57 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Log Files ###
+logs/
+*.log
+*.log.*
+log/
+
+### Temporary Files ###
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+### OS Generated Files ###
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+### Java ###
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+
+### Maven ###
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.properties
+dependency-reduced-pom.xml
+
+### Application Specific ###
+# TinyRest data files
+data/
+*.db
+*.sqlite
+*.h2.db
+
+# Configuration overrides
+local.yaml
+local.yml
+*.local.yaml
+*.local.yml
+
+# Test outputs
+test-output/
+test-results/
+coverage/
+
+# Runtime files
+*.pid
+*.lock
