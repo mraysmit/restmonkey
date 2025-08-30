@@ -1,0 +1,28 @@
+# Configuration without authentication
+port: 0
+# authToken: ""  # No auth token - mutations should work without auth
+
+features:
+  templating: false
+  hotReload: false
+  schemaValidation: lenient
+
+resources:
+  - name: products
+    idField: productId
+    enableCrud: true
+    seed:
+      - productId: p1
+        name: Widget
+        price: 10.99
+      - productId: p2
+        name: Gadget
+        price: 25.50
+
+staticEndpoints:
+  - path: /status
+    method: GET
+    status: 200
+    response:
+      service: tinyrest
+      version: test

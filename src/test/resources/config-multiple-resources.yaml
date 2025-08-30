@@ -1,0 +1,64 @@
+# Configuration with multiple resources and various features
+port: 0
+authToken: multi-token
+
+features:
+  templating: true
+  hotReload: false
+  schemaValidation: strict
+
+resources:
+  - name: users
+    idField: userId
+    enableCrud: true
+    seed:
+      - userId: u1
+        name: John Doe
+        email: john@example.com
+        role: admin
+      - userId: u2
+        name: Jane Smith
+        email: jane@example.com
+        role: user
+
+  - name: posts
+    idField: postId
+    enableCrud: true
+    seed:
+      - postId: p1
+        title: First Post
+        content: Hello World
+        authorId: u1
+      - postId: p2
+        title: Second Post
+        content: Another post
+        authorId: u2
+
+  - name: categories
+    idField: id
+    enableCrud: false  # No CRUD routes
+    seed:
+      - id: c1
+        name: Technology
+      - id: c2
+        name: Science
+
+staticEndpoints:
+  - path: /info
+    method: GET
+    status: 200
+    response:
+      service: tinyrest
+      resources: ["users", "posts", "categories"]
+      timestamp: "{{now}}"
+      
+  - path: /echo-post
+    method: POST
+    status: 200
+    echoRequest: true
+    
+  - path: /custom-status
+    method: GET
+    status: 418
+    response:
+      message: "I'm a teapot"

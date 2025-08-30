@@ -1,0 +1,33 @@
+# Configuration with chaos engineering features
+port: 0
+authToken: chaos-token
+artificialLatencyMs: 100
+chaosFailRate: 0.3
+
+logging:
+  level: INFO
+  httpRequests: true
+  enableFileLogging: false
+
+features:
+  templating: true
+  hotReload: false
+  schemaValidation: strict
+
+resources:
+  - name: orders
+    idField: orderId
+    enableCrud: true
+    seed:
+      - orderId: o1
+        item: laptop
+        quantity: 1
+        status: pending
+
+staticEndpoints:
+  - path: /chaos-test
+    method: GET
+    status: 200
+    response:
+      message: "This endpoint may fail randomly"
+      timestamp: "{{now}}"

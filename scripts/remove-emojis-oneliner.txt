@@ -1,0 +1,10 @@
+# One-liner commands for removing emojis from TinyRest
+
+## PowerShell (Windows/Cross-platform)
+Get-ChildItem -Path "src/main/java/dev/mars/tinyrest/TinyRest.java","docs/README.md","docs/LOGGING.md","docs/LOGGING_EXAMPLES.md" | ForEach-Object { $content = Get-Content $_.FullName -Raw -Encoding UTF8; $content = $content -replace '[\u{1F300}-\u{1F9FF}]','' -replace '[\u{2600}-\u{26FF}]','' -replace '[\u{2700}-\u{27BF}]','' -replace '\u{2192}','->' -replace '\u{2190}','<-'; Set-Content $_.FullName $content -Encoding UTF8 }
+
+## Bash/Linux/macOS
+find . -name "TinyRest.java" -o -name "README.md" -o -name "LOGGING.md" -o -name "LOGGING_EXAMPLES.md" | xargs perl -i.bak -pe 's/[\x{1F300}-\x{1F9FF}]//g; s/[\x{2600}-\x{26FF}]//g; s/[\x{2700}-\x{27BF}]//g; s/\x{2192}/->/g; s/\x{2190}/<-/g'
+
+## Alternative using sed (may not work with all emoji ranges)
+find . -name "*.java" -o -name "*.md" | xargs sed -i.bak -E 's/[[:space:]]*[^[:print:][:space:]]//g'

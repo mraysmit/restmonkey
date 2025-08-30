@@ -48,3 +48,201 @@
 20:33:47.134 ← 201 POST /api/users (6ms)
 20:33:47.142 → POST /api/users 
 20:33:47.143 ← 401 POST /api/users (1ms) - Missing/invalid bearer token
+20:41:30.463 → GET /health 
+20:41:30.534 ← 200 GET /health (71ms)
+20:41:30.571 → GET /api/users ?limit=10&offset=0
+20:41:30.640 ← 200 GET /api/users (69ms)
+20:41:30.644 → POST /api/users 
+20:41:30.705 ← 201 POST /api/users (62ms)
+20:41:30.708 → POST /api/users 
+20:41:30.763 ← 401 POST /api/users (55ms) - Missing/invalid bearer token
+20:41:30.767 → POST /echo ?test=value
+20:41:30.831 ← 200 POST /echo (63ms)
+20:41:30.834 → GET /nonexistent 
+20:41:30.889 ← 404 GET /nonexistent (55ms) - No matching route
+20:41:30.929 → GET /health 
+20:41:30.931 ← 200 GET /health (2ms)
+20:41:30.942 → GET /api/users 
+20:41:30.943 ← 200 GET /api/users (1ms)
+20:41:30.951 → POST /api/users 
+20:41:30.953 ← 201 POST /api/users (2ms)
+20:41:30.960 → POST /api/users 
+20:41:30.961 ← 401 POST /api/users (1ms) - Missing/invalid bearer token
+21:19:21.827 -> GET /health 
+21:19:21.896 <- 200 GET /health (69ms)
+21:19:21.930 -> GET /api/users ?limit=10&offset=0
+21:19:21.988 <- 200 GET /api/users (58ms)
+21:19:21.992 -> POST /api/users 
+21:19:22.053 <- 201 POST /api/users (62ms)
+21:19:22.055 -> POST /api/users 
+21:19:22.109 <- 401 POST /api/users (54ms) - Missing/invalid bearer token
+21:19:22.114 -> POST /echo ?test=value
+21:19:22.174 <- 200 POST /echo (59ms)
+21:19:22.177 -> GET /nonexistent 
+21:19:22.234 <- 404 GET /nonexistent (57ms) - No matching route
+21:19:22.271 -> GET /health 
+21:19:22.272 <- 200 GET /health (1ms)
+21:19:22.282 -> GET /api/users 
+21:19:22.283 <- 200 GET /api/users (1ms)
+21:19:22.292 -> POST /api/users 
+21:19:22.293 <- 201 POST /api/users (2ms)
+21:19:22.302 -> POST /api/users 
+21:19:22.303 <- 401 POST /api/users (1ms) - Missing/invalid bearer token
+21:21:14.607 -> GET /health 
+21:21:14.616 <- 200 GET /health (9ms)
+21:21:14.659 -> GET /api/users 
+21:21:14.667 <- 200 GET /api/users (8ms)
+21:21:14.685 -> POST /api/users 
+21:21:14.692 <- 201 POST /api/users (7ms)
+21:21:14.702 -> POST /api/users 
+21:21:14.702 <- 401 POST /api/users (1ms) - Missing/invalid bearer token
+21:31:16.887 -> GET /health 
+21:31:16.894 <- 200 GET /health (7ms)
+21:32:03.041 -> GET /health 
+21:32:03.115 <- 200 GET /health (74ms)
+21:32:03.151 -> GET /api/users ?limit=10&offset=0
+21:32:03.222 <- 200 GET /api/users (72ms)
+21:32:03.225 -> POST /api/users 
+21:32:03.283 <- 201 POST /api/users (58ms)
+21:32:03.286 -> POST /api/users 
+21:32:03.338 <- 401 POST /api/users (52ms) - Missing/invalid bearer token
+21:32:03.342 -> POST /echo ?test=value
+21:32:03.405 <- 200 POST /echo (62ms)
+21:32:03.408 -> GET /nonexistent 
+21:32:03.464 <- 404 GET /nonexistent (56ms) - No matching route
+21:32:03.502 -> GET /health 
+21:32:03.503 <- 200 GET /health (1ms)
+21:32:03.515 -> GET /api/users 
+21:32:03.516 <- 200 GET /api/users (1ms)
+21:32:03.523 -> POST /api/users 
+21:32:03.525 <- 201 POST /api/users (2ms)
+21:32:03.533 -> POST /api/users 
+21:32:03.535 <- 401 POST /api/users (1ms) - Missing/invalid bearer token
+21:38:56.043 -> GET /health 
+21:38:56.047 <- 200 GET /health (5ms)
+22:31:28.219 -> GET /api/categories 
+22:31:28.220 <- 404 GET /api/categories (2ms) - No matching route
+22:31:28.265 -> GET /custom-status 
+22:31:28.269 <- 418 GET /custom-status (4ms)
+22:31:28.278 -> GET /api/users 
+22:31:28.281 <- 200 GET /api/users (3ms)
+22:31:28.284 -> GET /api/posts 
+22:31:28.286 <- 200 GET /api/posts (2ms)
+22:31:28.295 -> POST /echo-post 
+22:31:28.297 <- 200 POST /echo-post (2ms)
+22:31:28.337 -> GET /api/products 
+22:31:28.342 <- 200 GET /api/products (4ms)
+22:31:28.350 -> POST /api/products 
+22:31:28.358 <- 201 POST /api/products (8ms)
+22:31:28.365 -> GET /status 
+22:31:28.366 <- 200 GET /status (1ms)
+22:31:55.565 -> GET /api/categories 
+22:31:55.566 <- 404 GET /api/categories (2ms) - No matching route
+22:31:55.614 -> GET /custom-status 
+22:31:55.619 <- 418 GET /custom-status (5ms)
+22:31:55.628 -> GET /api/users 
+22:31:55.631 <- 200 GET /api/users (4ms)
+22:31:55.634 -> GET /api/posts 
+22:31:55.635 <- 200 GET /api/posts (1ms)
+22:31:55.645 -> POST /echo-post 
+22:31:55.647 <- 200 POST /echo-post (3ms)
+22:31:55.686 -> GET /api/products 
+22:31:55.693 <- 200 GET /api/products (6ms)
+22:31:55.702 -> POST /api/products 
+22:31:55.712 <- 201 POST /api/products (11ms)
+22:31:55.720 -> GET /status 
+22:31:55.722 <- 200 GET /status (2ms)
+22:31:55.740 -> GET /api/items 
+22:31:55.741 <- 200 GET /api/items (1ms)
+22:31:55.750 -> POST /api/items 
+22:31:55.751 <- 201 POST /api/items (1ms)
+22:32:09.795 -> GET /time 
+22:32:09.802 <- 200 GET /time (7ms)
+22:32:09.859 -> GET /random 
+22:32:09.862 <- 200 GET /random (3ms)
+22:32:09.872 -> GET /api/events 
+22:32:09.875 <- 200 GET /api/events (4ms)
+22:32:09.881 -> GET /random 
+22:32:09.882 <- 200 GET /random (1ms)
+22:32:09.908 -> GET /random 
+22:32:09.910 <- 200 GET /random (2ms)
+22:32:09.919 -> GET /complex-template 
+22:32:09.922 <- 200 GET /complex-template (3ms)
+22:32:09.930 -> POST /template-echo 
+22:32:09.931 <- 200 POST /template-echo (2ms)
+22:33:17.753 -> GET /time 
+22:33:17.771 <- 200 GET /time (17ms)
+22:33:17.820 -> GET /random 
+22:33:17.825 <- 200 GET /random (5ms)
+22:33:17.834 -> GET /api/events 
+22:33:17.838 <- 200 GET /api/events (3ms)
+22:33:17.847 -> GET /random 
+22:33:17.849 <- 200 GET /random (3ms)
+22:33:17.863 -> GET /random 
+22:33:17.865 <- 200 GET /random (2ms)
+22:33:17.874 -> GET /complex-template 
+22:33:17.877 <- 200 GET /complex-template (4ms)
+22:33:17.888 -> POST /template-echo 
+22:33:17.890 <- 200 POST /template-echo (2ms)
+22:33:34.335 -> POST /api/products 
+22:33:34.348 <- 201 POST /api/products (13ms)
+22:33:34.397 -> POST /api/products 
+22:33:34.401 <- 201 POST /api/products (4ms)
+22:33:34.432 -> POST /api/users 
+22:33:34.436 <- 201 POST /api/users (4ms)
+22:33:34.440 -> POST /api/users 
+22:33:34.440 <- 401 POST /api/users (1ms) - Missing/invalid bearer token
+22:33:34.457 -> GET /api/users 
+22:33:34.462 <- 200 GET /api/users (5ms)
+22:33:34.472 -> DELETE /api/users/u1 
+22:33:34.474 <- 401 DELETE /api/users/u1 (2ms) - Missing/invalid bearer token
+22:33:34.484 -> POST /api/users 
+22:33:34.484 <- 401 POST /api/users (1ms) - Missing/invalid bearer token
+22:33:34.488 -> POST /api/users 
+22:33:34.488 <- 401 POST /api/users (1ms) - Missing/invalid bearer token
+22:33:34.493 -> POST /api/users 
+22:33:34.493 <- 401 POST /api/users (1ms) - Missing/invalid bearer token
+22:33:34.496 -> POST /api/users 
+22:33:34.496 <- 401 POST /api/users (0ms) - Missing/invalid bearer token
+22:33:34.498 -> POST /api/users 
+22:33:34.498 <- 401 POST /api/users (0ms) - Missing/invalid bearer token
+22:33:34.506 -> PUT /api/users/u1 
+22:33:34.506 <- 401 PUT /api/users/u1 (0ms) - Missing/invalid bearer token
+22:33:34.515 -> POST /api/users 
+22:33:34.516 <- 201 POST /api/users (2ms)
+22:33:34.523 -> POST /api/users 
+22:33:34.523 <- 401 POST /api/users (0ms) - Missing/invalid bearer token
+22:33:34.532 -> POST /api/users 
+22:33:34.532 <- 401 POST /api/users (1ms) - Missing/invalid bearer token
+22:34:35.633 -> POST /api/products 
+22:34:35.648 <- 201 POST /api/products (15ms)
+22:34:35.694 -> POST /api/products 
+22:34:35.697 <- 201 POST /api/products (3ms)
+22:34:35.724 -> POST /api/users 
+22:34:35.727 <- 201 POST /api/users (4ms)
+22:34:35.735 -> GET /api/users 
+22:34:35.739 <- 200 GET /api/users (5ms)
+22:34:35.750 -> DELETE /api/users/u1 
+22:34:35.751 <- 401 DELETE /api/users/u1 (1ms) - Missing/invalid bearer token
+22:34:35.760 -> POST /api/users 
+22:34:35.761 <- 401 POST /api/users (1ms) - Missing/invalid bearer token
+22:34:35.766 -> POST /api/users 
+22:34:35.767 <- 401 POST /api/users (1ms) - Missing/invalid bearer token
+22:34:35.771 -> POST /api/users 
+22:34:35.772 <- 401 POST /api/users (0ms) - Missing/invalid bearer token
+22:34:35.778 -> POST /api/users 
+22:34:35.778 <- 401 POST /api/users (1ms) - Missing/invalid bearer token
+22:34:35.782 -> POST /api/users 
+22:34:35.783 <- 401 POST /api/users (1ms) - Missing/invalid bearer token
+22:34:35.785 -> POST /api/users 
+22:34:35.785 <- 401 POST /api/users (0ms) - Missing/invalid bearer token
+22:34:35.788 -> POST /api/users 
+22:34:35.789 <- 401 POST /api/users (2ms) - Missing/invalid bearer token
+22:34:35.797 -> PUT /api/users/u1 
+22:34:35.797 <- 401 PUT /api/users/u1 (1ms) - Missing/invalid bearer token
+22:34:35.806 -> POST /api/users 
+22:34:35.808 <- 201 POST /api/users (2ms)
+22:34:35.815 -> POST /api/users 
+22:34:35.816 <- 401 POST /api/users (1ms) - Missing/invalid bearer token
+22:34:35.824 -> POST /api/users 
+22:34:35.825 <- 401 POST /api/users (1ms) - Missing/invalid bearer token

@@ -67,12 +67,12 @@ public class TinyRest {
                     countEnabledFeatures(cfg));
 
             var handle = start(cfg, path);
-            log.info("🚀 TinyRest server successfully started on http://localhost:{}/", handle.boundAddress().getPort());
-            log.info("📁 Configuration file being watched: {}", path);
+            log.info("TinyRest server successfully started on http://localhost:{}/", handle.boundAddress().getPort());
+            log.info("Configuration file being watched: {}", path);
             log.debug("Server bound to address: {}, executor pool size: {}",
                     handle.boundAddress(), Runtime.getRuntime().availableProcessors());
         } catch (Exception e) {
-            log.error("❌ Failed to start TinyRest server: {}", e.getMessage(), e);
+            log.error("Failed to start TinyRest server: {}", e.getMessage(), e);
             throw e;
         }
     }
@@ -169,7 +169,7 @@ public class TinyRest {
         final Recorder recorder;
 
         Engine(MockConfig cfg, Path configPath) {
-            log.debug("🔧 Engine initialization starting...");
+            log.debug("Engine initialization starting...");
             this.cfg = cfg;
             this.configPath = configPath;
             this.features = Features.from(cfg.features);
@@ -183,9 +183,9 @@ public class TinyRest {
                 log.debug("Running strict configuration validation...");
                 try {
                     validateOrDie(cfg);
-                    log.debug("✅ Strict validation passed");
+                    log.debug("Strict validation passed");
                 } catch (Exception e) {
-                    log.error("❌ Strict validation failed: {}", e.getMessage());
+                    log.error("Strict validation failed: {}", e.getMessage());
                     throw e;
                 }
             } else {
@@ -207,7 +207,7 @@ public class TinyRest {
                 recorder.loadFromFile();
             }
 
-            log.info("✅ Engine initialized successfully: {} routes, {} stores, {} features active",
+            log.info("Engine initialized successfully: {} routes, {} stores, {} features active",
                     routes.size(), stores.size(), countActiveFeatures());
         }
 
@@ -226,8 +226,8 @@ public class TinyRest {
             String remoteAddr = ex.getRemoteAddress().toString();
             long startTime = System.currentTimeMillis();
 
-            log.trace("🌐 Incoming request: {} {} from {}", method, path, remoteAddr);
-            httpLog.info("→ {} {} {}", method, path, query != null ? "?" + query : "");
+            log.trace("Incoming request: {} {} from {}", method, path, remoteAddr);
+            httpLog.info("-> {} {} {}", method, path, query != null ? "?" + query : "");
 
             // Log request headers in debug mode
             if (log.isDebugEnabled()) {
@@ -238,25 +238,25 @@ public class TinyRest {
 
             addCORS(ex);
             if (handleCorsPreflight(ex)) {
-                log.debug("✅ CORS preflight handled for {} {}", method, path);
+                log.debug("CORS preflight handled for {} {}", method, path);
                 return;
             }
 
             // Apply artificial latency if configured
             if (cfg.artificialLatencyMs != null && cfg.artificialLatencyMs > 0) {
-                log.debug("⏱️ Applying artificial latency: {}ms", cfg.artificialLatencyMs);
+                log.debug("Applying artificial latency: {}ms", cfg.artificialLatencyMs);
                 withLatency(cfg.artificialLatencyMs);
             }
 
             // Apply chaos engineering if configured
             if (cfg.chaosFailRate != null && cfg.chaosFailRate > 0) {
-                log.debug("🎲 Chaos rate configured: {}", cfg.chaosFailRate);
+                log.debug("Chaos rate configured: {}", cfg.chaosFailRate);
                 try {
                     maybeChaos(cfg.chaosFailRate);
                 } catch (RuntimeException e) {
                     long duration = System.currentTimeMillis() - startTime;
-                    log.warn("💥 Chaos engineering triggered failure for {} {} ({}ms)", method, path, duration);
-                    httpLog.warn("← 500 {} {} ({}ms) - Chaos failure", method, path, duration);
+                    log.warn("Chaos engineering triggered failure for {} {} ({}ms)", method, path, duration);
+                    httpLog.warn("<- 500 {} {} ({}ms) - Chaos failure", method, path, duration);
                     var resp = Response.json(500, Map.of("error", "chaos", "message", "Simulated failure"));
                     write(ex, resp);
                     return;
@@ -266,60 +266,60 @@ public class TinyRest {
             try {
                 // record/replay — replay happens BEFORE any routing
                 if (recorder.isReplay()) {
-                    log.debug("🔄 Attempting replay for {} {}", method, path);
+                    log.debug("Attempting replay for {} {}", method, path);
                     var hit = recorder.tryReplay(ex);
                     if (hit != null) {
                         long duration = System.currentTimeMillis() - startTime;
-                        log.debug("✅ Replay hit found for {} {}", method, path);
-                        httpLog.info("← {} {} {} ({}ms) [REPLAY]", hit.status, method, path, duration);
+                        log.debug("Replay hit found for {} {}", method, path);
+                        httpLog.info("<- {} {} {} ({}ms) [REPLAY]", hit.status, method, path, duration);
                         write(ex, hit);
                         return;
                     }
 
-                    log.debug("❌ No replay match found for {} {}", method, path);
+                    log.debug("No replay match found for {} {}", method, path);
                     if ("error".equalsIgnoreCase(recorder.replayOnMiss())) {
                         long duration = System.currentTimeMillis() - startTime;
-                        log.warn("🚫 Replay miss configured as error for {} {}", method, path);
-                        httpLog.warn("← 501 {} {} ({}ms) [REPLAY MISS]", method, path, duration);
+                        log.warn("Replay miss configured as error for {} {}", method, path);
+                        httpLog.warn("<- 501 {} {} ({}ms) [REPLAY MISS]", method, path, duration);
                         write(ex, Response.json(501, Map.of("error", "replay_miss", "path", path, "method", method)));
                         return;
                     }
-                    log.debug("⤵️ Replay miss, falling back to normal routing for {} {}", method, path);
+                    log.debug("Replay miss, falling back to normal routing for {} {}", method, path);
                 }
 
-                log.debug("🔍 Searching for matching route among {} routes for {} {}", routes.size(), method, path);
+                log.debug("Searching for matching route among {} routes for {} {}", routes.size(), method, path);
                 for (Route r : routes) {
                     Matcher m = r.pattern.matcher(path);
                     log.trace("Testing route pattern {} against path {}: method match={}, pattern match={}",
                             r.pattern.pattern(), path, r.method.equals(method), m.matches());
 
                     if (r.method.equals(method) && m.matches()) {
-                        log.debug("✅ Route matched: {} {} -> handler (mutates={})", method, path, r.mutates);
+                        log.debug("Route matched: {} {} -> handler (mutates={})", method, path, r.mutates);
 
                         var ctx = new Ctx(ex, om, cfg, m, r, features);
 
                         // Check authorization for mutating operations
                         if (r.mutates) {
-                            log.debug("🔐 Checking authorization for mutating operation {} {}", method, path);
+                            log.debug("Checking authorization for mutating operation {} {}", method, path);
                             if (!isAuthorized(ctx)) {
-                                log.warn("🚫 Authorization failed for {} {} - missing or invalid bearer token", method, path);
+                                log.warn("Authorization failed for {} {} - missing or invalid bearer token", method, path);
                                 throw new Unauthorized("Missing/invalid bearer token");
                             }
-                            log.debug("✅ Authorization successful for {} {}", method, path);
+                            log.debug("Authorization successful for {} {}", method, path);
                         }
 
-                        log.debug("🎯 Executing handler for {} {}", method, path);
+                        log.debug("Executing handler for {} {}", method, path);
                         Response resp = r.handler.handle(ctx);
                         long duration = System.currentTimeMillis() - startTime;
 
-                        log.debug("✅ Handler completed for {} {} -> {} ({}ms)", method, path, resp.status, duration);
-                        httpLog.info("← {} {} {} ({}ms)", resp.status, method, path, duration);
+                        log.debug("Handler completed for {} {} -> {} ({}ms)", method, path, resp.status, duration);
+                        httpLog.info("<- {} {} {} ({}ms)", resp.status, method, path, duration);
 
                         write(ex, resp);
 
                         // record AFTER successful handling
                         if (recorder.isRecording()) {
-                            log.debug("📝 Recording request/response for {} {}", method, path);
+                            log.debug("Recording request/response for {} {}", method, path);
                             recorder.record(ex, resp);
                         }
                         return;
@@ -327,8 +327,8 @@ public class TinyRest {
                 }
                 // No route found
                 long duration = System.currentTimeMillis() - startTime;
-                log.warn("❌ No matching route found for {} {} after checking {} routes", method, path, routes.size());
-                httpLog.warn("← 404 {} {} ({}ms) - No matching route", method, path, duration);
+                log.warn("No matching route found for {} {} after checking {} routes", method, path, routes.size());
+                httpLog.warn("<- 404 {} {} ({}ms) - No matching route", method, path, duration);
 
                 var notFound = Response.json(404, Map.of(
                         "error","not_found",
@@ -336,13 +336,13 @@ public class TinyRest {
                         "availableRoutes", routes.stream().map(r -> r.method + " " + r.pattern.pattern()).collect(Collectors.toList())));
                 write(ex, notFound);
                 if (recorder.isRecording()) {
-                    log.debug("📝 Recording 404 response for {} {}", method, path);
+                    log.debug("Recording 404 response for {} {}", method, path);
                     recorder.record(ex, notFound);
                 }
             } catch (BadRequest e) {
                 long duration = System.currentTimeMillis() - startTime;
-                log.warn("🚫 Bad request for {} {}: {}", method, path, e.getMessage());
-                httpLog.warn("← 400 {} {} ({}ms) - {}", method, path, duration, e.getMessage());
+                log.warn("Bad request for {} {}: {}", method, path, e.getMessage());
+                httpLog.warn("<- 400 {} {} ({}ms) - {}", method, path, duration, e.getMessage());
 
                 var resp = Response.json(400, Map.of(
                         "error","bad_request",
@@ -351,13 +351,13 @@ public class TinyRest {
                         "method", method));
                 write(ex, resp);
                 if (recorder.isRecording()) {
-                    log.debug("📝 Recording 400 response for {} {}", method, path);
+                    log.debug("Recording 400 response for {} {}", method, path);
                     recorder.record(ex, resp);
                 }
             } catch (Unauthorized e) {
                 long duration = System.currentTimeMillis() - startTime;
-                log.warn("🔐 Unauthorized access attempt for {} {}: {}", method, path, e.getMessage());
-                httpLog.warn("← 401 {} {} ({}ms) - {}", method, path, duration, e.getMessage());
+                log.warn("Unauthorized access attempt for {} {}: {}", method, path, e.getMessage());
+                httpLog.warn("<- 401 {} {} ({}ms) - {}", method, path, duration, e.getMessage());
 
                 var resp = Response.json(401, Map.of(
                         "error","unauthorized",
@@ -367,13 +367,13 @@ public class TinyRest {
                         "hint", "Include 'Authorization: Bearer <token>' header"));
                 write(ex, resp);
                 if (recorder.isRecording()) {
-                    log.debug("📝 Recording 401 response for {} {}", method, path);
+                    log.debug("Recording 401 response for {} {}", method, path);
                     recorder.record(ex, resp);
                 }
             } catch (Exception e) {
                 long duration = System.currentTimeMillis() - startTime;
-                log.error("💥 Internal server error for {} {} ({}ms): {}", method, path, duration, e.getMessage(), e);
-                httpLog.error("← 500 {} {} ({}ms) - Internal error: {}", method, path, duration, e.getMessage());
+                log.error("Internal server error for {} {} ({}ms): {}", method, path, duration, e.getMessage(), e);
+                httpLog.error("<- 500 {} {} ({}ms) - Internal error: {}", method, path, duration, e.getMessage());
 
                 var resp = Response.json(500, Map.of(
                         "error","internal",
@@ -383,18 +383,18 @@ public class TinyRest {
                         "timestamp", Instant.now().toString()));
                 write(ex, resp);
                 if (recorder.isRecording()) {
-                    log.debug("📝 Recording 500 response for {} {}", method, path);
+                    log.debug("Recording 500 response for {} {}", method, path);
                     recorder.record(ex, resp);
                 }
             }
         }
 
         private void initStores() {
-            log.debug("🗄️ Initializing data stores...");
+            log.debug("Initializing data stores...");
             stores.clear();
 
             if (cfg.resources == null || cfg.resources.isEmpty()) {
-                log.info("📭 No resources configured - no data stores created");
+                log.info("No resources configured - no data stores created");
                 return;
             }
 
@@ -404,7 +404,7 @@ public class TinyRest {
                         r.name, r.idField, r.enableCrud, r.seed != null ? r.seed.size() : 0);
 
                 if (blank(r.name)) {
-                    log.warn("⚠️ Skipping resource with blank name");
+                    log.warn("Skipping resource with blank name");
                     continue;
                 }
 
@@ -429,20 +429,20 @@ public class TinyRest {
                         seededCount++;
                         log.trace("Seeded record with ID '{}' in resource '{}'", id, r.name);
                     }
-                    log.info("✅ Initialized resource '{}' with {} seed records (idField='{}')",
+                    log.info("Initialized resource '{}' with {} seed records (idField='{}')",
                             r.name, seededCount, idField);
                 } else {
-                    log.info("📝 Initialized empty resource '{}' (idField='{}')", r.name, idField);
+                    log.info("Initialized empty resource '{}' (idField='{}')", r.name, idField);
                 }
 
                 stores.put(r.name, store);
             }
 
-            log.debug("✅ Store initialization complete: {} stores created", stores.size());
+            log.debug("Store initialization complete: {} stores created", stores.size());
         }
 
         private void initRoutes() {
-            log.debug("🛣️ Initializing request routes...");
+            log.debug("Initializing request routes...");
             var newRoutes = new ArrayList<Route>();
             int crudRoutes = 0;
             int staticRoutes = 0;
@@ -456,20 +456,20 @@ public class TinyRest {
                     log.debug("Resource '{}': enableCrud={}", r.name, enable);
 
                     if (!enable) {
-                        log.info("⏭️ CRUD disabled for resource '{}' - skipping route generation", r.name);
+                        log.info("CRUD disabled for resource '{}' - skipping route generation", r.name);
                         continue;
                     }
 
                     if (blank(r.name)) {
-                        log.warn("⚠️ Skipping resource with blank name for route generation");
+                        log.warn("Skipping resource with blank name for route generation");
                         continue;
                     }
 
                     var base = "/api/" + r.name;
-                    log.info("🔧 Creating CRUD routes for resource '{}' at base path '{}'", r.name, base);
+                    log.info("Creating CRUD routes for resource '{}' at base path '{}'", r.name, base);
 
                     // GET /api/{resource} - List resources
-                    log.debug("  📋 Adding route: GET {} (list resources)", base);
+                    log.debug("  Adding route: GET {} (list resources)", base);
                     newRoutes.add(new Route("GET", base, false, (ctx) -> {
                         var store = stores.get(r.name);
                         var qp = ctx.query();
@@ -482,7 +482,7 @@ public class TinyRest {
                     }));
 
                     // POST /api/{resource} - Create resource
-                    log.debug("  ➕ Adding route: POST {} (create resource, auth required)", base);
+                    log.debug("  Adding route: POST {} (create resource, auth required)", base);
                     newRoutes.add(new Route("POST", base, true, (ctx) -> {
                         var store = stores.get(r.name);
                         Map<String,Object> in = ctx.readJsonMap();
@@ -498,7 +498,7 @@ public class TinyRest {
                     }));
 
                     // GET /api/{resource}/{id} - Get specific resource
-                    log.debug("  🔍 Adding route: GET {}/:id (get resource by ID)", base);
+                    log.debug("  Adding route: GET {}/:id (get resource by ID)", base);
                     newRoutes.add(new Route("GET", base + "/{id}", false, (ctx) -> {
                         var store = stores.get(r.name);
                         String id = ctx.path("id");
@@ -513,7 +513,7 @@ public class TinyRest {
                     }));
 
                     // PUT /api/{resource}/{id} - Update resource
-                    log.debug("  ✏️ Adding route: PUT {}/:id (update resource, auth required)", base);
+                    log.debug("  Adding route: PUT {}/:id (update resource, auth required)", base);
                     newRoutes.add(new Route("PUT", base + "/{id}", true, (ctx) -> {
                         var store = stores.get(r.name);
                         String id = ctx.path("id");
@@ -533,7 +533,7 @@ public class TinyRest {
                     }));
 
                     // DELETE /api/{resource}/{id} - Delete resource
-                    log.debug("  🗑️ Adding route: DELETE {}/:id (delete resource, auth required)", base);
+                    log.debug("  Adding route: DELETE {}/:id (delete resource, auth required)", base);
                     newRoutes.add(new Route("DELETE", base + "/{id}", true, (ctx) -> {
                         var store = stores.get(r.name);
                         String id = ctx.path("id");
@@ -558,7 +558,7 @@ public class TinyRest {
 
                 for (var se : cfg.staticEndpoints) {
                     if (blank(se.path)) {
-                        log.warn("⚠️ Skipping static endpoint with blank path");
+                        log.warn("Skipping static endpoint with blank path");
                         continue;
                     }
 
@@ -570,7 +570,7 @@ public class TinyRest {
                     boolean isEcho = Boolean.TRUE.equals(se.echoRequest);
                     boolean hasTemplating = features.templating && se.response != null;
 
-                    log.info("🔧 Creating static endpoint: {} {} -> {} (echo={}, templating={}, auth={})",
+                    log.info("Creating static endpoint: {} {} -> {} (echo={}, templating={}, auth={})",
                             method, se.path, status, isEcho, hasTemplating, mutates);
 
                     newRoutes.add(new Route(method, se.path, mutates, (ctx) -> {
@@ -597,17 +597,17 @@ public class TinyRest {
                     }));
                     staticRoutes++;
                 }
-                log.debug("✅ Static endpoint processing complete: {} endpoints created", staticRoutes);
+                log.debug("Static endpoint processing complete: {} endpoints created", staticRoutes);
             } else {
-                log.debug("📭 No static endpoints configured");
+                log.debug("No static endpoints configured");
             }
 
             this.routes = newRoutes;
-            log.info("✅ Route initialization complete: {} total routes ({} CRUD + {} static)",
+            log.info("Route initialization complete: {} total routes ({} CRUD + {} static)",
                     newRoutes.size(), crudRoutes, staticRoutes);
 
             if (log.isDebugEnabled()) {
-                log.debug("📋 Route summary:");
+                log.debug("Route summary:");
                 for (Route route : newRoutes) {
                     log.debug("  {} {} (mutates={})", route.method, route.pattern.pattern(), route.mutates);
                 }
@@ -616,17 +616,17 @@ public class TinyRest {
 
         // ---- Hot reload ----
         void startFileWatcher() {
-            hotReloadLog.info("🔄 Starting file watcher for configuration hot reload: {}", configPath);
+            hotReloadLog.info("Starting file watcher for configuration hot reload: {}", configPath);
             Thread t = new Thread(() -> {
                 try (WatchService ws = FileSystems.getDefault().newWatchService()) {
                     var dir = configPath.getParent();
                     if (dir == null) {
-                        hotReloadLog.error("❌ Cannot watch config file - no parent directory for: {}", configPath);
+                        hotReloadLog.error("Cannot watch config file - no parent directory for: {}", configPath);
                         return;
                     }
 
                     dir.register(ws, StandardWatchEventKinds.ENTRY_MODIFY);
-                    hotReloadLog.info("👀 File watcher active - monitoring directory: {}", dir);
+                    hotReloadLog.info("File watcher active - monitoring directory: {}", dir);
                     hotReloadLog.debug("Watching for changes to file: {}", configPath.getFileName());
 
                     while (true) {
@@ -638,7 +638,7 @@ public class TinyRest {
                             hotReloadLog.trace("File changed: {} (looking for: {})", changed, configPath.getFileName());
 
                             if (changed != null && configPath.getFileName().equals(changed)) {
-                                hotReloadLog.info("🔄 Configuration file changed, initiating hot reload...");
+                                hotReloadLog.info("Configuration file changed, initiating hot reload...");
                                 long reloadStart = System.currentTimeMillis();
 
                                 try {
@@ -650,7 +650,7 @@ public class TinyRest {
                                     hotReloadLog.debug("Validating new configuration (mode: {})", features.schemaValidation);
                                     if ("strict".equalsIgnoreCase(features.schemaValidation)) {
                                         validateOrDie(newCfg);
-                                        hotReloadLog.debug("✅ Strict validation passed");
+                                        hotReloadLog.debug("Strict validation passed");
                                     } else {
                                         validateLenient(newCfg);
                                     }
@@ -666,30 +666,30 @@ public class TinyRest {
                                     initRoutes();
 
                                     long reloadDuration = System.currentTimeMillis() - reloadStart;
-                                    hotReloadLog.info("✅ Hot reload completed successfully in {}ms at {}",
+                                    hotReloadLog.info("Hot reload completed successfully in {}ms at {}",
                                             reloadDuration, Instant.now());
-                                    hotReloadLog.info("📊 Configuration changes: routes {} -> {}, stores {} -> {}",
+                                    hotReloadLog.info("Configuration changes: routes {} -> {}, stores {} -> {}",
                                             oldRouteCount, routes.size(), oldStoreCount, stores.size());
 
                                 } catch (Exception e) {
                                     long reloadDuration = System.currentTimeMillis() - reloadStart;
-                                    hotReloadLog.error("❌ Hot reload failed after {}ms: {}", reloadDuration, e.getMessage(), e);
-                                    hotReloadLog.warn("⚠️ Server continues with previous configuration");
+                                    hotReloadLog.error("Hot reload failed after {}ms: {}", reloadDuration, e.getMessage(), e);
+                                    hotReloadLog.warn("Server continues with previous configuration");
                                 }
                             }
                         }
                         key.reset();
                     }
                 } catch (InterruptedException e) {
-                    hotReloadLog.info("🛑 File watcher interrupted - hot reload disabled");
+                    hotReloadLog.info("File watcher interrupted - hot reload disabled");
                     Thread.currentThread().interrupt();
                 } catch (Exception e) {
-                    hotReloadLog.error("💥 File watcher stopped unexpectedly: {}", e.getMessage(), e);
+                    hotReloadLog.error("File watcher stopped unexpectedly: {}", e.getMessage(), e);
                 }
             }, "tinyrest-hot-reload");
             t.setDaemon(true);
             t.start();
-            hotReloadLog.debug("✅ Hot reload thread started successfully");
+            hotReloadLog.debug("Hot reload thread started successfully");
         }
     }
 
@@ -772,20 +772,20 @@ public class TinyRest {
             this.om = om;
 
             String mode = this.rr.mode != null ? this.rr.mode.toLowerCase() : "off";
-            recorderLog.debug("🎬 Initializing recorder with mode: {}", mode);
+            recorderLog.debug("Initializing recorder with mode: {}", mode);
 
             if (isRecording()) {
-                recorderLog.info("📹 Recording mode enabled - capturing requests to: {}",
+                recorderLog.info("Recording mode enabled - capturing requests to: {}",
                         blank(this.rr.file) ? "[NO FILE SPECIFIED]" : this.rr.file);
                 if (blank(this.rr.file)) {
-                    recorderLog.warn("⚠️ Recording enabled but no file specified - requests will not be saved");
+                    recorderLog.warn("Recording enabled but no file specified - requests will not be saved");
                 }
             } else if (isReplay()) {
-                recorderLog.info("▶️ Replay mode enabled - replaying from: {}",
+                recorderLog.info("Replay mode enabled - replaying from: {}",
                         blank(this.rr.file) ? "[NO FILE SPECIFIED]" : this.rr.file);
                 recorderLog.debug("Replay on miss strategy: {}", replayOnMiss());
             } else {
-                recorderLog.debug("📴 Record/replay disabled");
+                recorderLog.debug("Record/replay disabled");
             }
         }
         boolean isRecording() { return rr != null && "record".equalsIgnoreCase(rr.mode); }
@@ -796,27 +796,27 @@ public class TinyRest {
 
         void loadFromFile() {
             if (blank(rr.file)) {
-                recorderLog.debug("📭 No replay file specified - replay will be empty");
+                recorderLog.debug("No replay file specified - replay will be empty");
                 return;
             }
 
             var f = Paths.get(rr.file);
-            recorderLog.debug("📂 Loading replay data from: {}", f.toAbsolutePath());
+            recorderLog.debug("Loading replay data from: {}", f.toAbsolutePath());
 
             if (!Files.exists(f)) {
-                recorderLog.warn("⚠️ Replay file does not exist: {} - replay will be empty", rr.file);
+                recorderLog.warn("Replay file does not exist: {} - replay will be empty", rr.file);
                 return;
             }
 
             if (!Files.isReadable(f)) {
-                recorderLog.error("❌ Replay file is not readable: {}", rr.file);
+                recorderLog.error("Replay file is not readable: {}", rr.file);
                 return;
             }
 
             long fileSize = 0;
             try {
                 fileSize = Files.size(f);
-                recorderLog.debug("📊 Replay file size: {} bytes", fileSize);
+                recorderLog.debug("Replay file size: {} bytes", fileSize);
             } catch (IOException e) {
                 recorderLog.warn("Cannot determine replay file size: {}", e.getMessage());
             }
@@ -841,24 +841,24 @@ public class TinyRest {
                         recorderLog.trace("Loaded replay item {} from line {}", loadedCount, lineNumber);
                     } catch (Exception e) {
                         errorCount++;
-                        recorderLog.warn("⚠️ Failed to parse replay item at line {}: {}", lineNumber, e.getMessage());
+                        recorderLog.warn("Failed to parse replay item at line {}: {}", lineNumber, e.getMessage());
                         if (errorCount > 10) {
-                            recorderLog.error("❌ Too many parse errors ({}), stopping replay file loading", errorCount);
+                            recorderLog.error("Too many parse errors ({}), stopping replay file loading", errorCount);
                             break;
                         }
                     }
                 }
 
-                recorderLog.info("✅ Loaded {} replay entries from {} ({} lines processed, {} errors)",
+                recorderLog.info("Loaded {} replay entries from {} ({} lines processed, {} errors)",
                         loadedCount, rr.file, lineNumber, errorCount);
 
                 if (loadedCount > 0) {
-                    recorderLog.debug("📋 Replay entries summary: {} unique request patterns loaded",
+                    recorderLog.debug("Replay entries summary: {} unique request patterns loaded",
                             items.stream().map(item -> item.request.get("method") + " " + item.request.get("path")).distinct().count());
                 }
 
             } catch (Exception e) {
-                recorderLog.error("💥 Failed loading replay file {}: {}", rr.file, e.getMessage(), e);
+                recorderLog.error("Failed loading replay file {}: {}", rr.file, e.getMessage(), e);
             }
         }
 
@@ -869,14 +869,14 @@ public class TinyRest {
             }
 
             if (blank(rr.file)) {
-                recorderLog.warn("⚠️ Recording skipped - no file specified");
+                recorderLog.warn("Recording skipped - no file specified");
                 return;
             }
 
             String method = ex.getRequestMethod();
             String path = ex.getRequestURI().getPath();
 
-            recorderLog.trace("📝 Recording request: {} {} -> {}", method, path, resp.status);
+            recorderLog.trace("Recording request: {} {} -> {}", method, path, resp.status);
 
             try {
                 var item = ReplayItem.from(ex, resp, rr);
@@ -898,20 +898,20 @@ public class TinyRest {
                     bw.flush();
                 }
 
-                recorderLog.debug("✅ Recorded: {} {} -> {} (file: {})", method, path, resp.status, rr.file);
+                recorderLog.debug("Recorded: {} {} -> {} (file: {})", method, path, resp.status, rr.file);
 
                 // Log file size periodically
                 try {
                     long fileSize = Files.size(file);
                     if (fileSize > 0 && fileSize % (1024 * 1024) == 0) { // Every MB
-                        recorderLog.info("📊 Recording file size: {} MB", fileSize / (1024 * 1024));
+                        recorderLog.info("Recording file size: {} MB", fileSize / (1024 * 1024));
                     }
                 } catch (IOException ignored) {
                     // File size check is not critical
                 }
 
             } catch (Exception e) {
-                recorderLog.error("💥 Recording failed for {} {}: {}", method, path, e.getMessage(), e);
+                recorderLog.error("Recording failed for {} {}: {}", method, path, e.getMessage(), e);
             }
         }
 
@@ -929,7 +929,7 @@ public class TinyRest {
             String method = ex.getRequestMethod();
             String path = ex.getRequestURI().getPath();
 
-            recorderLog.trace("🔍 Searching for replay match: {} {} among {} items", method, path, items.size());
+            recorderLog.trace("Searching for replay match: {} {} among {} items", method, path, items.size());
 
             var req = ReplayItem.captureRequest(ex);
             int checkedCount = 0;
@@ -941,13 +941,13 @@ public class TinyRest {
 
                 if (it.matches(req, rr)) {
                     int status = (int) it.response.get("status");
-                    recorderLog.debug("✅ Replay match found for {} {} -> {} (item {}/{})",
+                    recorderLog.debug("Replay match found for {} {} -> {} (item {}/{})",
                             method, path, status, checkedCount, items.size());
                     return it.toResponse();
                 }
             }
 
-            recorderLog.debug("❌ No replay match found for {} {} after checking {} items",
+            recorderLog.debug("No replay match found for {} {} after checking {} items",
                     method, path, checkedCount);
             return null;
         }
@@ -1071,18 +1071,33 @@ public class TinyRest {
 
     // ---------- In-memory store ----------
     static class ResourceStore {
-        final String name; final String idField; final ConcurrentMap<String, Map<String,Object>> data = new ConcurrentHashMap<>();
-        ResourceStore(String name, String idField) { this.name = name; this.idField = idField; }
-        void put(String id, Map<String,Object> row){ data.put(id, deepCopy(row)); }
-        Map<String,Object> get(String id){ return data.get(id); }
-        boolean remove(String id){ return data.remove(id) != null; }
+        final String name; 
+        final String idField; 
+        final ConcurrentMap<String, Map<String,Object>> data = new ConcurrentHashMap<>();
+        
+        ResourceStore(String name, String idField) { 
+            this.name = name; this.idField = idField; 
+        }
+        
+        void put(String id, Map<String,Object> row){
+            data.put(id, deepCopy(row)); 
+        }
+        
+        Map<String,Object> get(String id){ 
+            return data.get(id); 
+        }
+        
+        boolean remove(String id){ 
+            return data.remove(id) != null; 
+        }
+        
         List<Map<String,Object>> list(int limit, int offset) {
             return data.values().stream()
-                    .sorted(Comparator.comparing(o -> String.valueOf(o.getOrDefault(idField, ""))))
-                    .skip(Math.max(0, offset))
-                    .limit(Math.max(1, limit))
-                    .map(TinyRest::deepCopy)
-                    .collect(Collectors.toList());
+                .sorted(Comparator.comparing(o -> String.valueOf(o.getOrDefault(idField, ""))))
+                .skip(Math.max(0, offset))
+                .limit(Math.max(1, limit))
+                .map(TinyRest::deepCopy)
+                .collect(Collectors.toList());
         }
     }
 
@@ -1385,3 +1400,5 @@ public class TinyRest {
     @java.lang.annotation.Target(java.lang.annotation.ElementType.PARAMETER)
     public @interface TinyRestBaseUrl {}
 }
+
+

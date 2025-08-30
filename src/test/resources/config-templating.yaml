@@ -1,0 +1,52 @@
+# Configuration focused on templating features
+port: 0
+authToken: template-token
+
+features:
+  templating: true
+  hotReload: false
+  schemaValidation: strict
+
+resources:
+  - name: events
+    idField: eventId
+    enableCrud: true
+    seed:
+      - eventId: e1
+        name: Conference
+        date: "2024-01-15"
+        location: San Francisco
+
+staticEndpoints:
+  - path: /time
+    method: GET
+    status: 200
+    response:
+      current_time: "{{now}}"
+      formatted_time: "{{now:yyyy-MM-dd HH:mm:ss}}"
+      
+  - path: /random
+    method: GET
+    status: 200
+    response:
+      random_number: "{{random.int(1,100)}}"
+      random_uuid: "{{uuid}}"
+      
+  - path: /template-echo
+    method: POST
+    status: 200
+    response:
+      received_at: "{{now}}"
+      echo: "You sent a POST request to /template-echo"
+      
+  - path: /complex-template
+    method: GET
+    status: 200
+    response:
+      server_info:
+        timestamp: "{{now}}"
+        random_id: "{{uuid}}"
+        port: "{{env.PORT:8080}}"
+      data:
+        - id: "{{random.int(1,10)}}"
+          value: "item-{{random.int(100,999)}}"

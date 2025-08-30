@@ -10,7 +10,7 @@
 
 **Tiny, YAML-driven REST server for tests and dev** — a single Java class that spins up realistic HTTP endpoints backed by in-memory data. Define resources + seed data + static endpoints in YAML. Optional JUnit 5 extension boots it automatically for your test suites.
 
-No servlet container. No frameworks. Starts fast. Easy to bend to your will.
+No servlet container. No frameworks. Starts fast. Easy to bend to your will. **Comprehensive logging** with performance timing for excellent observability.
 
 ---
 
@@ -23,6 +23,7 @@ You need **real HTTP** behavior in tests without dragging in Tomcat/Jetty/WireMo
 - **Deterministic**: built-in paging, IDs, and simple routing.
 - **Practical**: auth on mutating operations, CORS, latency/chaos toggles.
 - **Test-first**: JUnit 5 extension with base URL injection, port auto-binding.
+- **Observable**: comprehensive SLF4J/Logback logging with performance timing and specialized loggers.
 
 If you want proxying, complex request matchers, or a giant DSL, use WireMock. If you want a **fake service** you control in Java, keep reading.
 
@@ -54,6 +55,13 @@ curl -s http://localhost:<PORT>/api/users | jq
 curl -s http://localhost:<PORT>/health | jq
 ```
 
+You'll see detailed, colorful logs like:
+```
+20:33:33.157 [main] INFO  TinyRest - HTTP server started successfully on port 8080
+20:33:33.379 [pool-2-thread-1] INFO  http - -> GET /health
+20:33:33.443 [pool-2-thread-1] INFO  http - <- 200 GET /health (65ms)
+```
+
 ---
 
 ## Project Layout (suggested)
@@ -72,7 +80,7 @@ your-project/
 
 ## Installation (Maven)
 
-Use this **copy-paste POM**. It pulls Jackson (JSON+YAML), JUnit, and builds a **fat JAR** with Shade.
+Use this **copy-paste POM**. It pulls Jackson (JSON+YAML), SLF4J/Logback (logging), JUnit, and builds a **fat JAR** with Shade.
 
 ```xml
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -104,6 +112,18 @@ Use this **copy-paste POM**. It pulls Jackson (JSON+YAML), JUnit, and builds a *
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-yaml</artifactId>
       <version>${jackson.version}</version>
+    </dependency>
+
+    <!-- Logging -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>2.0.9</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.4.11</version>
     </dependency>
 
     <!-- Tests -->
@@ -336,7 +356,44 @@ class MySuite { ... }
 | Hot reload | `features.hotReload: true` | Watches the YAML file, reapplies config on change |
 | Validation | `features.schemaValidation: strict|lenient` | Strict fails fast at startup |
 | Record/Replay | `features.recordReplay.*` | JSONL file with captured responses; replay later |
-| **Structured Logging** | `logging.*` | **SLF4J/Logback with colored console, file rotation, HTTP request logs** |
+| **Structured Logging** | `logging.*` | **SLF4J/Logback with TRACE/DEBUG/INFO/WARN/ERROR levels, performance timing, specialized loggers (HTTP/hotreload/recorder), colored console output, file rotation** |
+
+## Comprehensive Logging
+
+TinyRest includes enterprise-grade logging with SLF4J/Logback providing detailed observability:
+
+### Log Levels & Features
+- **TRACE**: Every internal operation (route matching, templating, data operations)
+- **DEBUG**: Development insights (configuration parsing, route creation, auth checks)
+- **INFO**: Production monitoring (server lifecycle, resource summaries, HTTP requests)
+- **WARN**: Security issues (auth failures, missing routes, config problems)
+- **ERROR**: Critical problems (server errors, validation failures, stack traces)
+
+### Visual Logging
+- **Color-coded console** output (INFO=blue, WARN=yellow, ERROR=red)
+- **Performance timing** for all HTTP requests: `<- 200 GET /health (65ms)`
+
+### Specialized Loggers
+- **`dev.mars.tinyrest.http`** - Clean HTTP request/response logs
+- **`dev.mars.tinyrest.hotreload`** - Configuration change monitoring
+- **`dev.mars.tinyrest.recorder`** - Record/replay functionality
+- **`dev.mars.tinyrest.TinyRest`** - Main application events
+
+### Log Files
+- **`logs/tinyrest.log`** - Complete application logs with automatic rotation
+- **`logs/tinyrest-http.log`** - Dedicated HTTP traffic logs
+- **Daily rotation** with size limits and configurable retention
+
+### Example Output
+```
+20:33:33.129 [main] INFO  TinyRest$Engine - Engine configuration: templating=true, hotReload=true
+20:33:33.144 [main] INFO  TinyRest$Engine - Initialized resource 'users' with 2 seed records
+20:33:33.379 [pool-2-thread-1] INFO  http - -> GET /health
+20:33:33.443 [pool-2-thread-1] INFO  http - <- 200 GET /health (65ms)
+20:33:33.668 [pool-2-thread-4] WARN  http - <- 401 POST /api/users (54ms) - Missing/invalid bearer token
+```
+
+See [LOGGING.md](LOGGING.md) and [LOGGING_EXAMPLES.md](LOGGING_EXAMPLES.md) for complete documentation.
 
 ### Templating expressions (when enabled)
 
@@ -434,3 +491,4 @@ Pick whatever fits your org. MIT is typical for utility code like this.
 ## Final word
 
 TinyRest exists to **unblock testing**. It’s not a framework. If you’re fighting it, you’re solving the wrong problem — reach for a real service or WireMock. Otherwise, enjoy the speed and simplicity.
+

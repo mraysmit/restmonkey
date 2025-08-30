@@ -1,0 +1,24 @@
+# Invalid configuration for testing error handling
+port: "invalid-port"  # Should be number
+authToken: 123        # Should be string
+
+features:
+  templating: "yes"   # Should be boolean
+  hotReload: 1        # Should be boolean
+  schemaValidation: invalid  # Should be strict|lenient
+
+resources:
+  - name: ""          # Empty name should be invalid
+    enableCrud: true
+  - name: invalid-resource
+    idField: ""       # Empty idField
+    enableCrud: "true" # Should be boolean
+    seed:
+      - id: 1
+        name: null    # Null values
+
+staticEndpoints:
+  - path: ""          # Empty path
+    method: INVALID   # Invalid HTTP method
+    status: "200"     # Should be number
+    response: null    # Null response

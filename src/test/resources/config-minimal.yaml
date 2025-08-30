@@ -1,0 +1,6 @@
+# Minimal valid configuration
+port: 8080
+resources:
+  - name: items
+    idField: id
+    enableCrud: true

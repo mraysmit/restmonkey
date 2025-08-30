@@ -4,23 +4,23 @@ TinyRest now includes comprehensive logging using SLF4J with Logback, providing 
 
 ## Features
 
-### 🎨 **Colored Console Output**
+### **Colored Console Output**
 - Color-coded log levels (INFO=blue, WARN=yellow, ERROR=red)
 - Structured format with timestamps, thread names, and logger names
 - Easy-to-read HTTP request/response logs
 
-### 📁 **File Logging**
+### **File Logging**
 - Separate log files for different concerns
 - Automatic log rotation by date and size
 - Configurable retention policies
 
-### 🔍 **HTTP Request Logging**
+### **HTTP Request Logging**
 - Dedicated HTTP traffic log (`tinyrest-http.log`)
 - Request/response timing information
 - Authentication failures and errors
 - Clean format: `→ GET /api/users` and `← 200 GET /api/users (5ms)`
 
-### ⚙️ **Configurable Logging**
+### **Configurable Logging**
 - YAML-based logging configuration
 - Multiple log levels (TRACE, DEBUG, INFO, WARN, ERROR)
 - Enable/disable specific logging features
@@ -140,3 +140,4 @@ You can customize logging by modifying `src/main/resources/logback.xml`:
 - Configurable log levels to reduce verbosity in production
 - Automatic log rotation prevents disk space issues
 - Separate HTTP logs don't clutter main application logs
+
