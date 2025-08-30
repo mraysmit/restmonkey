@@ -1,0 +1,33 @@
+port: 0                   # 0 = auto-assign a free port
+authToken: test-token     # omit or "" to disable auth
+artificialLatencyMs: 0    # no latency by default
+chaosFailRate: 0.0        # 0..1 chance of random 500s
+
+features:
+  templating: true
+  hotReload: false        # enable if you want live reload of config
+  schemaValidation: strict
+  recordReplay:
+    mode: off             # off | record | replay
+    file: target/tinyrest.recordings.jsonl
+    replayOnMiss: fallback
+
+resources:
+  - name: users
+    idField: id
+    enableCrud: true
+    seed:
+      - id: u1
+        name: Ada Lovelace
+        email: ada@math.example
+      - id: u2
+        name: Alan Turing
+        email: alan@logic.example
+
+staticEndpoints:
+  - method: GET
+    path: /health
+    status: 200
+    response:
+      status: ok
+      time: "{{now}}"
