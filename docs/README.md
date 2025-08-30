@@ -193,6 +193,12 @@ authToken: test-token     # omit or "" to disable auth
 artificialLatencyMs: 0
 chaosFailRate: 0.0
 
+logging:
+  level: INFO             # TRACE, DEBUG, INFO, WARN, ERROR
+  httpRequests: true      # log HTTP requests/responses
+  enableFileLogging: true # write logs to files
+  logDirectory: logs      # directory for log files
+
 features:
   templating: true
   hotReload: false
@@ -330,6 +336,7 @@ class MySuite { ... }
 | Hot reload | `features.hotReload: true` | Watches the YAML file, reapplies config on change |
 | Validation | `features.schemaValidation: strict|lenient` | Strict fails fast at startup |
 | Record/Replay | `features.recordReplay.*` | JSONL file with captured responses; replay later |
+| **Structured Logging** | `logging.*` | **SLF4J/Logback with colored console, file rotation, HTTP request logs** |
 
 ### Templating expressions (when enabled)
 

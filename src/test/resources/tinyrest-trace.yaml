@@ -1,0 +1,55 @@
+port: 0                   # 0 = auto-assign a free port
+authToken: test-token     # omit or "" to disable auth
+artificialLatencyMs: 50   # Add some latency to see timing logs
+chaosFailRate: 0.0        # 0..1 chance of random 500s
+
+logging:
+  level: TRACE            # TRACE, DEBUG, INFO, WARN, ERROR
+  httpRequests: true      # log HTTP requests/responses
+  enableFileLogging: true # write logs to files
+  logDirectory: logs      # directory for log files
+
+features:
+  templating: true        # enable {{...}} templating
+  hotReload: true         # watch for config file changes
+  schemaValidation: strict # strict|lenient
+  recordReplay:
+    mode: off             # off | record | replay
+    file: target/test-recordings.jsonl
+    replayOnMiss: fallback
+
+resources:
+  - name: users
+    idField: id           # default field for unique IDs
+    enableCrud: true      # auto-generate REST endpoints
+    seed:                 # initial data
+      - id: "1"
+        name: "Alice"
+        email: "alice@example.com"
+        role: "admin"
+      - id: "2"
+        name: "Bob"
+        email: "bob@example.com"
+        role: "user"
+
+staticEndpoints:
+  - path: /health
+    method: GET           # default: GET
+    status: 200           # default: 200
+    response:
+      status: "healthy"
+      timestamp: "{{now}}"
+      version: "1.0.0"
+      uptime: "{{now}}"
+      
+  - path: /echo
+    method: POST
+    status: 200
+    echoRequest: true     # return request details
+    
+  - path: /slow
+    method: GET
+    status: 200
+    response:
+      message: "This endpoint has artificial latency"
+      timestamp: "{{now}}"

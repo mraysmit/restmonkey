@@ -1,0 +1,522 @@
+2025-08-30 20:22:56.128 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - Initialized resource 'users' with 2 seed records
+2025-08-30 20:22:56.133 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - Initialized 6 routes
+2025-08-30 20:22:56.133 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - Engine initialized with 6 routes and 1 stores
+2025-08-30 20:31:08.246 [main] DEBUG dev.mars.tinyrest.TinyRest - Loading configuration from file: src/test/resources/tinyrest.yaml
+2025-08-30 20:31:08.249 [main] DEBUG dev.mars.tinyrest.TinyRest - Configuration file format detected: YAML
+2025-08-30 20:31:08.488 [main] DEBUG dev.mars.tinyrest.TinyRest - Configuration parsed successfully. Raw config: port=0, resources=1, staticEndpoints=1
+2025-08-30 20:31:08.499 [main] DEBUG dev.mars.tinyrest.TinyRest - Creating HTTP server on port 0 (0 = auto-assign)
+2025-08-30 20:31:08.583 [main] DEBUG dev.mars.tinyrest.TinyRest - Setting up thread pool executor with 22 threads
+2025-08-30 20:31:08.583 [main] DEBUG dev.mars.tinyrest.TinyRest - Initializing request engine with configuration defaults
+2025-08-30 20:31:08.586 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔧 Engine initialization starting...
+2025-08-30 20:31:08.587 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - Engine configuration: templating=true, hotReload=false, schemaValidation=strict, recordReplay=off
+2025-08-30 20:31:08.587 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Configuration validation mode: strict
+2025-08-30 20:31:08.587 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Running strict configuration validation...
+2025-08-30 20:31:08.588 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Strict validation passed
+2025-08-30 20:31:08.588 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Initializing data stores...
+2025-08-30 20:31:08.588 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🗄️ Initializing data stores...
+2025-08-30 20:31:08.588 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Creating 1 resource stores
+2025-08-30 20:31:08.588 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Processing resource configuration: name='users', idField='id', enableCrud=true, seedCount=2
+2025-08-30 20:31:08.588 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Seeding resource 'users' with 2 records
+2025-08-30 20:31:08.597 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - ✅ Initialized resource 'users' with 2 seed records (idField='id')
+2025-08-30 20:31:08.597 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Store initialization complete: 1 stores created
+2025-08-30 20:31:08.597 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Initializing request routes...
+2025-08-30 20:31:08.597 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🛣️ Initializing request routes...
+2025-08-30 20:31:08.598 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Processing 1 resources for CRUD route generation
+2025-08-30 20:31:08.598 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Resource 'users': enableCrud=true
+2025-08-30 20:31:08.598 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - 🔧 Creating CRUD routes for resource 'users' at base path '/api/users'
+2025-08-30 20:31:08.599 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   📋 Adding route: GET /api/users (list resources)
+2025-08-30 20:31:08.604 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   ➕ Adding route: POST /api/users (create resource, auth required)
+2025-08-30 20:31:08.604 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   🔍 Adding route: GET /api/users/:id (get resource by ID)
+2025-08-30 20:31:08.605 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   ✏️ Adding route: PUT /api/users/:id (update resource, auth required)
+2025-08-30 20:31:08.605 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   🗑️ Adding route: DELETE /api/users/:id (delete resource, auth required)
+2025-08-30 20:31:08.605 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Processing 1 static endpoints
+2025-08-30 20:31:08.605 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - 🔧 Creating static endpoint: GET /health -> 200 (echo=false, templating=true, auth=false)
+2025-08-30 20:31:08.606 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Static endpoint processing complete: 1 endpoints created
+2025-08-30 20:31:08.606 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - ✅ Route initialization complete: 6 total routes (5 CRUD + 1 static)
+2025-08-30 20:31:08.606 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 📋 Route summary:
+2025-08-30 20:31:08.607 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qapi\E/\Qusers\E$ (mutates=false)
+2025-08-30 20:31:08.607 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   POST ^/\Qapi\E/\Qusers\E$ (mutates=true)
+2025-08-30 20:31:08.607 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ (mutates=false)
+2025-08-30 20:31:08.607 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   PUT ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ (mutates=true)
+2025-08-30 20:31:08.607 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   DELETE ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ (mutates=true)
+2025-08-30 20:31:08.607 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qhealth\E$ (mutates=false)
+2025-08-30 20:31:08.607 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Initializing recorder with mode: off
+2025-08-30 20:31:08.609 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - ✅ Engine initialized successfully: 6 routes, 1 stores, 1 features active
+2025-08-30 20:31:08.609 [main] DEBUG dev.mars.tinyrest.TinyRest - Creating root context handler for all requests
+2025-08-30 20:31:08.611 [main] DEBUG dev.mars.tinyrest.TinyRest - Starting HTTP server...
+2025-08-30 20:31:08.611 [main] INFO  dev.mars.tinyrest.TinyRest - HTTP server started successfully on port 62131
+2025-08-30 20:31:08.611 [main] DEBUG dev.mars.tinyrest.TinyRest - Hot reload is disabled
+2025-08-30 20:31:08.848 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62131, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:31:08.848 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 6 routes for GET /health
+2025-08-30 20:31:08.849 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: GET /health -> handler (mutates=false)
+2025-08-30 20:31:08.850 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🎯 Executing handler for GET /health
+2025-08-30 20:31:08.853 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Handler completed for GET /health -> 200 (6ms)
+2025-08-30 20:31:21.636 [main] DEBUG dev.mars.tinyrest.TinyRest - Loading configuration from file: src/test/resources/tinyrest.yaml
+2025-08-30 20:31:21.639 [main] DEBUG dev.mars.tinyrest.TinyRest - Configuration file format detected: YAML
+2025-08-30 20:31:21.869 [main] DEBUG dev.mars.tinyrest.TinyRest - Configuration parsed successfully. Raw config: port=0, resources=1, staticEndpoints=1
+2025-08-30 20:31:21.869 [main] DEBUG dev.mars.tinyrest.TinyRest - Creating HTTP server on port 0 (0 = auto-assign)
+2025-08-30 20:31:21.973 [main] DEBUG dev.mars.tinyrest.TinyRest - Setting up thread pool executor with 22 threads
+2025-08-30 20:31:21.973 [main] DEBUG dev.mars.tinyrest.TinyRest - Initializing request engine with configuration defaults
+2025-08-30 20:31:21.976 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔧 Engine initialization starting...
+2025-08-30 20:31:21.977 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - Engine configuration: templating=true, hotReload=false, schemaValidation=strict, recordReplay=off
+2025-08-30 20:31:21.977 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Configuration validation mode: strict
+2025-08-30 20:31:21.978 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Running strict configuration validation...
+2025-08-30 20:31:21.978 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Strict validation passed
+2025-08-30 20:31:21.978 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Initializing data stores...
+2025-08-30 20:31:21.978 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🗄️ Initializing data stores...
+2025-08-30 20:31:21.978 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Creating 1 resource stores
+2025-08-30 20:31:21.978 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Processing resource configuration: name='users', idField='id', enableCrud=true, seedCount=2
+2025-08-30 20:31:21.980 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Seeding resource 'users' with 2 records
+2025-08-30 20:31:21.992 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - ✅ Initialized resource 'users' with 2 seed records (idField='id')
+2025-08-30 20:31:21.992 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Store initialization complete: 1 stores created
+2025-08-30 20:31:21.992 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Initializing request routes...
+2025-08-30 20:31:21.992 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🛣️ Initializing request routes...
+2025-08-30 20:31:21.992 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Processing 1 resources for CRUD route generation
+2025-08-30 20:31:21.992 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Resource 'users': enableCrud=true
+2025-08-30 20:31:21.992 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - 🔧 Creating CRUD routes for resource 'users' at base path '/api/users'
+2025-08-30 20:31:21.992 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   📋 Adding route: GET /api/users (list resources)
+2025-08-30 20:31:21.997 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   ➕ Adding route: POST /api/users (create resource, auth required)
+2025-08-30 20:31:21.997 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   🔍 Adding route: GET /api/users/:id (get resource by ID)
+2025-08-30 20:31:21.998 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   ✏️ Adding route: PUT /api/users/:id (update resource, auth required)
+2025-08-30 20:31:21.998 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   🗑️ Adding route: DELETE /api/users/:id (delete resource, auth required)
+2025-08-30 20:31:21.999 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Processing 1 static endpoints
+2025-08-30 20:31:21.999 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - 🔧 Creating static endpoint: GET /health -> 200 (echo=false, templating=true, auth=false)
+2025-08-30 20:31:22.000 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Static endpoint processing complete: 1 endpoints created
+2025-08-30 20:31:22.000 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - ✅ Route initialization complete: 6 total routes (5 CRUD + 1 static)
+2025-08-30 20:31:22.000 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 📋 Route summary:
+2025-08-30 20:31:22.000 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qapi\E/\Qusers\E$ (mutates=false)
+2025-08-30 20:31:22.000 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   POST ^/\Qapi\E/\Qusers\E$ (mutates=true)
+2025-08-30 20:31:22.000 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ (mutates=false)
+2025-08-30 20:31:22.000 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   PUT ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ (mutates=true)
+2025-08-30 20:31:22.001 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   DELETE ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ (mutates=true)
+2025-08-30 20:31:22.001 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qhealth\E$ (mutates=false)
+2025-08-30 20:31:22.001 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Initializing recorder with mode: off
+2025-08-30 20:31:22.002 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - ✅ Engine initialized successfully: 6 routes, 1 stores, 1 features active
+2025-08-30 20:31:22.002 [main] DEBUG dev.mars.tinyrest.TinyRest - Creating root context handler for all requests
+2025-08-30 20:31:22.003 [main] DEBUG dev.mars.tinyrest.TinyRest - Starting HTTP server...
+2025-08-30 20:31:22.004 [main] INFO  dev.mars.tinyrest.TinyRest - HTTP server started successfully on port 62140
+2025-08-30 20:31:22.004 [main] DEBUG dev.mars.tinyrest.TinyRest - Hot reload is disabled
+2025-08-30 20:31:22.284 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62140, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:31:22.284 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 6 routes for GET /health
+2025-08-30 20:31:22.284 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: GET /health -> handler (mutates=false)
+2025-08-30 20:31:22.285 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🎯 Executing handler for GET /health
+2025-08-30 20:31:22.290 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Handler completed for GET /health -> 200 (10ms)
+2025-08-30 20:31:22.350 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62140, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:31:22.350 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 6 routes for GET /api/users
+2025-08-30 20:31:22.350 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: GET /api/users -> handler (mutates=false)
+2025-08-30 20:31:22.351 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🎯 Executing handler for GET /api/users
+2025-08-30 20:31:22.355 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Handler completed for GET /api/users -> 200 (6ms)
+2025-08-30 20:31:22.369 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Authorization=Bearer test-token, Content-type=application/json, Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62140, Content-length=40, User-agent=Java-http-client/23, Upgrade=h2c}
+2025-08-30 20:31:22.369 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 6 routes for POST /api/users
+2025-08-30 20:31:22.369 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: POST /api/users -> handler (mutates=true)
+2025-08-30 20:31:22.370 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔐 Checking authorization for mutating operation POST /api/users
+2025-08-30 20:31:22.370 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Authorization successful for POST /api/users
+2025-08-30 20:31:22.370 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🎯 Executing handler for POST /api/users
+2025-08-30 20:31:22.377 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Handler completed for POST /api/users -> 201 (9ms)
+2025-08-30 20:31:22.389 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Content-type=application/json, Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62140, Content-length=40, User-agent=Java-http-client/23, Upgrade=h2c}
+2025-08-30 20:31:22.389 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 6 routes for POST /api/users
+2025-08-30 20:31:22.390 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: POST /api/users -> handler (mutates=true)
+2025-08-30 20:31:22.390 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔐 Checking authorization for mutating operation POST /api/users
+2025-08-30 20:31:22.390 [pool-2-thread-4] WARN  dev.mars.tinyrest.TinyRest$Engine - 🚫 Authorization failed for POST /api/users - missing or invalid bearer token
+2025-08-30 20:31:22.390 [pool-2-thread-4] WARN  dev.mars.tinyrest.TinyRest$Engine - 🔐 Unauthorized access attempt for POST /api/users: Missing/invalid bearer token
+2025-08-30 20:32:29.306 [main] DEBUG dev.mars.tinyrest.TinyRest - Loading configuration from file: src/test/resources/tinyrest-trace.yaml
+2025-08-30 20:32:29.308 [main] DEBUG dev.mars.tinyrest.TinyRest - Configuration file format detected: YAML
+2025-08-30 20:32:29.526 [main] DEBUG dev.mars.tinyrest.TinyRest - Configuration parsed successfully. Raw config: port=0, resources=1, staticEndpoints=3
+2025-08-30 20:32:29.527 [main] DEBUG dev.mars.tinyrest.TinyRest - Creating HTTP server on port 0 (0 = auto-assign)
+2025-08-30 20:32:29.622 [main] DEBUG dev.mars.tinyrest.TinyRest - Setting up thread pool executor with 22 threads
+2025-08-30 20:32:29.622 [main] DEBUG dev.mars.tinyrest.TinyRest - Initializing request engine with configuration defaults
+2025-08-30 20:32:29.624 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔧 Engine initialization starting...
+2025-08-30 20:32:29.625 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - Engine configuration: templating=true, hotReload=true, schemaValidation=strict, recordReplay=record
+2025-08-30 20:32:29.626 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Configuration validation mode: strict
+2025-08-30 20:32:29.626 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Running strict configuration validation...
+2025-08-30 20:32:29.626 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Strict validation passed
+2025-08-30 20:32:29.626 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Initializing data stores...
+2025-08-30 20:32:29.626 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🗄️ Initializing data stores...
+2025-08-30 20:32:29.626 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Creating 1 resource stores
+2025-08-30 20:32:29.627 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Processing resource configuration: name='users', idField='id', enableCrud=true, seedCount=2
+2025-08-30 20:32:29.628 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Seeding resource 'users' with 2 records
+2025-08-30 20:32:29.639 [main] TRACE dev.mars.tinyrest.TinyRest$Engine - Seeded record with ID '1' in resource 'users'
+2025-08-30 20:32:29.640 [main] TRACE dev.mars.tinyrest.TinyRest$Engine - Seeded record with ID '2' in resource 'users'
+2025-08-30 20:32:29.640 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - ✅ Initialized resource 'users' with 2 seed records (idField='id')
+2025-08-30 20:32:29.640 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Store initialization complete: 1 stores created
+2025-08-30 20:32:29.640 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Initializing request routes...
+2025-08-30 20:32:29.640 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🛣️ Initializing request routes...
+2025-08-30 20:32:29.640 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Processing 1 resources for CRUD route generation
+2025-08-30 20:32:29.641 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Resource 'users': enableCrud=true
+2025-08-30 20:32:29.641 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - 🔧 Creating CRUD routes for resource 'users' at base path '/api/users'
+2025-08-30 20:32:29.641 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   📋 Adding route: GET /api/users (list resources)
+2025-08-30 20:32:29.645 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   ➕ Adding route: POST /api/users (create resource, auth required)
+2025-08-30 20:32:29.645 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   🔍 Adding route: GET /api/users/:id (get resource by ID)
+2025-08-30 20:32:29.646 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   ✏️ Adding route: PUT /api/users/:id (update resource, auth required)
+2025-08-30 20:32:29.646 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   🗑️ Adding route: DELETE /api/users/:id (delete resource, auth required)
+2025-08-30 20:32:29.647 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Processing 3 static endpoints
+2025-08-30 20:32:29.647 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - 🔧 Creating static endpoint: GET /health -> 200 (echo=false, templating=true, auth=false)
+2025-08-30 20:32:29.649 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - 🔧 Creating static endpoint: POST /echo -> 200 (echo=true, templating=false, auth=true)
+2025-08-30 20:32:29.649 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - 🔧 Creating static endpoint: GET /slow -> 200 (echo=false, templating=true, auth=false)
+2025-08-30 20:32:29.650 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Static endpoint processing complete: 3 endpoints created
+2025-08-30 20:32:29.650 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - ✅ Route initialization complete: 8 total routes (5 CRUD + 3 static)
+2025-08-30 20:32:29.650 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 📋 Route summary:
+2025-08-30 20:32:29.650 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qapi\E/\Qusers\E$ (mutates=false)
+2025-08-30 20:32:29.650 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   POST ^/\Qapi\E/\Qusers\E$ (mutates=true)
+2025-08-30 20:32:29.650 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ (mutates=false)
+2025-08-30 20:32:29.650 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   PUT ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ (mutates=true)
+2025-08-30 20:32:29.650 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   DELETE ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ (mutates=true)
+2025-08-30 20:32:29.650 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qhealth\E$ (mutates=false)
+2025-08-30 20:32:29.650 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   POST ^/\Qecho\E$ (mutates=true)
+2025-08-30 20:32:29.650 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qslow\E$ (mutates=false)
+2025-08-30 20:32:29.650 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Initializing recorder with mode: record
+2025-08-30 20:32:29.653 [main] INFO  dev.mars.tinyrest.recorder - 📹 Recording mode enabled - capturing requests to: target/test-recordings.jsonl
+2025-08-30 20:32:29.653 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - ✅ Engine initialized successfully: 8 routes, 1 stores, 3 features active
+2025-08-30 20:32:29.653 [main] DEBUG dev.mars.tinyrest.TinyRest - Creating root context handler for all requests
+2025-08-30 20:32:29.656 [main] DEBUG dev.mars.tinyrest.TinyRest - Starting HTTP server...
+2025-08-30 20:32:29.656 [main] INFO  dev.mars.tinyrest.TinyRest - HTTP server started successfully on port 62195
+2025-08-30 20:32:29.656 [main] DEBUG dev.mars.tinyrest.TinyRest - Hot reload is enabled, starting file watcher
+2025-08-30 20:32:29.656 [main] INFO  dev.mars.tinyrest.hotreload - 🔄 Starting file watcher for configuration hot reload: src\test\resources\tinyrest-trace.yaml
+2025-08-30 20:32:29.670 [tinyrest-hot-reload] INFO  dev.mars.tinyrest.hotreload - 👀 File watcher active - monitoring directory: src\test\resources
+2025-08-30 20:32:29.885 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - 🌐 Incoming request: GET /health from /127.0.0.1:62196
+2025-08-30 20:32:29.886 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62195, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:32:29.886 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - ⏱️ Applying artificial latency: 50ms
+2025-08-30 20:32:29.938 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 8 routes for GET /health
+2025-08-30 20:32:29.938 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /health: method match=true, pattern match=false
+2025-08-30 20:32:29.939 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /health: method match=false, pattern match=false
+2025-08-30 20:32:29.939 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /health: method match=true, pattern match=false
+2025-08-30 20:32:29.939 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /health: method match=false, pattern match=false
+2025-08-30 20:32:29.939 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /health: method match=false, pattern match=false
+2025-08-30 20:32:29.940 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qhealth\E$ against path /health: method match=true, pattern match=true
+2025-08-30 20:32:29.940 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: GET /health -> handler (mutates=false)
+2025-08-30 20:32:29.941 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🎯 Executing handler for GET /health
+2025-08-30 20:32:29.943 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Applying templating to static response for GET /health
+2025-08-30 20:32:29.943 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Returning static response for GET /health with status 200
+2025-08-30 20:32:29.945 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Handler completed for GET /health -> 200 (60ms)
+2025-08-30 20:32:29.965 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - 📝 Recording request/response for GET /health
+2025-08-30 20:32:29.969 [pool-2-thread-1] ERROR dev.mars.tinyrest.recorder - 💥 Recording failed for GET /health: null
+java.lang.NullPointerException: null
+	at java.base/java.util.Objects.requireNonNull(Objects.java:220)
+	at java.base/java.util.ImmutableCollections$MapN.<init>(ImmutableCollections.java:1195)
+	at java.base/java.util.Map.of(Map.java:1456)
+	at dev.mars.tinyrest.TinyRest$ReplayItem$CapturedRequest.toMap(TinyRest.java:1230)
+	at dev.mars.tinyrest.TinyRest$ReplayItem.from(TinyRest.java:1172)
+	at dev.mars.tinyrest.TinyRest$Recorder.record(TinyRest.java:882)
+	at dev.mars.tinyrest.TinyRest$Engine.handle(TinyRest.java:323)
+	at dev.mars.tinyrest.TinyRest.lambda$start$0(TinyRest.java:130)
+	at jdk.httpserver/com.sun.net.httpserver.Filter$Chain.doFilter(Filter.java:98)
+	at jdk.httpserver/sun.net.httpserver.AuthFilter.doFilter(AuthFilter.java:82)
+	at jdk.httpserver/com.sun.net.httpserver.Filter$Chain.doFilter(Filter.java:101)
+	at jdk.httpserver/sun.net.httpserver.ServerImpl$Exchange$LinkHandler.handle(ServerImpl.java:873)
+	at jdk.httpserver/com.sun.net.httpserver.Filter$Chain.doFilter(Filter.java:98)
+	at jdk.httpserver/sun.net.httpserver.ServerImpl$Exchange.run(ServerImpl.java:849)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+2025-08-30 20:32:29.983 [pool-2-thread-2] TRACE dev.mars.tinyrest.TinyRest$Engine - 🌐 Incoming request: GET /api/users from /127.0.0.1:62196
+2025-08-30 20:32:29.983 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62195, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:32:29.984 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - ⏱️ Applying artificial latency: 50ms
+2025-08-30 20:32:30.044 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 8 routes for GET /api/users
+2025-08-30 20:32:30.046 [pool-2-thread-2] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /api/users: method match=true, pattern match=true
+2025-08-30 20:32:30.046 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: GET /api/users -> handler (mutates=false)
+2025-08-30 20:32:30.046 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🎯 Executing handler for GET /api/users
+2025-08-30 20:32:30.049 [pool-2-thread-2] TRACE dev.mars.tinyrest.TinyRest$Engine - Listing resources from 'users': limit=10, offset=0
+2025-08-30 20:32:30.053 [pool-2-thread-2] TRACE dev.mars.tinyrest.TinyRest$Engine - Retrieved 2 items from resource 'users'
+2025-08-30 20:32:30.054 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Handler completed for GET /api/users -> 200 (71ms)
+2025-08-30 20:32:30.055 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - 📝 Recording request/response for GET /api/users
+2025-08-30 20:32:30.059 [pool-2-thread-3] TRACE dev.mars.tinyrest.TinyRest$Engine - 🌐 Incoming request: POST /api/users from /127.0.0.1:62196
+2025-08-30 20:32:30.061 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Authorization=Bearer test-token, Content-type=application/json, Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62195, Content-length=48, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:32:30.061 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - ⏱️ Applying artificial latency: 50ms
+2025-08-30 20:32:30.121 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 8 routes for POST /api/users
+2025-08-30 20:32:30.122 [pool-2-thread-3] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /api/users: method match=false, pattern match=true
+2025-08-30 20:32:30.122 [pool-2-thread-3] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /api/users: method match=true, pattern match=true
+2025-08-30 20:32:30.122 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: POST /api/users -> handler (mutates=true)
+2025-08-30 20:32:30.122 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔐 Checking authorization for mutating operation POST /api/users
+2025-08-30 20:32:30.122 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Authorization successful for POST /api/users
+2025-08-30 20:32:30.122 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🎯 Executing handler for POST /api/users
+2025-08-30 20:32:30.126 [pool-2-thread-3] TRACE dev.mars.tinyrest.TinyRest$Engine - Generated new ID '0b2b84c2-7eb8-4724-9027-837d25963725' for resource 'users'
+2025-08-30 20:32:30.127 [pool-2-thread-3] TRACE dev.mars.tinyrest.TinyRest$Engine - Created new resource 'users' with ID '0b2b84c2-7eb8-4724-9027-837d25963725'
+2025-08-30 20:32:30.127 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Handler completed for POST /api/users -> 201 (68ms)
+2025-08-30 20:32:30.128 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - 📝 Recording request/response for POST /api/users
+2025-08-30 20:32:30.128 [pool-2-thread-3] ERROR dev.mars.tinyrest.recorder - 💥 Recording failed for POST /api/users: null
+java.lang.NullPointerException: null
+	at java.base/java.util.Objects.requireNonNull(Objects.java:220)
+	at java.base/java.util.ImmutableCollections$MapN.<init>(ImmutableCollections.java:1195)
+	at java.base/java.util.Map.of(Map.java:1456)
+	at dev.mars.tinyrest.TinyRest$ReplayItem$CapturedRequest.toMap(TinyRest.java:1230)
+	at dev.mars.tinyrest.TinyRest$ReplayItem.from(TinyRest.java:1172)
+	at dev.mars.tinyrest.TinyRest$Recorder.record(TinyRest.java:882)
+	at dev.mars.tinyrest.TinyRest$Engine.handle(TinyRest.java:323)
+	at dev.mars.tinyrest.TinyRest.lambda$start$0(TinyRest.java:130)
+	at jdk.httpserver/com.sun.net.httpserver.Filter$Chain.doFilter(Filter.java:98)
+	at jdk.httpserver/sun.net.httpserver.AuthFilter.doFilter(AuthFilter.java:82)
+	at jdk.httpserver/com.sun.net.httpserver.Filter$Chain.doFilter(Filter.java:101)
+	at jdk.httpserver/sun.net.httpserver.ServerImpl$Exchange$LinkHandler.handle(ServerImpl.java:873)
+	at jdk.httpserver/com.sun.net.httpserver.Filter$Chain.doFilter(Filter.java:98)
+	at jdk.httpserver/sun.net.httpserver.ServerImpl$Exchange.run(ServerImpl.java:849)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+2025-08-30 20:32:30.130 [pool-2-thread-4] TRACE dev.mars.tinyrest.TinyRest$Engine - 🌐 Incoming request: POST /api/users from /127.0.0.1:62196
+2025-08-30 20:32:30.130 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Content-type=application/json, Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62195, Content-length=42, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:32:30.130 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - ⏱️ Applying artificial latency: 50ms
+2025-08-30 20:32:30.183 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 8 routes for POST /api/users
+2025-08-30 20:32:30.184 [pool-2-thread-4] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /api/users: method match=false, pattern match=true
+2025-08-30 20:32:30.184 [pool-2-thread-4] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /api/users: method match=true, pattern match=true
+2025-08-30 20:32:30.184 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: POST /api/users -> handler (mutates=true)
+2025-08-30 20:32:30.184 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔐 Checking authorization for mutating operation POST /api/users
+2025-08-30 20:32:30.184 [pool-2-thread-4] WARN  dev.mars.tinyrest.TinyRest$Engine - 🚫 Authorization failed for POST /api/users - missing or invalid bearer token
+2025-08-30 20:32:30.184 [pool-2-thread-4] WARN  dev.mars.tinyrest.TinyRest$Engine - 🔐 Unauthorized access attempt for POST /api/users: Missing/invalid bearer token
+2025-08-30 20:32:30.186 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - 📝 Recording 401 response for POST /api/users
+2025-08-30 20:32:30.186 [pool-2-thread-4] ERROR dev.mars.tinyrest.recorder - 💥 Recording failed for POST /api/users: null
+java.lang.NullPointerException: null
+	at java.base/java.util.Objects.requireNonNull(Objects.java:220)
+	at java.base/java.util.ImmutableCollections$MapN.<init>(ImmutableCollections.java:1195)
+	at java.base/java.util.Map.of(Map.java:1456)
+	at dev.mars.tinyrest.TinyRest$ReplayItem$CapturedRequest.toMap(TinyRest.java:1230)
+	at dev.mars.tinyrest.TinyRest$ReplayItem.from(TinyRest.java:1172)
+	at dev.mars.tinyrest.TinyRest$Recorder.record(TinyRest.java:882)
+	at dev.mars.tinyrest.TinyRest$Engine.handle(TinyRest.java:371)
+	at dev.mars.tinyrest.TinyRest.lambda$start$0(TinyRest.java:130)
+	at jdk.httpserver/com.sun.net.httpserver.Filter$Chain.doFilter(Filter.java:98)
+	at jdk.httpserver/sun.net.httpserver.AuthFilter.doFilter(AuthFilter.java:82)
+	at jdk.httpserver/com.sun.net.httpserver.Filter$Chain.doFilter(Filter.java:101)
+	at jdk.httpserver/sun.net.httpserver.ServerImpl$Exchange$LinkHandler.handle(ServerImpl.java:873)
+	at jdk.httpserver/com.sun.net.httpserver.Filter$Chain.doFilter(Filter.java:98)
+	at jdk.httpserver/sun.net.httpserver.ServerImpl$Exchange.run(ServerImpl.java:849)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+2025-08-30 20:32:30.188 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - 🌐 Incoming request: POST /echo from /127.0.0.1:62196
+2025-08-30 20:32:30.189 [pool-2-thread-5] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {X-custom-header=test-value, Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62195, Content-length=15, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:32:30.189 [pool-2-thread-5] DEBUG dev.mars.tinyrest.TinyRest$Engine - ⏱️ Applying artificial latency: 50ms
+2025-08-30 20:32:30.245 [pool-2-thread-5] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 8 routes for POST /echo
+2025-08-30 20:32:30.245 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /echo: method match=false, pattern match=false
+2025-08-30 20:32:30.246 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /echo: method match=true, pattern match=false
+2025-08-30 20:32:30.246 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /echo: method match=false, pattern match=false
+2025-08-30 20:32:30.246 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /echo: method match=false, pattern match=false
+2025-08-30 20:32:30.246 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /echo: method match=false, pattern match=false
+2025-08-30 20:32:30.246 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qhealth\E$ against path /echo: method match=false, pattern match=false
+2025-08-30 20:32:30.246 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qecho\E$ against path /echo: method match=true, pattern match=true
+2025-08-30 20:32:30.246 [pool-2-thread-5] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: POST /echo -> handler (mutates=true)
+2025-08-30 20:32:30.246 [pool-2-thread-5] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔐 Checking authorization for mutating operation POST /echo
+2025-08-30 20:32:30.246 [pool-2-thread-5] WARN  dev.mars.tinyrest.TinyRest$Engine - 🚫 Authorization failed for POST /echo - missing or invalid bearer token
+2025-08-30 20:32:30.246 [pool-2-thread-5] WARN  dev.mars.tinyrest.TinyRest$Engine - 🔐 Unauthorized access attempt for POST /echo: Missing/invalid bearer token
+2025-08-30 20:32:30.246 [pool-2-thread-5] DEBUG dev.mars.tinyrest.TinyRest$Engine - 📝 Recording 401 response for POST /echo
+2025-08-30 20:33:32.826 [main] DEBUG dev.mars.tinyrest.TinyRest - Loading configuration from file: src/test/resources/tinyrest-trace.yaml
+2025-08-30 20:33:32.827 [main] DEBUG dev.mars.tinyrest.TinyRest - Configuration file format detected: YAML
+2025-08-30 20:33:33.025 [main] DEBUG dev.mars.tinyrest.TinyRest - Configuration parsed successfully. Raw config: port=0, resources=1, staticEndpoints=3
+2025-08-30 20:33:33.025 [main] DEBUG dev.mars.tinyrest.TinyRest - Creating HTTP server on port 0 (0 = auto-assign)
+2025-08-30 20:33:33.125 [main] DEBUG dev.mars.tinyrest.TinyRest - Setting up thread pool executor with 22 threads
+2025-08-30 20:33:33.125 [main] DEBUG dev.mars.tinyrest.TinyRest - Initializing request engine with configuration defaults
+2025-08-30 20:33:33.128 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔧 Engine initialization starting...
+2025-08-30 20:33:33.129 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - Engine configuration: templating=true, hotReload=true, schemaValidation=strict, recordReplay=off
+2025-08-30 20:33:33.130 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Configuration validation mode: strict
+2025-08-30 20:33:33.130 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Running strict configuration validation...
+2025-08-30 20:33:33.130 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Strict validation passed
+2025-08-30 20:33:33.130 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Initializing data stores...
+2025-08-30 20:33:33.130 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🗄️ Initializing data stores...
+2025-08-30 20:33:33.130 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Creating 1 resource stores
+2025-08-30 20:33:33.130 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Processing resource configuration: name='users', idField='id', enableCrud=true, seedCount=2
+2025-08-30 20:33:33.132 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Seeding resource 'users' with 2 records
+2025-08-30 20:33:33.143 [main] TRACE dev.mars.tinyrest.TinyRest$Engine - Seeded record with ID '1' in resource 'users'
+2025-08-30 20:33:33.143 [main] TRACE dev.mars.tinyrest.TinyRest$Engine - Seeded record with ID '2' in resource 'users'
+2025-08-30 20:33:33.144 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - ✅ Initialized resource 'users' with 2 seed records (idField='id')
+2025-08-30 20:33:33.144 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Store initialization complete: 1 stores created
+2025-08-30 20:33:33.144 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Initializing request routes...
+2025-08-30 20:33:33.144 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🛣️ Initializing request routes...
+2025-08-30 20:33:33.144 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Processing 1 resources for CRUD route generation
+2025-08-30 20:33:33.144 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Resource 'users': enableCrud=true
+2025-08-30 20:33:33.144 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - 🔧 Creating CRUD routes for resource 'users' at base path '/api/users'
+2025-08-30 20:33:33.144 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   📋 Adding route: GET /api/users (list resources)
+2025-08-30 20:33:33.148 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   ➕ Adding route: POST /api/users (create resource, auth required)
+2025-08-30 20:33:33.149 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   🔍 Adding route: GET /api/users/:id (get resource by ID)
+2025-08-30 20:33:33.149 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   ✏️ Adding route: PUT /api/users/:id (update resource, auth required)
+2025-08-30 20:33:33.149 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   🗑️ Adding route: DELETE /api/users/:id (delete resource, auth required)
+2025-08-30 20:33:33.150 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Processing 3 static endpoints
+2025-08-30 20:33:33.150 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - 🔧 Creating static endpoint: GET /health -> 200 (echo=false, templating=true, auth=false)
+2025-08-30 20:33:33.152 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - 🔧 Creating static endpoint: POST /echo -> 200 (echo=true, templating=false, auth=true)
+2025-08-30 20:33:33.152 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - 🔧 Creating static endpoint: GET /slow -> 200 (echo=false, templating=true, auth=false)
+2025-08-30 20:33:33.152 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Static endpoint processing complete: 3 endpoints created
+2025-08-30 20:33:33.152 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - ✅ Route initialization complete: 8 total routes (5 CRUD + 3 static)
+2025-08-30 20:33:33.152 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 📋 Route summary:
+2025-08-30 20:33:33.152 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qapi\E/\Qusers\E$ (mutates=false)
+2025-08-30 20:33:33.152 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   POST ^/\Qapi\E/\Qusers\E$ (mutates=true)
+2025-08-30 20:33:33.152 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ (mutates=false)
+2025-08-30 20:33:33.152 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   PUT ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ (mutates=true)
+2025-08-30 20:33:33.152 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   DELETE ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ (mutates=true)
+2025-08-30 20:33:33.152 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qhealth\E$ (mutates=false)
+2025-08-30 20:33:33.152 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   POST ^/\Qecho\E$ (mutates=true)
+2025-08-30 20:33:33.152 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qslow\E$ (mutates=false)
+2025-08-30 20:33:33.152 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Initializing recorder with mode: off
+2025-08-30 20:33:33.154 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - ✅ Engine initialized successfully: 8 routes, 1 stores, 2 features active
+2025-08-30 20:33:33.154 [main] DEBUG dev.mars.tinyrest.TinyRest - Creating root context handler for all requests
+2025-08-30 20:33:33.156 [main] DEBUG dev.mars.tinyrest.TinyRest - Starting HTTP server...
+2025-08-30 20:33:33.157 [main] INFO  dev.mars.tinyrest.TinyRest - HTTP server started successfully on port 62238
+2025-08-30 20:33:33.157 [main] DEBUG dev.mars.tinyrest.TinyRest - Hot reload is enabled, starting file watcher
+2025-08-30 20:33:33.157 [main] INFO  dev.mars.tinyrest.hotreload - 🔄 Starting file watcher for configuration hot reload: src\test\resources\tinyrest-trace.yaml
+2025-08-30 20:33:33.161 [tinyrest-hot-reload] INFO  dev.mars.tinyrest.hotreload - 👀 File watcher active - monitoring directory: src\test\resources
+2025-08-30 20:33:33.378 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - 🌐 Incoming request: GET /health from /127.0.0.1:62239
+2025-08-30 20:33:33.379 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62238, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:33:33.380 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - ⏱️ Applying artificial latency: 50ms
+2025-08-30 20:33:33.434 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 8 routes for GET /health
+2025-08-30 20:33:33.434 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /health: method match=true, pattern match=false
+2025-08-30 20:33:33.435 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /health: method match=false, pattern match=false
+2025-08-30 20:33:33.435 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /health: method match=true, pattern match=false
+2025-08-30 20:33:33.435 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /health: method match=false, pattern match=false
+2025-08-30 20:33:33.435 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /health: method match=false, pattern match=false
+2025-08-30 20:33:33.436 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qhealth\E$ against path /health: method match=true, pattern match=true
+2025-08-30 20:33:33.436 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: GET /health -> handler (mutates=false)
+2025-08-30 20:33:33.439 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🎯 Executing handler for GET /health
+2025-08-30 20:33:33.441 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Applying templating to static response for GET /health
+2025-08-30 20:33:33.442 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Returning static response for GET /health with status 200
+2025-08-30 20:33:33.443 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Handler completed for GET /health -> 200 (65ms)
+2025-08-30 20:33:33.481 [pool-2-thread-2] TRACE dev.mars.tinyrest.TinyRest$Engine - 🌐 Incoming request: GET /api/users from /127.0.0.1:62239
+2025-08-30 20:33:33.482 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62238, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:33:33.482 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - ⏱️ Applying artificial latency: 50ms
+2025-08-30 20:33:33.541 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 8 routes for GET /api/users
+2025-08-30 20:33:33.542 [pool-2-thread-2] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /api/users: method match=true, pattern match=true
+2025-08-30 20:33:33.542 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: GET /api/users -> handler (mutates=false)
+2025-08-30 20:33:33.542 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🎯 Executing handler for GET /api/users
+2025-08-30 20:33:33.544 [pool-2-thread-2] TRACE dev.mars.tinyrest.TinyRest$Engine - Listing resources from 'users': limit=10, offset=0
+2025-08-30 20:33:33.546 [pool-2-thread-2] TRACE dev.mars.tinyrest.TinyRest$Engine - Retrieved 2 items from resource 'users'
+2025-08-30 20:33:33.546 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Handler completed for GET /api/users -> 200 (65ms)
+2025-08-30 20:33:33.549 [pool-2-thread-3] TRACE dev.mars.tinyrest.TinyRest$Engine - 🌐 Incoming request: POST /api/users from /127.0.0.1:62239
+2025-08-30 20:33:33.550 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Authorization=Bearer test-token, Content-type=application/json, Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62238, Content-length=48, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:33:33.550 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - ⏱️ Applying artificial latency: 50ms
+2025-08-30 20:33:33.603 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 8 routes for POST /api/users
+2025-08-30 20:33:33.603 [pool-2-thread-3] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /api/users: method match=false, pattern match=true
+2025-08-30 20:33:33.603 [pool-2-thread-3] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /api/users: method match=true, pattern match=true
+2025-08-30 20:33:33.603 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: POST /api/users -> handler (mutates=true)
+2025-08-30 20:33:33.603 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔐 Checking authorization for mutating operation POST /api/users
+2025-08-30 20:33:33.603 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Authorization successful for POST /api/users
+2025-08-30 20:33:33.604 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🎯 Executing handler for POST /api/users
+2025-08-30 20:33:33.610 [pool-2-thread-3] TRACE dev.mars.tinyrest.TinyRest$Engine - Generated new ID '077c3a51-ef21-436a-84a0-be1d6fb7fac3' for resource 'users'
+2025-08-30 20:33:33.611 [pool-2-thread-3] TRACE dev.mars.tinyrest.TinyRest$Engine - Created new resource 'users' with ID '077c3a51-ef21-436a-84a0-be1d6fb7fac3'
+2025-08-30 20:33:33.611 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Handler completed for POST /api/users -> 201 (62ms)
+2025-08-30 20:33:33.614 [pool-2-thread-4] TRACE dev.mars.tinyrest.TinyRest$Engine - 🌐 Incoming request: POST /api/users from /127.0.0.1:62239
+2025-08-30 20:33:33.614 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Content-type=application/json, Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62238, Content-length=42, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:33:33.614 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - ⏱️ Applying artificial latency: 50ms
+2025-08-30 20:33:33.667 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 8 routes for POST /api/users
+2025-08-30 20:33:33.667 [pool-2-thread-4] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /api/users: method match=false, pattern match=true
+2025-08-30 20:33:33.668 [pool-2-thread-4] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /api/users: method match=true, pattern match=true
+2025-08-30 20:33:33.668 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: POST /api/users -> handler (mutates=true)
+2025-08-30 20:33:33.668 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔐 Checking authorization for mutating operation POST /api/users
+2025-08-30 20:33:33.668 [pool-2-thread-4] WARN  dev.mars.tinyrest.TinyRest$Engine - 🚫 Authorization failed for POST /api/users - missing or invalid bearer token
+2025-08-30 20:33:33.668 [pool-2-thread-4] WARN  dev.mars.tinyrest.TinyRest$Engine - 🔐 Unauthorized access attempt for POST /api/users: Missing/invalid bearer token
+2025-08-30 20:33:33.672 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - 🌐 Incoming request: POST /echo from /127.0.0.1:62239
+2025-08-30 20:33:33.672 [pool-2-thread-5] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Authorization=Bearer test-token, Content-type=application/json, X-custom-header=test-value, Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62238, Content-length=15, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:33:33.672 [pool-2-thread-5] DEBUG dev.mars.tinyrest.TinyRest$Engine - ⏱️ Applying artificial latency: 50ms
+2025-08-30 20:33:33.727 [pool-2-thread-5] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 8 routes for POST /echo
+2025-08-30 20:33:33.727 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /echo: method match=false, pattern match=false
+2025-08-30 20:33:33.727 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /echo: method match=true, pattern match=false
+2025-08-30 20:33:33.727 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /echo: method match=false, pattern match=false
+2025-08-30 20:33:33.727 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /echo: method match=false, pattern match=false
+2025-08-30 20:33:33.727 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /echo: method match=false, pattern match=false
+2025-08-30 20:33:33.727 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qhealth\E$ against path /echo: method match=false, pattern match=false
+2025-08-30 20:33:33.727 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qecho\E$ against path /echo: method match=true, pattern match=true
+2025-08-30 20:33:33.727 [pool-2-thread-5] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: POST /echo -> handler (mutates=true)
+2025-08-30 20:33:33.727 [pool-2-thread-5] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔐 Checking authorization for mutating operation POST /echo
+2025-08-30 20:33:33.727 [pool-2-thread-5] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Authorization successful for POST /echo
+2025-08-30 20:33:33.727 [pool-2-thread-5] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🎯 Executing handler for POST /echo
+2025-08-30 20:33:33.727 [pool-2-thread-5] TRACE dev.mars.tinyrest.TinyRest$Engine - Echoing request details for POST /echo
+2025-08-30 20:33:33.730 [pool-2-thread-5] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Handler completed for POST /echo -> 200 (58ms)
+2025-08-30 20:33:33.732 [pool-2-thread-6] TRACE dev.mars.tinyrest.TinyRest$Engine - 🌐 Incoming request: GET /nonexistent from /127.0.0.1:62239
+2025-08-30 20:33:33.733 [pool-2-thread-6] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62238, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:33:33.733 [pool-2-thread-6] DEBUG dev.mars.tinyrest.TinyRest$Engine - ⏱️ Applying artificial latency: 50ms
+2025-08-30 20:33:33.790 [pool-2-thread-6] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 8 routes for GET /nonexistent
+2025-08-30 20:33:33.790 [pool-2-thread-6] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /nonexistent: method match=true, pattern match=false
+2025-08-30 20:33:33.791 [pool-2-thread-6] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /nonexistent: method match=false, pattern match=false
+2025-08-30 20:33:33.791 [pool-2-thread-6] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /nonexistent: method match=true, pattern match=false
+2025-08-30 20:33:33.791 [pool-2-thread-6] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /nonexistent: method match=false, pattern match=false
+2025-08-30 20:33:33.791 [pool-2-thread-6] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /nonexistent: method match=false, pattern match=false
+2025-08-30 20:33:33.791 [pool-2-thread-6] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qhealth\E$ against path /nonexistent: method match=true, pattern match=false
+2025-08-30 20:33:33.791 [pool-2-thread-6] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qecho\E$ against path /nonexistent: method match=false, pattern match=false
+2025-08-30 20:33:33.791 [pool-2-thread-6] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qslow\E$ against path /nonexistent: method match=true, pattern match=false
+2025-08-30 20:33:33.791 [pool-2-thread-6] WARN  dev.mars.tinyrest.TinyRest$Engine - ❌ No matching route found for GET /nonexistent after checking 8 routes
+2025-08-30 20:33:46.505 [main] DEBUG dev.mars.tinyrest.TinyRest - Loading configuration from file: src/test/resources/tinyrest.yaml
+2025-08-30 20:33:46.506 [main] DEBUG dev.mars.tinyrest.TinyRest - Configuration file format detected: YAML
+2025-08-30 20:33:46.707 [main] DEBUG dev.mars.tinyrest.TinyRest - Configuration parsed successfully. Raw config: port=0, resources=1, staticEndpoints=1
+2025-08-30 20:33:46.708 [main] DEBUG dev.mars.tinyrest.TinyRest - Creating HTTP server on port 0 (0 = auto-assign)
+2025-08-30 20:33:46.805 [main] DEBUG dev.mars.tinyrest.TinyRest - Setting up thread pool executor with 22 threads
+2025-08-30 20:33:46.805 [main] DEBUG dev.mars.tinyrest.TinyRest - Initializing request engine with configuration defaults
+2025-08-30 20:33:46.808 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔧 Engine initialization starting...
+2025-08-30 20:33:46.810 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - Engine configuration: templating=true, hotReload=false, schemaValidation=strict, recordReplay=off
+2025-08-30 20:33:46.811 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Configuration validation mode: strict
+2025-08-30 20:33:46.811 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Running strict configuration validation...
+2025-08-30 20:33:46.811 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Strict validation passed
+2025-08-30 20:33:46.811 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Initializing data stores...
+2025-08-30 20:33:46.811 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🗄️ Initializing data stores...
+2025-08-30 20:33:46.811 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Creating 1 resource stores
+2025-08-30 20:33:46.811 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Processing resource configuration: name='users', idField='id', enableCrud=true, seedCount=2
+2025-08-30 20:33:46.814 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Seeding resource 'users' with 2 records
+2025-08-30 20:33:46.829 [main] TRACE dev.mars.tinyrest.TinyRest$Engine - Seeded record with ID 'u1' in resource 'users'
+2025-08-30 20:33:46.830 [main] TRACE dev.mars.tinyrest.TinyRest$Engine - Seeded record with ID 'u2' in resource 'users'
+2025-08-30 20:33:46.831 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - ✅ Initialized resource 'users' with 2 seed records (idField='id')
+2025-08-30 20:33:46.831 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Store initialization complete: 1 stores created
+2025-08-30 20:33:46.831 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Initializing request routes...
+2025-08-30 20:33:46.831 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🛣️ Initializing request routes...
+2025-08-30 20:33:46.831 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Processing 1 resources for CRUD route generation
+2025-08-30 20:33:46.831 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Resource 'users': enableCrud=true
+2025-08-30 20:33:46.831 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - 🔧 Creating CRUD routes for resource 'users' at base path '/api/users'
+2025-08-30 20:33:46.831 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   📋 Adding route: GET /api/users (list resources)
+2025-08-30 20:33:46.837 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   ➕ Adding route: POST /api/users (create resource, auth required)
+2025-08-30 20:33:46.837 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   🔍 Adding route: GET /api/users/:id (get resource by ID)
+2025-08-30 20:33:46.837 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   ✏️ Adding route: PUT /api/users/:id (update resource, auth required)
+2025-08-30 20:33:46.838 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   🗑️ Adding route: DELETE /api/users/:id (delete resource, auth required)
+2025-08-30 20:33:46.838 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Processing 1 static endpoints
+2025-08-30 20:33:46.839 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - 🔧 Creating static endpoint: GET /health -> 200 (echo=false, templating=true, auth=false)
+2025-08-30 20:33:46.840 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Static endpoint processing complete: 1 endpoints created
+2025-08-30 20:33:46.840 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - ✅ Route initialization complete: 6 total routes (5 CRUD + 1 static)
+2025-08-30 20:33:46.840 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - 📋 Route summary:
+2025-08-30 20:33:46.840 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qapi\E/\Qusers\E$ (mutates=false)
+2025-08-30 20:33:46.840 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   POST ^/\Qapi\E/\Qusers\E$ (mutates=true)
+2025-08-30 20:33:46.840 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ (mutates=false)
+2025-08-30 20:33:46.840 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   PUT ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ (mutates=true)
+2025-08-30 20:33:46.840 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   DELETE ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ (mutates=true)
+2025-08-30 20:33:46.840 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine -   GET ^/\Qhealth\E$ (mutates=false)
+2025-08-30 20:33:46.840 [main] DEBUG dev.mars.tinyrest.TinyRest$Engine - Initializing recorder with mode: off
+2025-08-30 20:33:46.842 [main] INFO  dev.mars.tinyrest.TinyRest$Engine - ✅ Engine initialized successfully: 6 routes, 1 stores, 1 features active
+2025-08-30 20:33:46.842 [main] DEBUG dev.mars.tinyrest.TinyRest - Creating root context handler for all requests
+2025-08-30 20:33:46.844 [main] DEBUG dev.mars.tinyrest.TinyRest - Starting HTTP server...
+2025-08-30 20:33:46.845 [main] INFO  dev.mars.tinyrest.TinyRest - HTTP server started successfully on port 62253
+2025-08-30 20:33:46.845 [main] DEBUG dev.mars.tinyrest.TinyRest - Hot reload is disabled
+2025-08-30 20:33:47.066 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - 🌐 Incoming request: GET /health from /127.0.0.1:62254
+2025-08-30 20:33:47.069 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62253, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:33:47.069 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 6 routes for GET /health
+2025-08-30 20:33:47.069 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /health: method match=true, pattern match=false
+2025-08-30 20:33:47.069 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /health: method match=false, pattern match=false
+2025-08-30 20:33:47.070 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /health: method match=true, pattern match=false
+2025-08-30 20:33:47.070 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /health: method match=false, pattern match=false
+2025-08-30 20:33:47.070 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E/(?<id>[^/]+)$ against path /health: method match=false, pattern match=false
+2025-08-30 20:33:47.070 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qhealth\E$ against path /health: method match=true, pattern match=true
+2025-08-30 20:33:47.070 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: GET /health -> handler (mutates=false)
+2025-08-30 20:33:47.071 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🎯 Executing handler for GET /health
+2025-08-30 20:33:47.072 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Applying templating to static response for GET /health
+2025-08-30 20:33:47.072 [pool-2-thread-1] TRACE dev.mars.tinyrest.TinyRest$Engine - Returning static response for GET /health with status 200
+2025-08-30 20:33:47.074 [pool-2-thread-1] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Handler completed for GET /health -> 200 (8ms)
+2025-08-30 20:33:47.115 [pool-2-thread-2] TRACE dev.mars.tinyrest.TinyRest$Engine - 🌐 Incoming request: GET /api/users from /127.0.0.1:62255
+2025-08-30 20:33:47.115 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62253, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:33:47.115 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 6 routes for GET /api/users
+2025-08-30 20:33:47.116 [pool-2-thread-2] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /api/users: method match=true, pattern match=true
+2025-08-30 20:33:47.116 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: GET /api/users -> handler (mutates=false)
+2025-08-30 20:33:47.116 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🎯 Executing handler for GET /api/users
+2025-08-30 20:33:47.116 [pool-2-thread-2] TRACE dev.mars.tinyrest.TinyRest$Engine - Listing resources from 'users': limit=50, offset=0
+2025-08-30 20:33:47.118 [pool-2-thread-2] TRACE dev.mars.tinyrest.TinyRest$Engine - Retrieved 2 items from resource 'users'
+2025-08-30 20:33:47.118 [pool-2-thread-2] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Handler completed for GET /api/users -> 200 (3ms)
+2025-08-30 20:33:47.128 [pool-2-thread-3] TRACE dev.mars.tinyrest.TinyRest$Engine - 🌐 Incoming request: POST /api/users from /127.0.0.1:62256
+2025-08-30 20:33:47.128 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Authorization=Bearer test-token, Content-type=application/json, Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62253, Content-length=40, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:33:47.128 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 6 routes for POST /api/users
+2025-08-30 20:33:47.128 [pool-2-thread-3] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /api/users: method match=false, pattern match=true
+2025-08-30 20:33:47.128 [pool-2-thread-3] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /api/users: method match=true, pattern match=true
+2025-08-30 20:33:47.128 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: POST /api/users -> handler (mutates=true)
+2025-08-30 20:33:47.129 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔐 Checking authorization for mutating operation POST /api/users
+2025-08-30 20:33:47.129 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Authorization successful for POST /api/users
+2025-08-30 20:33:47.129 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🎯 Executing handler for POST /api/users
+2025-08-30 20:33:47.133 [pool-2-thread-3] TRACE dev.mars.tinyrest.TinyRest$Engine - Generated new ID 'b065bf29-c215-4d34-a95e-0e5002f0a674' for resource 'users'
+2025-08-30 20:33:47.133 [pool-2-thread-3] TRACE dev.mars.tinyrest.TinyRest$Engine - Created new resource 'users' with ID 'b065bf29-c215-4d34-a95e-0e5002f0a674'
+2025-08-30 20:33:47.134 [pool-2-thread-3] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Handler completed for POST /api/users -> 201 (6ms)
+2025-08-30 20:33:47.142 [pool-2-thread-4] TRACE dev.mars.tinyrest.TinyRest$Engine - 🌐 Incoming request: POST /api/users from /127.0.0.1:62257
+2025-08-30 20:33:47.142 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - Request headers: {Content-type=application/json, Connection=Upgrade, HTTP2-Settings, Http2-settings=AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA, Host=localhost:62253, Content-length=40, Upgrade=h2c, User-agent=Java-http-client/23}
+2025-08-30 20:33:47.142 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔍 Searching for matching route among 6 routes for POST /api/users
+2025-08-30 20:33:47.142 [pool-2-thread-4] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /api/users: method match=false, pattern match=true
+2025-08-30 20:33:47.142 [pool-2-thread-4] TRACE dev.mars.tinyrest.TinyRest$Engine - Testing route pattern ^/\Qapi\E/\Qusers\E$ against path /api/users: method match=true, pattern match=true
+2025-08-30 20:33:47.142 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - ✅ Route matched: POST /api/users -> handler (mutates=true)
+2025-08-30 20:33:47.142 [pool-2-thread-4] DEBUG dev.mars.tinyrest.TinyRest$Engine - 🔐 Checking authorization for mutating operation POST /api/users
+2025-08-30 20:33:47.143 [pool-2-thread-4] WARN  dev.mars.tinyrest.TinyRest$Engine - 🚫 Authorization failed for POST /api/users - missing or invalid bearer token
+2025-08-30 20:33:47.143 [pool-2-thread-4] WARN  dev.mars.tinyrest.TinyRest$Engine - 🔐 Unauthorized access attempt for POST /api/users: Missing/invalid bearer token

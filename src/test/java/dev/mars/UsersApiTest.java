@@ -1,5 +1,6 @@
 package dev.mars;
 
+import dev.mars.tinyrest.TinyRest;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -10,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(TinyRest.JUnitTinyRestExtension.class)
 @TinyRest.UseTinyRest(
-        configPath = "src/test/resources/tinyrest.yml",
+        configPath = "src/test/resources/tinyrest.yaml",
         port = 0 // auto-bind to a free port
 )
 class UsersApiTest {

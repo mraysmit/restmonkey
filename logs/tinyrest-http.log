@@ -1,0 +1,50 @@
+20:21:46.660 → GET /health 
+20:21:46.665 ← 200 GET /health (5ms)
+20:21:46.718 → GET /api/users 
+20:21:46.724 ← 200 GET /api/users (6ms)
+20:21:46.745 → POST /api/users 
+20:21:46.750 ← 201 POST /api/users (5ms)
+20:21:46.756 → POST /api/users 
+20:21:46.757 ← 401 POST /api/users (1ms) - Missing/invalid bearer token
+20:22:56.339 → GET /health 
+20:22:56.344 ← 200 GET /health (5ms)
+20:31:08.847 → GET /health 
+20:31:08.853 ← 200 GET /health (6ms)
+20:31:22.280 → GET /health 
+20:31:22.291 ← 200 GET /health (10ms)
+20:31:22.349 → GET /api/users 
+20:31:22.355 ← 200 GET /api/users (6ms)
+20:31:22.368 → POST /api/users 
+20:31:22.377 ← 201 POST /api/users (9ms)
+20:31:22.389 → POST /api/users 
+20:31:22.390 ← 401 POST /api/users (1ms) - Missing/invalid bearer token
+20:32:29.886 → GET /health 
+20:32:29.945 ← 200 GET /health (60ms)
+20:32:29.983 → GET /api/users ?limit=10&offset=0
+20:32:30.054 ← 200 GET /api/users (71ms)
+20:32:30.060 → POST /api/users 
+20:32:30.127 ← 201 POST /api/users (68ms)
+20:32:30.130 → POST /api/users 
+20:32:30.185 ← 401 POST /api/users (54ms) - Missing/invalid bearer token
+20:32:30.188 → POST /echo ?test=value
+20:32:30.246 ← 401 POST /echo (58ms) - Missing/invalid bearer token
+20:33:33.379 → GET /health 
+20:33:33.443 ← 200 GET /health (65ms)
+20:33:33.482 → GET /api/users ?limit=10&offset=0
+20:33:33.546 ← 200 GET /api/users (65ms)
+20:33:33.550 → POST /api/users 
+20:33:33.611 ← 201 POST /api/users (62ms)
+20:33:33.614 → POST /api/users 
+20:33:33.668 ← 401 POST /api/users (54ms) - Missing/invalid bearer token
+20:33:33.672 → POST /echo ?test=value
+20:33:33.730 ← 200 POST /echo (58ms)
+20:33:33.733 → GET /nonexistent 
+20:33:33.791 ← 404 GET /nonexistent (59ms) - No matching route
+20:33:47.066 → GET /health 
+20:33:47.074 ← 200 GET /health (8ms)
+20:33:47.115 → GET /api/users 
+20:33:47.119 ← 200 GET /api/users (3ms)
+20:33:47.128 → POST /api/users 
+20:33:47.134 ← 201 POST /api/users (6ms)
+20:33:47.142 → POST /api/users 
+20:33:47.143 ← 401 POST /api/users (1ms) - Missing/invalid bearer token

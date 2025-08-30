@@ -3,6 +3,12 @@ authToken: test-token     # omit or "" to disable auth
 artificialLatencyMs: 0    # no latency by default
 chaosFailRate: 0.0        # 0..1 chance of random 500s
 
+logging:
+  level: DEBUG            # TRACE, DEBUG, INFO, WARN, ERROR
+  httpRequests: true      # log HTTP requests/responses
+  enableFileLogging: true # write logs to files
+  logDirectory: logs      # directory for log files
+
 features:
   templating: true
   hotReload: false        # enable if you want live reload of config
