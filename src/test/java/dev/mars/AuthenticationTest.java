@@ -1,8 +1,27 @@
 package dev.mars;
 
+/*
+ * Copyright 2025 Mark Andrew Ray-Smith Cityline Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
 import dev.mars.tinyrest.TinyRest;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.http.*;
@@ -11,9 +30,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Comprehensive tests for authentication and authorization
+ *
+ * @author Mark Andrew Ray-Smith Cityline Ltd
+ * @since 2025-08-30
+ * @version 1.0
  */
 class AuthenticationTest {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationTest.class);
     HttpClient client = HttpClient.newHttpClient();
 
     @Nested
@@ -46,14 +70,24 @@ class AuthenticationTest {
         
         @Test
         void postWithValidAuthShouldSucceed(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+            logger.info("Testing POST with valid Bearer token authentication");
+
+            var requestBody = "{\"name\":\"Test User\"}";
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/api/users"))
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer test-token")
-                    .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"Test User\"}"))
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
+
+            logger.debug("Sending authenticated POST: {} with body: {}", request.uri(), requestBody);
+            logger.debug("Auth header: {}", request.headers().firstValue("Authorization").orElse("NONE"));
+
             var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            logger.info("Auth test response: status={}, body: {}", response.statusCode(), response.body());
+
             assertEquals(201, response.statusCode());
+            logger.info("Valid auth test passed - got expected 201");
         }
         
         @Test
