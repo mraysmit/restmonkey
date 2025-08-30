@@ -88,6 +88,86 @@ public class TinyRest {
         }
     }
 
+    // ---------- Constructors ----------
+
+    /**
+     * Create a TinyRest server with the given configuration.
+     * The server is not started automatically - call start() to begin serving requests.
+     */
+    public TinyRest(MockConfig config) throws IOException {
+        this.config = defaults(config);
+        this.handle = start(this.config, null); // No config file path for programmatic usage
+    }
+
+    /**
+     * Start the TinyRest server and return the server handle.
+     */
+    public ServerHandle start() {
+        return handle;
+    }
+
+    /**
+     * Stop the TinyRest server.
+     */
+    public void stop() {
+        if (handle != null) {
+            handle.stop(0);
+        }
+    }
+
+    /**
+     * Get the server's bound address.
+     */
+    public InetSocketAddress getAddress() {
+        return handle != null ? handle.boundAddress() : null;
+    }
+
+    /**
+     * Get the server's port.
+     */
+    public int getPort() {
+        InetSocketAddress addr = getAddress();
+        return addr != null ? addr.getPort() : -1;
+    }
+
+    /**
+     * Get the base URL for this server.
+     */
+    public String getBaseUrl() {
+        int port = getPort();
+        return port > 0 ? "http://localhost:" + port : null;
+    }
+
+    // Instance fields for programmatic usage
+    private final MockConfig config;
+    private final ServerHandle handle;
+
+    // ---------- Builder API ----------
+
+    /**
+     * Create a new fluent builder for configuring TinyRest programmatically.
+     *
+     * Example:
+     * <pre>
+     * var server = TinyRest.builder()
+     *     .port(8080)
+     *     .authToken("my-token")
+     *     .enableTemplating()
+     *     .resource("users")
+     *         .idField("id")
+     *         .seed("id", "u1", "name", "Alice")
+     *         .done()
+     *     .staticEndpoint()
+     *         .get("/health")
+     *         .response("status", "healthy")
+     *         .done()
+     *     .start();
+     * </pre>
+     */
+    public static TinyRestBuilder builder() {
+        return TinyRestBuilder.create();
+    }
+
     // ---------- Public API ----------
     public static MockConfig loadConfig(String path) throws IOException {
         log.debug("Loading configuration from file: {}", path);
