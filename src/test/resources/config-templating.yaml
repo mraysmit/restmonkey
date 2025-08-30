@@ -1,4 +1,35 @@
-# Configuration focused on templating features
+# =============================================================================
+# TinyRest Configuration: Templating Features Test
+# =============================================================================
+#
+# Purpose: Tests TinyRest's templating engine with various template expressions
+# Used by: TemplatingTest.java
+#
+# Key Features Tested:
+# - Template rendering with {{now}}, {{uuid}}, {{random.int()}}
+# - Complex nested template structures
+# - Template expressions in static endpoint responses
+# - Templating with authentication (template-echo endpoint)
+# - Multiple template variables in single response
+#
+# Template Variables Available:
+# - {{now}} - Current timestamp in ISO format
+# - {{now:format}} - Formatted timestamp (e.g., {{now:yyyy-MM-dd}})
+# - {{uuid}} - Random UUID
+# - {{random.int(min,max)}} - Random integer in range
+# - {{path.param}} - Path parameter value
+# - {{query.param}} - Query parameter value
+# - {{header.name}} - Request header value
+# - {{body.field}} - Request body field (JSON pointer)
+#
+# Configuration Details:
+# - Port 0: Auto-assign free port for test isolation
+# - Auth Token: Required for POST /template-echo endpoint
+# - Templating: ENABLED - all {{...}} expressions will be processed
+# - Hot Reload: DISABLED - no file watching during tests
+# - Schema Validation: STRICT - configuration must be valid
+# =============================================================================
+
 port: 0
 authToken: template-token
 

@@ -1,0 +1,101 @@
+# =============================================================================
+# TinyRest Configuration: Server Information Endpoints Test
+# =============================================================================
+# 
+# Purpose: Tests TinyRest's server introspection and information endpoints
+# Used by: ServerInfoTest.java
+# 
+# Key Features Tested:
+# - Server runtime information (port, start time, features)
+# - Route information (count, types, detailed list)
+# - Resource information (count, details, data counts)
+# - Java runtime information (version, vendor)
+# - Template variables for server state
+# 
+# Server Template Variables:
+# - {{server.port}} - Actual runtime port
+# - {{server.started}} - Server start timestamp
+# - {{server.features.*}} - Feature status (templating, hotReload, etc.)
+# - {{server.routes.*}} - Route counts and details
+# - {{server.resources.*}} - Resource counts and details
+# - {{java.version}} - Java version information
+# 
+# Use Cases:
+# - Server monitoring and health dashboards
+# - API documentation generation
+# - Development debugging and introspection
+# - Configuration validation and verification
+# 
+# Configuration Details:
+# - Port 0: Auto-assign free port for test isolation
+# - No Authentication: All info endpoints are public
+# - Templating: ENABLED - processes {{server.*}} and {{java.*}} variables
+# - Hot Reload: DISABLED - no file watching during tests
+# - Schema Validation: STRICT - configuration must be valid
+# =============================================================================
+
+port: 0
+authToken: info-token
+
+features:
+  templating: true
+  hotReload: false
+  schemaValidation: strict
+
+resources:
+  - name: users
+    idField: id
+    enableCrud: true
+    seedData:
+      - id: u1
+        name: John Doe
+        email: john@example.com
+      - id: u2
+        name: Jane Smith
+        email: jane@example.com
+
+staticEndpoints:
+  # Basic health check
+  - method: GET
+    path: /health
+    status: 200
+    response: "healthy"
+    
+  # Server configuration information
+  - method: GET
+    path: /server/info
+    status: 200
+    response:
+      server: "TinyRest"
+      version: "1.0.0-SNAPSHOT"
+      java_version: "{{java.version}}"
+      port: "{{server.port}}"
+      started_at: "{{server.started}}"
+      features:
+        templating: "{{server.features.templating}}"
+        hot_reload: "{{server.features.hotReload}}"
+        schema_validation: "{{server.features.schemaValidation}}"
+      
+  # Route information (summary)
+  - method: GET
+    path: /server/routes
+    status: 200
+    response:
+      total_routes: "{{server.routes.count}}"
+      crud_routes: "{{server.routes.crud}}"
+      static_routes: "{{server.routes.static}}"
+      routes: "{{server.routes.list}}"
+
+  # Route information (detailed array) - returns raw JSON array
+  - method: GET
+    path: /server/routes/list
+    status: 200
+    response: "{{server.routes.array}}"
+      
+  # Resource information
+  - method: GET
+    path: /server/resources
+    status: 200
+    response:
+      total_resources: "{{server.resources.count}}"
+      resources: "{{server.resources.list}}"

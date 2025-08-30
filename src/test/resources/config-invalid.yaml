@@ -1,4 +1,36 @@
-# Invalid configuration for testing error handling
+# =============================================================================
+# TinyRest Configuration: Invalid Configuration Test
+# =============================================================================
+#
+# Purpose: Tests TinyRest's configuration validation and error handling
+# Used by: Configuration validation tests and error handling scenarios
+#
+# Key Features Tested:
+# - Schema validation error detection
+# - Type validation (string vs number vs boolean)
+# - Required field validation
+# - Invalid enum value handling
+# - Graceful error reporting
+#
+# Intentional Errors:
+# - port: "invalid-port" (should be integer)
+# - authToken: 123 (should be string)
+# - templating: "yes" (should be boolean true/false)
+# - hotReload: 1 (should be boolean true/false)
+# - schemaValidation: "invalid" (should be "strict" or "lenient")
+# - resource name: "" (empty string, should be non-empty)
+# - resource idField: "" (empty string, should be non-empty)
+# - enableCrud: "true" (should be boolean true/false)
+# - staticEndpoint path: "" (empty string, should be non-empty)
+# - HTTP method: "INVALID" (should be GET/POST/PUT/DELETE/PATCH)
+# - status: "200" (should be integer)
+#
+# Expected Behavior:
+# - Strict validation: Throws exception, server fails to start
+# - Lenient validation: Logs warnings, attempts to continue
+# - Provides detailed error messages for debugging
+# =============================================================================
+
 port: "invalid-port"  # Should be number
 authToken: 123        # Should be string
 

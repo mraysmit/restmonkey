@@ -1,4 +1,37 @@
-# Configuration with chaos engineering features
+# =============================================================================
+# TinyRest Configuration: Chaos Engineering Test
+# =============================================================================
+#
+# Purpose: Tests TinyRest's chaos engineering capabilities for resilience testing
+# Used by: ChaosEngineeringTest.java
+#
+# Key Features Tested:
+# - Artificial latency injection (100ms minimum delay)
+# - Random failure injection (30% chance of 500 errors)
+# - Resilience testing under adverse conditions
+# - Performance timing validation
+# - Error handling and recovery
+#
+# Chaos Engineering Settings:
+# - artificialLatencyMs: 100 = Minimum 100ms delay on all requests
+# - chaosFailRate: 0.3 = 30% chance any request returns 500 error
+# - Helps test client retry logic and error handling
+# - Simulates real-world network issues and server problems
+#
+# Test Scenarios:
+# - Latency tests verify minimum response times
+# - Failure tests verify proper 500 error responses
+# - Multiple requests test statistical failure rates
+# - Template rendering works even with chaos enabled
+#
+# Configuration Details:
+# - Port 0: Auto-assign free port for test isolation
+# - Templating: ENABLED - {{now}} works even with chaos
+# - Hot Reload: DISABLED - no file watching during chaos tests
+# - Schema Validation: STRICT - configuration must be valid
+# - Logging: INFO level to see chaos events without overwhelming detail
+# =============================================================================
+
 port: 0
 authToken: chaos-token
 artificialLatencyMs: 100

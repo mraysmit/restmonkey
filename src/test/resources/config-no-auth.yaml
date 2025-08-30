@@ -1,4 +1,34 @@
-# Configuration without authentication
+# =============================================================================
+# TinyRest Configuration: No Authentication Test
+# =============================================================================
+#
+# Purpose: Tests TinyRest behavior when authentication is completely disabled
+# Used by: YamlConfigurationTest.NoAuthConfigurationTest, AuthenticationTest.NoAuthConfiguredTest
+#
+# Key Features Tested:
+# - No authentication required for any operations
+# - Custom ID fields (productId instead of default 'id')
+# - Templating disabled (static responses without {{...}} processing)
+# - Lenient schema validation (warnings instead of errors)
+# - Multiple resources with different configurations
+#
+# Authentication Behavior:
+# - No authToken configured = All operations work without authentication
+# - POST, PUT, DELETE work without Authorization header
+# - Demonstrates TinyRest's flexible auth model
+#
+# Schema Validation:
+# - LENIENT mode = Configuration warnings logged but don't stop startup
+# - Allows for more flexible development and testing
+# - Invalid configurations generate warnings instead of errors
+#
+# Configuration Details:
+# - Port 0: Auto-assign free port for test isolation
+# - Templating: DISABLED - {{...}} expressions NOT processed
+# - Hot Reload: DISABLED - no file watching
+# - Schema Validation: LENIENT - warnings only, continues on errors
+# =============================================================================
+
 port: 0
 # authToken: ""  # No auth token - mutations should work without auth
 

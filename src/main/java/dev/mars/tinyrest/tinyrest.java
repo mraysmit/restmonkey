@@ -53,6 +53,8 @@ public class TinyRest {
     private static final Logger log = LoggerFactory.getLogger(TinyRest.class);
 
     public static void main(String[] args) throws Exception {
+        showSplashScreen();
+
         log.debug("TinyRest starting with {} command line arguments", args.length);
         if (args.length == 0) {
             log.error("No configuration file specified. Usage: java TinyRest <tinyrest.yml|json>");
@@ -176,9 +178,11 @@ public class TinyRest {
         final Path configPath;
         final Features features;
         final Recorder recorder;
+        final Instant startTime;
 
         Engine(MockConfig cfg, Path configPath) {
             log.debug("Engine initialization starting...");
+            this.startTime = Instant.now();
             this.cfg = cfg;
             this.configPath = configPath;
             this.features = Features.from(cfg.features);
@@ -226,6 +230,64 @@ public class TinyRest {
             if (features.hotReload) count++;
             if (recorder.isRecording() || recorder.isReplay()) count++;
             return count;
+        }
+
+        int countCrudRoutes() {
+            return (int) routes.stream().filter(r -> !r.isStatic).count();
+        }
+
+        int countStaticRoutes() {
+            return (int) routes.stream().filter(r -> r.isStatic).count();
+        }
+
+        String getRoutesList() {
+            return routes.stream()
+                .map(this::formatRouteForDisplay)
+                .collect(Collectors.joining(", "));
+        }
+
+        List<Map<String,Object>> getRoutesArray() {
+            return routes.stream()
+                .map(r -> {
+                    Map<String,Object> route = new HashMap<>();
+                    route.put("method", r.method);
+                    route.put("path", cleanPath(r.pattern.pattern()));
+                    route.put("type", r.isStatic ? "static" : "crud");
+                    route.put("mutates", r.mutates);
+                    return route;
+                })
+                .toList();
+        }
+
+        private String formatRouteForDisplay(Route r) {
+            return r.method + " " + cleanPath(r.pattern.pattern());
+        }
+
+        private String cleanPath(String regexPath) {
+            return regexPath
+                .replaceAll("^\\^/?", "")                    // Remove leading ^/
+                .replaceAll("\\$$", "")                      // Remove trailing $
+                .replaceAll("\\\\Q", "")                     // Remove \Q
+                .replaceAll("\\\\E", "")                     // Remove \E
+                .replaceAll("/", "/")                        // Keep forward slashes
+                .replaceAll("\\(\\?<id>\\[\\^/\\]\\+\\)", "/:id")     // Replace (?<id>[^/]+) with /:id
+                .replaceAll("\\(\\?<([^>]+)>\\[\\^/\\]\\+\\)", "/:$1") // Replace other params
+                .replaceAll("^/", "");                       // Remove leading slash for consistency
+        }
+
+        String getResourcesList() {
+            try {
+                var resourceList = stores.entrySet().stream()
+                    .map(entry -> Map.of(
+                        "name", entry.getKey(),
+                        "idField", entry.getValue().idField,
+                        "count", entry.getValue().data.size()
+                    ))
+                    .toList();
+                return om.writeValueAsString(resourceList);
+            } catch (Exception e) {
+                return "[]";
+            }
         }
 
         void handle(HttpExchange ex) throws IOException {
@@ -305,13 +367,20 @@ public class TinyRest {
                     if (r.method.equals(method) && m.matches()) {
                         log.debug("Route matched: {} {} -> handler (mutates={})", method, path, r.mutates);
 
-                        var ctx = new Ctx(ex, om, cfg, m, r, features);
+                        var ctx = new Ctx(ex, om, cfg, m, r, features, this);
 
                         // Check authorization for mutating operations
                         if (r.mutates) {
                             log.debug("Checking authorization for mutating operation {} {}", method, path);
                             if (!isAuthorized(ctx)) {
-                                log.warn("Authorization failed for {} {} - missing or invalid bearer token", method, path);
+                                String userAgent = ctx.header("User-Agent");
+                                boolean isTestRequest = userAgent != null && userAgent.contains("Java-http-client");
+
+                                if (isTestRequest) {
+                                    log.info("TEST: Authentication check failed for {} {} - missing or invalid bearer token (expected for auth tests)", method, path);
+                                } else {
+                                    log.warn("SECURITY: Authorization failed for {} {} - missing or invalid bearer token", method, path);
+                                }
                                 throw new Unauthorized("Missing/invalid bearer token");
                             }
                             log.debug("Authorization successful for {} {}", method, path);
@@ -336,8 +405,16 @@ public class TinyRest {
                 }
                 // No route found
                 long duration = System.currentTimeMillis() - startTime;
-                log.warn("No matching route found for {} {} after checking {} routes", method, path, routes.size());
-                httpLog.warn("<- 404 {} {} ({}ms) - No matching route", method, path, duration);
+                String userAgent = ex.getRequestHeaders().getFirst("User-Agent");
+                boolean isTestRequest = userAgent != null && userAgent.contains("Java-http-client");
+
+                if (isTestRequest) {
+                    log.info("TEST: No matching route found for {} {} after checking {} routes (expected for routing tests)", method, path, routes.size());
+                    httpLog.info("<- 404 {} {} ({}ms) - No matching route [TEST]", method, path, duration);
+                } else {
+                    log.warn("ROUTING: No matching route found for {} {} after checking {} routes", method, path, routes.size());
+                    httpLog.warn("<- 404 {} {} ({}ms) - No matching route [ROUTING]", method, path, duration);
+                }
 
                 var notFound = Response.json(404, Map.of(
                         "error","not_found",
@@ -365,8 +442,16 @@ public class TinyRest {
                 }
             } catch (Unauthorized e) {
                 long duration = System.currentTimeMillis() - startTime;
-                log.warn("Unauthorized access attempt for {} {}: {}", method, path, e.getMessage());
-                httpLog.warn("<- 401 {} {} ({}ms) - {}", method, path, duration, e.getMessage());
+                String userAgent = ex.getRequestHeaders().getFirst("User-Agent");
+                boolean isTestRequest = userAgent != null && userAgent.contains("Java-http-client");
+
+                if (isTestRequest) {
+                    log.info("TEST: Expected auth failure for {} {}: {}", method, path, e.getMessage());
+                    httpLog.info("<- 401 {} {} ({}ms) - {} [TEST]", method, path, duration, e.getMessage());
+                } else {
+                    log.warn("SECURITY: Unauthorized access attempt for {} {}: {}", method, path, e.getMessage());
+                    httpLog.warn("<- 401 {} {} ({}ms) - {} [SECURITY]", method, path, duration, e.getMessage());
+                }
 
                 var resp = Response.json(401, Map.of(
                         "error","unauthorized",
@@ -434,7 +519,7 @@ public class TinyRest {
                             row.put(idField, id);
                             log.trace("Generated ID '{}' for seed record in resource '{}'", id, r.name);
                         }
-                        store.put(id.toString(), deepCopy(row));
+                        store.put(id.toString(), (Map<String,Object>) deepCopy(row));
                         seededCount++;
                         log.trace("Seeded record with ID '{}' in resource '{}'", id, r.name);
                     }
@@ -582,7 +667,7 @@ public class TinyRest {
                     log.info("Creating static endpoint: {} {} -> {} (echo={}, templating={}, auth={})",
                             method, se.path, status, isEcho, hasTemplating, mutates);
 
-                    newRoutes.add(new Route(method, se.path, mutates, (ctx) -> {
+                    newRoutes.add(new Route(method, se.path, mutates, true, (ctx) -> {
                         if (Boolean.TRUE.equals(se.echoRequest)) {
                             log.trace("Echoing request details for {} {}", method, se.path);
                             return Response.json(status, Map.of(
@@ -742,6 +827,11 @@ public class TinyRest {
             if (expr.startsWith("query.")) return nvl(ctx.query().get(expr.substring(6), ""));
             if (expr.startsWith("body."))  return nvl(jsonPointer(ctx.bodyAsMap(), expr.substring(5)));
             if (expr.startsWith("header.")) return nvl(ctx.header(expr.substring(7)));
+
+            // server information
+            if (expr.startsWith("server.")) return evalServerInfo(expr.substring(7), ctx);
+            if (expr.startsWith("java.")) return evalJavaInfo(expr.substring(5));
+
             // random.int(a,b)
             if (expr.startsWith("random.int(") && expr.endsWith(")")) {
                 try {
@@ -754,6 +844,42 @@ public class TinyRest {
                 } catch (Exception e) { return ""; }
             }
             return ""; // unknown expression -> empty
+        }
+
+        static String evalServerInfo(String expr, Ctx ctx) {
+            Engine engine = ctx.engine;
+            if (engine == null) return "";
+
+            return switch (expr) {
+                case "port" -> String.valueOf(ctx.exchange.getLocalAddress().getPort());
+                case "started" -> DateTimeFormatter.ISO_INSTANT.format(engine.startTime);
+                case "features.templating" -> String.valueOf(engine.features.templating);
+                case "features.hotReload" -> String.valueOf(engine.features.hotReload);
+                case "features.schemaValidation" -> engine.features.schemaValidation;
+                case "routes.count" -> String.valueOf(engine.routes.size());
+                case "routes.crud" -> String.valueOf(engine.countCrudRoutes());
+                case "routes.static" -> String.valueOf(engine.countStaticRoutes());
+                case "routes.list" -> engine.getRoutesList();
+                case "routes.array" -> {
+                    try {
+                        yield engine.om.writeValueAsString(engine.getRoutesArray());
+                    } catch (Exception e) {
+                        yield "[]";
+                    }
+                }
+                case "resources.count" -> String.valueOf(engine.stores.size());
+                case "resources.list" -> engine.getResourcesList();
+                default -> "";
+            };
+        }
+
+        static String evalJavaInfo(String expr) {
+            return switch (expr) {
+                case "version" -> System.getProperty("java.version", "unknown");
+                case "vendor" -> System.getProperty("java.vendor", "unknown");
+                case "runtime" -> System.getProperty("java.runtime.name", "unknown");
+                default -> "";
+            };
         }
 
         @SuppressWarnings("unchecked")
@@ -965,9 +1091,12 @@ public class TinyRest {
     // ---------- HTTP plumbing ----------
     interface Handler { Response handle(Ctx ctx) throws Exception; }
     static class Route {
-        final String method; final Pattern pattern; final Handler handler; final boolean mutates;
+        final String method; final Pattern pattern; final Handler handler; final boolean mutates; final boolean isStatic;
         Route(String method, String pathTemplate, boolean mutates, Handler handler) {
-            this.method = method; this.pattern = compile(pathTemplate); this.mutates = mutates; this.handler = handler;
+            this(method, pathTemplate, mutates, false, handler);
+        }
+        Route(String method, String pathTemplate, boolean mutates, boolean isStatic, Handler handler) {
+            this.method = method; this.pattern = compile(pathTemplate); this.mutates = mutates; this.isStatic = isStatic; this.handler = handler;
         }
         private static Pattern compile(String tpl) {
             String regex = Arrays.stream(tpl.split("/"))
@@ -981,11 +1110,11 @@ public class TinyRest {
     }
 
     static class Ctx {
-        final HttpExchange exchange; final ObjectMapper om; final MockConfig cfg; final Matcher matcher; final Route route; final Features features;
+        final HttpExchange exchange; final ObjectMapper om; final MockConfig cfg; final Matcher matcher; final Route route; final Features features; final Engine engine;
         Map<String,Object> bodyCache;
 
-        Ctx(HttpExchange exchange, ObjectMapper om, MockConfig cfg, Matcher matcher, Route route, Features features) {
-            this.exchange = exchange; this.om = om; this.cfg = cfg; this.matcher = matcher; this.route = route; this.features = features;
+        Ctx(HttpExchange exchange, ObjectMapper om, MockConfig cfg, Matcher matcher, Route route, Features features, Engine engine) {
+            this.exchange = exchange; this.om = om; this.cfg = cfg; this.matcher = matcher; this.route = route; this.features = features; this.engine = engine;
         }
         String path(String group) { return matcher.group(group); }
         String pathOrNull(String group) { try { return matcher.group(group); } catch (Exception e) { return null; } }
@@ -1075,8 +1204,25 @@ public class TinyRest {
 
     static ObjectMapper jsonMapper() { return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); }
     static ObjectMapper yamlMapper() { return new ObjectMapper(new YAMLFactory()).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); }
-    static Map<String,Object> deepCopy(Map<String,Object> m) { return jsonMapper().convertValue(m, new TypeReference<Map<String,Object>>(){}); }
+    static Object deepCopy(Object obj) {
+        if (obj == null) return null;
+        return jsonMapper().convertValue(obj, Object.class);
+    }
     static boolean blank(String s){ return s==null || s.isBlank(); }
+
+    static void showSplashScreen() {
+        System.out.println();
+        System.out.println("  ████████ ██ ███    ██ ██    ██ ██████  ███████ ███████ ████████ ");
+        System.out.println("     ██    ██ ████   ██  ██  ██  ██   ██ ██      ██         ██    ");
+        System.out.println("     ██    ██ ██ ██  ██   ████   ██████  █████   ███████    ██    ");
+        System.out.println("     ██    ██ ██  ██ ██    ██    ██   ██ ██           ██    ██    ");
+        System.out.println("     ██    ██ ██   ████    ██    ██   ██ ███████ ███████    ██    ");
+        System.out.println();
+        System.out.println("  Lightweight REST API Server for Rapid Prototyping & Testing");
+        System.out.println("  Version 1.0.0-SNAPSHOT | Built with Java " + System.getProperty("java.version"));
+        System.out.println("  Copyright 2025 Mark Andrew Ray-Smith Cityline Ltd");
+        System.out.println();
+    }
 
     // ---------- In-memory store ----------
     static class ResourceStore {
@@ -1089,7 +1235,7 @@ public class TinyRest {
         }
         
         void put(String id, Map<String,Object> row){
-            data.put(id, deepCopy(row)); 
+            data.put(id, (Map<String,Object>) deepCopy(row));
         }
         
         Map<String,Object> get(String id){ 
@@ -1105,7 +1251,7 @@ public class TinyRest {
                 .sorted(Comparator.comparing(o -> String.valueOf(o.getOrDefault(idField, ""))))
                 .skip(Math.max(0, offset))
                 .limit(Math.max(1, limit))
-                .map(TinyRest::deepCopy)
+                .map(row -> (Map<String,Object>) deepCopy(row))
                 .collect(Collectors.toList());
         }
     }
@@ -1134,7 +1280,7 @@ public class TinyRest {
         public String method;
         public String path;
         public Integer status;
-        public Map<String,Object> response;
+        public Object response;  // Can be String, Map, List, or any JSON value
         public Boolean echoRequest;
     }
 

@@ -1,0 +1,126 @@
+# =============================================================================
+# TinyRest Configuration: Static Endpoints Test
+# =============================================================================
+# 
+# Purpose: Tests TinyRest's static endpoint capabilities with various response types
+# Used by: StaticEndpointsTest.java
+# 
+# Key Features Tested:
+# - Various data types in responses (string, number, boolean, null, arrays)
+# - Custom HTTP status codes (201, 202, 418)
+# - Echo request functionality
+# - Authentication for specific endpoints
+# - Template variables in responses
+# - Complex nested JSON structures
+# 
+# Response Patterns:
+# - Simple objects with mixed data types
+# - Custom status codes for different scenarios
+# - Echo functionality to return request details
+# - Authentication-protected endpoints
+# - Template variable substitution
+# 
+# Configuration Details:
+# - Port 0: Auto-assign free port for test isolation
+# - Authentication: Required for POST endpoints only
+# - Templating: ENABLED - processes {{now}}, {{uuid}}, {{random}} variables
+# - Hot Reload: DISABLED - no file watching during tests
+# - Schema Validation: STRICT - configuration must be valid
+# =============================================================================
+
+port: 0
+authToken: static-token
+
+features:
+  templating: true
+  hotReload: false
+  schemaValidation: strict
+
+resources:
+  - name: items
+    idField: id
+    enableCrud: true
+
+staticEndpoints:
+  # Test response with various data types
+  - method: GET
+    path: /test-data
+    status: 200
+    response:
+      string_field: "Hello World"
+      number_field: 42
+      boolean_field: true
+      null_field: null
+      array_field: ["item1", "item2", "item3"]
+      nested_object:
+        inner_string: "nested value"
+        inner_number: 123
+        inner_array: [1, 2, 3]
+      timestamp: "{{now}}"
+      random_id: "{{uuid}}"
+      
+  # Test response with custom status codes
+  - method: GET
+    path: /test-created
+    status: 201
+    response:
+      message: "Resource created successfully"
+      id: "{{uuid}}"
+      created_at: "{{now}}"
+      
+  - method: GET
+    path: /test-accepted
+    status: 202
+    response:
+      message: "Request accepted for processing"
+      job_id: "{{random.int(1000,9999)}}"
+      
+  - method: GET
+    path: /test-teapot
+    status: 418
+    response:
+      error: "I'm a teapot"
+      message: "Cannot brew coffee, I'm a teapot!"
+      timestamp: "{{now}}"
+      
+  # Test POST endpoint with echo functionality
+  - method: POST
+    path: /test-echo
+    status: 200
+    echoRequest: true
+    
+  # Test POST endpoint with custom response (requires auth)
+  - method: POST
+    path: /test-submit
+    status: 201
+    response:
+      success: true
+      message: "Data submitted successfully"
+      submitted_at: "{{now}}"
+      submission_id: "{{uuid}}"
+      
+  # Test response with complex nested structure
+  - method: GET
+    path: /test-complex
+    status: 200
+    response:
+      metadata:
+        version: "1.0.0"
+        generated_at: "{{now}}"
+        server_id: "{{uuid}}"
+      data:
+        users:
+          - id: "{{random.int(1,100)}}"
+            name: "Test User 1"
+            active: true
+          - id: "{{random.int(101,200)}}"
+            name: "Test User 2"
+            active: false
+        statistics:
+          total_requests: "{{random.int(1000,5000)}}"
+          uptime_seconds: "{{random.int(3600,86400)}}"
+          last_restart: "{{now}}"
+      links:
+        self: "/test-complex"
+        users: "/api/users"
+        health: "/health"

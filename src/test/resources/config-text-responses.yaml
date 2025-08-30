@@ -1,0 +1,92 @@
+# =============================================================================
+# TinyRest Configuration: Simple Text Responses Test
+# =============================================================================
+# 
+# Purpose: Tests TinyRest's ability to return simple text strings
+# Used by: TextResponsesTest.java
+# 
+# Key Features Tested:
+# - Simple string responses (not JSON objects)
+# - Various HTTP status codes with text
+# - Plain text health checks and status endpoints
+# - No authentication required for simple endpoints
+# 
+# Response Types:
+# - Plain strings: "healthy", "OK", "pong"
+# - Custom status codes: 200, 201, 202, 418
+# - No templating needed for static text
+# 
+# Use Cases:
+# - Health checks that return simple "healthy" status
+# - Status endpoints that return "OK" or "READY"
+# - Ping/pong endpoints for connectivity testing
+# - Custom HTTP status demonstrations
+# 
+# Configuration Details:
+# - Port 0: Auto-assign free port for test isolation
+# - No Authentication: All endpoints are public
+# - Templating: DISABLED - no {{...}} processing needed
+# - Hot Reload: DISABLED - no file watching
+# - Schema Validation: STRICT - configuration must be valid
+# =============================================================================
+
+port: 0
+
+features:
+  templating: false
+  hotReload: false
+  schemaValidation: strict
+
+resources:
+  - name: items
+    idField: id
+    enableCrud: true
+
+staticEndpoints:
+  # Simple text responses
+  - method: GET
+    path: /health
+    status: 200
+    response: "healthy"
+    
+  - method: GET
+    path: /status
+    status: 200
+    response: "OK"
+    
+  - method: GET
+    path: /ping
+    status: 200
+    response: "pong"
+    
+  - method: GET
+    path: /ready
+    status: 200
+    response: "READY"
+    
+  # Custom status codes with text
+  - method: GET
+    path: /created
+    status: 201
+    response: "Resource created"
+    
+  - method: GET
+    path: /accepted
+    status: 202
+    response: "Request accepted"
+    
+  - method: GET
+    path: /teapot
+    status: 418
+    response: "I'm a teapot"
+    
+  # Error responses
+  - method: GET
+    path: /error
+    status: 500
+    response: "Internal server error"
+    
+  - method: GET
+    path: /forbidden
+    status: 403
+    response: "Access denied"

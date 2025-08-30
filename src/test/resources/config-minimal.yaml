@@ -1,4 +1,37 @@
-# Minimal valid configuration
+# =============================================================================
+# TinyRest Configuration: Minimal Setup Test
+# =============================================================================
+#
+# Purpose: Tests TinyRest with absolute minimum configuration
+# Used by: YamlConfigurationTest.MinimalConfigurationTest
+#
+# Key Features Tested:
+# - Minimal viable configuration (just port and one resource)
+# - Default feature settings (all features disabled by default)
+# - Empty resource with no seed data
+# - Basic CRUD operations without authentication
+# - Default schema validation (lenient mode)
+#
+# What's NOT Configured:
+# - No authToken = Authentication disabled for all operations
+# - No features section = All features default to false/off
+# - No staticEndpoints = Only CRUD routes available
+# - No logging config = Uses default console logging
+# - No chaos settings = No artificial delays or failures
+#
+# Expected Behavior:
+# - Creates 5 CRUD routes: GET, POST, PUT, DELETE, GET by ID
+# - All operations work without authentication
+# - Returns empty array [] for GET /api/items (no seed data)
+# - POST creates new items with auto-generated IDs
+#
+# Configuration Details:
+# - Port 8080: Fixed port (note: tests override to 0 for isolation)
+# - Templating: DISABLED (default) - no {{...}} processing
+# - Hot Reload: DISABLED (default) - no file watching
+# - Schema Validation: LENIENT (default) - warnings only
+# =============================================================================
+
 port: 8080
 resources:
   - name: items

@@ -1,4 +1,36 @@
-# Configuration with multiple resources and various features
+# =============================================================================
+# TinyRest Configuration: Multiple Resources Test
+# =============================================================================
+#
+# Purpose: Tests TinyRest with multiple resources and selective CRUD enablement
+# Used by: YamlConfigurationTest.MultipleResourcesTest
+#
+# Key Features Tested:
+# - Multiple resources with different ID fields
+# - Selective CRUD enablement (some resources have CRUD disabled)
+# - Rich seed data with relationships between resources
+# - Custom static endpoints with various HTTP methods and status codes
+# - Authentication required for mutating operations
+#
+# Resource Configuration:
+# - users: CRUD enabled, userId as ID field
+# - posts: CRUD enabled, postId as ID field, references users
+# - categories: CRUD DISABLED, only seed data available (no routes)
+#
+# Expected Behavior:
+# - /api/users and /api/posts work (CRUD enabled)
+# - /api/categories returns 404 (CRUD disabled)
+# - Static endpoints work with custom status codes
+# - Authentication required for POST/PUT/DELETE operations
+#
+# Configuration Details:
+# - Port 0: Auto-assign free port for test isolation
+# - Auth Token: "multi-token" required for mutating operations
+# - Templating: ENABLED - {{...}} expressions processed
+# - Hot Reload: DISABLED - no file watching
+# - Schema Validation: STRICT - configuration must be perfectly valid
+# =============================================================================
+
 port: 0
 authToken: multi-token
 

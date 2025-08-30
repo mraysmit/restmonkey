@@ -1,3 +1,36 @@
+# =============================================================================
+# TinyRest Configuration: Trace Logging & Hot Reload Test
+# =============================================================================
+#
+# Purpose: Advanced configuration for testing hot reload and detailed logging
+# Used by: LoggingDemoTest.java and hot reload functionality tests
+#
+# Key Features Tested:
+# - Hot reload functionality (file watcher monitors this config)
+# - TRACE level logging for maximum detail visibility
+# - Artificial latency for timing analysis
+# - Template rendering with authentication
+# - File-based logging with detailed request/response traces
+#
+# Hot Reload Behavior:
+# - File watcher monitors this file for changes
+# - Configuration changes trigger automatic server reload
+# - Routes, resources, and settings updated without restart
+# - Validation errors during reload preserve previous config
+#
+# Logging Features:
+# - TRACE level: Shows every internal operation
+# - HTTP request/response logging with timing
+# - File logging enabled for persistent audit trail
+# - Artificial latency: 50ms added to see timing in logs
+#
+# Configuration Details:
+# - Port 0: Auto-assign free port for test isolation
+# - Hot Reload: ENABLED - watches for file changes
+# - Templating: ENABLED - processes {{...}} expressions
+# - Schema Validation: STRICT - must be perfectly valid
+# =============================================================================
+
 port: 0                   # 0 = auto-assign a free port
 authToken: test-token     # omit or "" to disable auth
 artificialLatencyMs: 50   # Add some latency to see timing logs
