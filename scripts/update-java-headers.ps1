@@ -5,8 +5,8 @@
     Updates comment headers in Java class files with author information.
 
 .DESCRIPTION
-    TinyRest is a lightweight REST API server for rapid prototyping and testing
-    This script scans all Java files in the TinyRest project and updates their comment headers
+    RESTMonkey is a lightweight REST API server for rapid prototyping and testing
+    This script scans all Java files in the RESTMonkey project and updates their comment headers
     to include proper copyright notices and author tags with "Mark Andrew Ray-Smith Cityline Ltd".
 
 .PARAMETER DryRun
@@ -32,7 +32,7 @@ param(
 # Configuration
 $AUTHOR_NAME = "Mark Andrew Ray-Smith Cityline Ltd"
 $COPYRIGHT_YEAR = (Get-Date).Year
-$PROJECT_NAME = "TinyRest"
+$PROJECT_NAME = "RESTMonkey"
 
 # Function to determine the type of Java file (class, interface, enum, annotation)
 function Get-JavaFileType {
@@ -95,10 +95,10 @@ function New-JavaHeader {
 
     # Determine appropriate description based on file type
     $defaultDescription = switch ($FileType) {
-        "interface" { "Interface defining contracts for $ClassName in TinyRest." }
-        "enum" { "Enumeration defining $ClassName constants for TinyRest." }
-        "annotation" { "Annotation for $ClassName configuration in TinyRest." }
-        default { "TinyRest $ClassName implementation." }
+        "interface" { "Interface defining contracts for $ClassName in RESTMonkey." }
+        "enum" { "Enumeration defining $ClassName constants for RESTMonkey." }
+        "annotation" { "Annotation for $ClassName configuration in RESTMonkey." }
+        default { "RESTMonkey $ClassName implementation." }
     }
 
     $description = if ($ExistingDescription) { $ExistingDescription } else { $defaultDescription }

@@ -1,8 +1,8 @@
 # =============================================================================
-# TinyRest Configuration: Templating Features Test
+# RESTMonkey Configuration: Templating Features Test
 # =============================================================================
 #
-# Purpose: Tests TinyRest's templating engine with various template expressions
+# Purpose: Tests RESTMonkey's templating engine with various template expressions
 # Used by: TemplatingTest.java
 #
 # Key Features Tested:

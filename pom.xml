@@ -4,9 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>tinyrest</artifactId>
+    <artifactId>restmonkey</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <name>RestMonkey</name>
+    <description>A lightweight HTTP server for mocking REST APIs with chaos engineering capabilities</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -86,7 +88,7 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>dev.mars.tinyrest.TinyRest</mainClass>
+                                    <mainClass>dev.mars.restmonkey.RestMonkey</mainClass>
                                 </transformer>
                             </transformers>
                             <filters>

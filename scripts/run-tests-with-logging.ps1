@@ -2,10 +2,10 @@
 
 <#
 .SYNOPSIS
-    Runs TinyRest tests with enhanced logging output.
+    Runs RESTMonkey tests with enhanced logging output.
 
 .DESCRIPTION
-    This script runs Maven tests for TinyRest with comprehensive logging enabled.
+    This script runs Maven tests for RESTMonkey with comprehensive logging enabled.
     It shows detailed test execution, HTTP traffic, and server behavior.
 
 .PARAMETER TestClass
@@ -15,7 +15,7 @@
     Optional. Specific test method to run (e.g., "UsersApiTest#listUsers")
 
 .PARAMETER LogLevel
-    Optional. Log level for TinyRest components (TRACE, DEBUG, INFO, WARN, ERROR). Default: INFO
+    Optional. Log level for RESTMonkey components (TRACE, DEBUG, INFO, WARN, ERROR). Default: INFO
 
 .PARAMETER ShowLogFile
     Optional. Show the detailed log file after test execution
@@ -52,7 +52,7 @@ $Yellow = "`e[33m"
 $Red = "`e[31m"
 $Reset = "`e[0m"
 
-Write-Host "${Blue}TinyRest Test Runner with Enhanced Logging${Reset}" -ForegroundColor Blue
+Write-Host "${Blue}RESTMonkey Test Runner with Enhanced Logging${Reset}" -ForegroundColor Blue
 Write-Host "${Blue}===========================================${Reset}" -ForegroundColor Blue
 
 # Build Maven command
@@ -98,11 +98,11 @@ try {
 }
 
 # Show log file if requested
-if ($ShowLogFile -and (Test-Path "$logDir/tinyrest-tests.log")) {
+if ($ShowLogFile -and (Test-Path "$logDir/RESTMonkey-tests.log")) {
     Write-Host ""
     Write-Host "${Blue}Detailed log file contents:${Reset}" -ForegroundColor Blue
     Write-Host "${Blue}===========================${Reset}" -ForegroundColor Blue
-    Get-Content "$logDir/tinyrest-tests.log"
+    Get-Content "$logDir/RESTMonkey-tests.log"
 }
 
 Write-Host ""

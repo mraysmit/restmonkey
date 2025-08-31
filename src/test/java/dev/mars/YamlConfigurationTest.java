@@ -17,7 +17,7 @@ package dev.mars;
  */
 
 
-import dev.mars.tinyrest.TinyRest;
+import dev.mars.restmonkey.RestMonkey;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -43,12 +43,12 @@ class YamlConfigurationTest {
     HttpClient client = HttpClient.newHttpClient();
 
     @Nested
-    @ExtendWith(TinyRest.JUnitTinyRestExtension.class)
-    @TinyRest.UseTinyRest(configPath = "src/test/resources/config-minimal.yaml")
+    @ExtendWith(RestMonkey.JUnitRestMonkeyExtension.class)
+    @RestMonkey.UseRestMonkey(configPath = "src/test/resources/config-minimal.yaml")
     class MinimalConfigurationTest {
         
         @Test
-        void minimalConfigShouldWork(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void minimalConfigShouldWork(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             // Test that minimal config creates basic CRUD endpoints
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/api/items"))
@@ -60,7 +60,7 @@ class YamlConfigurationTest {
         }
         
         @Test
-        void minimalConfigShouldAllowMutationsWithoutAuth(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void minimalConfigShouldAllowMutationsWithoutAuth(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             // Since no authToken is specified, mutations should work without auth
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/api/items"))
@@ -73,12 +73,12 @@ class YamlConfigurationTest {
     }
 
     @Nested
-    @ExtendWith(TinyRest.JUnitTinyRestExtension.class)
-    @TinyRest.UseTinyRest(configPath = "src/test/resources/config-no-auth.yaml")
+    @ExtendWith(RestMonkey.JUnitRestMonkeyExtension.class)
+    @RestMonkey.UseRestMonkey(configPath = "src/test/resources/config-no-auth.yaml")
     class NoAuthConfigurationTest {
         
         @Test
-        void shouldUseCustomIdField(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void shouldUseCustomIdField(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/api/products"))
                     .GET()
@@ -90,7 +90,7 @@ class YamlConfigurationTest {
         }
         
         @Test
-        void shouldAllowMutationsWithoutAuth(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void shouldAllowMutationsWithoutAuth(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/api/products"))
                     .header("Content-Type", "application/json")
@@ -101,7 +101,7 @@ class YamlConfigurationTest {
         }
         
         @Test
-        void shouldHaveTemplatingDisabled(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void shouldHaveTemplatingDisabled(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/status"))
                     .GET()
@@ -114,12 +114,12 @@ class YamlConfigurationTest {
     }
 
     @Nested
-    @ExtendWith(TinyRest.JUnitTinyRestExtension.class)
-    @TinyRest.UseTinyRest(configPath = "src/test/resources/config-multiple-resources.yaml")
+    @ExtendWith(RestMonkey.JUnitRestMonkeyExtension.class)
+    @RestMonkey.UseRestMonkey(configPath = "src/test/resources/config-multiple-resources.yaml")
     class MultipleResourcesTest {
         
         @Test
-        void shouldCreateCrudForEnabledResources(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void shouldCreateCrudForEnabledResources(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             // Test users resource (CRUD enabled)
             var usersRequest = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/api/users"))
@@ -140,7 +140,7 @@ class YamlConfigurationTest {
         }
         
         @Test
-        void shouldNotCreateCrudForDisabledResources(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void shouldNotCreateCrudForDisabledResources(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             // Categories has enableCrud: false, so should return 404
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/api/categories"))
@@ -151,7 +151,7 @@ class YamlConfigurationTest {
         }
         
         @Test
-        void shouldHandleCustomStatusCodes(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void shouldHandleCustomStatusCodes(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/custom-status"))
                     .GET()
@@ -162,7 +162,7 @@ class YamlConfigurationTest {
         }
         
         @Test
-        void shouldHandleEchoEndpoint(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void shouldHandleEchoEndpoint(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/echo-post"))
                     .header("Authorization", "Bearer multi-token")

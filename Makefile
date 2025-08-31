@@ -1,11 +1,11 @@
-# TinyRest Makefile
+# RestMonkey Makefile
 # Simple commands for common development tasks
 
 .PHONY: test clean remove-emojis help
 
 # Default target
 help:
-	@echo "TinyRest Development Commands:"
+	@echo "RestMonkey Development Commands:"
 	@echo ""
 	@echo "  make test          - Run all tests"
 	@echo "  make clean         - Clean build artifacts"

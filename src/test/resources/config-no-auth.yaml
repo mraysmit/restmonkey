@@ -1,8 +1,8 @@
 # =============================================================================
-# TinyRest Configuration: No Authentication Test
+# RESTMonkey Configuration: No Authentication Test
 # =============================================================================
 #
-# Purpose: Tests TinyRest behavior when authentication is completely disabled
+# Purpose: Tests RESTMonkey behavior when authentication is completely disabled
 # Used by: YamlConfigurationTest.NoAuthConfigurationTest, AuthenticationTest.NoAuthConfiguredTest
 #
 # Key Features Tested:
@@ -15,7 +15,7 @@
 # Authentication Behavior:
 # - No authToken configured = All operations work without authentication
 # - POST, PUT, DELETE work without Authorization header
-# - Demonstrates TinyRest's flexible auth model
+# - Demonstrates RESTMonkey's flexible auth model
 #
 # Schema Validation:
 # - LENIENT mode = Configuration warnings logged but don't stop startup
@@ -54,5 +54,5 @@ staticEndpoints:
     method: GET
     status: 200
     response:
-      service: tinyrest
+      service: RESTMonkey
       version: test

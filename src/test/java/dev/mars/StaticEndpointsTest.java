@@ -16,7 +16,7 @@
 
 package dev.mars;
 
-import dev.mars.tinyrest.TinyRest;
+import dev.mars.restmonkey.RestMonkey;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -36,15 +36,15 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 2025-08-30
  * @version 1.0
  */
-@ExtendWith(TinyRest.JUnitTinyRestExtension.class)
-@TinyRest.UseTinyRest(configPath = "src/test/resources/config-static-endpoints.yaml")
+@ExtendWith(RestMonkey.JUnitRestMonkeyExtension.class)
+@RestMonkey.UseRestMonkey(configPath = "src/test/resources/config-static-endpoints.yaml")
 class StaticEndpointsTest {
 
     private static final Logger logger = LoggerFactory.getLogger(StaticEndpointsTest.class);
     HttpClient client = HttpClient.newHttpClient();
 
     @Test
-    void shouldReturnTestDataWithVariousTypes(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldReturnTestDataWithVariousTypes(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         logger.info("Testing /test-data endpoint with various data types");
 
         var request = HttpRequest.newBuilder()
@@ -75,7 +75,7 @@ class StaticEndpointsTest {
     }
 
     @Test
-    void shouldReturnCustomStatusCodes(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldReturnCustomStatusCodes(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         logger.info("Testing custom status codes");
 
         // Test 201 Created
@@ -107,7 +107,7 @@ class StaticEndpointsTest {
     }
 
     @Test
-    void shouldEchoRequestDetails(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldEchoRequestDetails(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         logger.info("Testing echo request functionality");
 
         var request = HttpRequest.newBuilder()
@@ -133,7 +133,7 @@ class StaticEndpointsTest {
     }
 
     @Test
-    void shouldReturnComplexNestedStructure(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldReturnComplexNestedStructure(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         logger.info("Testing complex nested response structure");
 
         var request = HttpRequest.newBuilder()
@@ -162,7 +162,7 @@ class StaticEndpointsTest {
     }
 
     @Test
-    void shouldRequireAuthForSubmitEndpoint(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldRequireAuthForSubmitEndpoint(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         logger.info("Testing authenticated POST endpoint");
 
         // Test without auth - should fail

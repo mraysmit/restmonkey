@@ -1,5 +1,5 @@
 # =============================================================================
-# TinyRest Configuration: Trace Logging & Hot Reload Test
+# RESTMonkey Configuration: Trace Logging & Hot Reload Test
 # =============================================================================
 #
 # Purpose: Advanced configuration for testing hot reload and detailed logging

@@ -17,7 +17,7 @@ package dev.mars;
  */
 
 
-import dev.mars.tinyrest.TinyRest;
+import dev.mars.restmonkey.RestMonkey;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -38,15 +38,15 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 2025-08-30
  * @version 1.0
  */
-@ExtendWith(TinyRest.JUnitTinyRestExtension.class)
-@TinyRest.UseTinyRest(configPath = "src/test/resources/config-chaos.yaml")
+@ExtendWith(RestMonkey.JUnitRestMonkeyExtension.class)
+@RestMonkey.UseRestMonkey(configPath = "src/test/resources/config-chaos.yaml")
 class ChaosEngineeringTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ChaosEngineeringTest.class);
     HttpClient client = HttpClient.newHttpClient();
 
     @Test
-    void shouldApplyArtificialLatency(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldApplyArtificialLatency(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         logger.info("Testing artificial latency (expected: 100ms minimum)");
         // Config has artificialLatencyMs: 100, so requests should take at least 100ms
         // Note: Due to chaos failure rate, we may get 500 status, so we'll retry until we get a 200
@@ -79,7 +79,7 @@ class ChaosEngineeringTest {
     }
 
     @Test
-    void shouldHaveChaosFailures(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldHaveChaosFailures(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         // Config has chaosFailRate: 0.3, so roughly 30% of requests should fail with 500
         List<Integer> statusCodes = new ArrayList<>();
         
@@ -106,7 +106,7 @@ class ChaosEngineeringTest {
     }
 
     @Test
-    void shouldWorkWithCrudOperations(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldWorkWithCrudOperations(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         // Test that chaos features don't break normal CRUD operations
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/api/orders"))
@@ -123,7 +123,7 @@ class ChaosEngineeringTest {
     }
 
     @Test
-    void chaosFailuresShouldHaveProperErrorResponse(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void chaosFailuresShouldHaveProperErrorResponse(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         // Keep trying until we get a chaos failure
         for (int attempt = 0; attempt < 50; attempt++) {
             var request = HttpRequest.newBuilder()

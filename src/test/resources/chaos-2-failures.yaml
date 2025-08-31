@@ -1,0 +1,41 @@
+# Chaos Engineering Demo 2: Failure Simulation
+# Shows how to simulate random failures and error rates
+
+port: 8080
+authToken: failure-demo
+
+resources:
+  # Reliable service (no failures)
+  - name: users
+    idField: id
+    enableCrud: true
+    seed:
+      - id: u1
+        name: Alice
+        status: active
+
+  # Unreliable service (30% failure rate)
+  - name: payments
+    idField: id
+    enableCrud: true
+    failureRate: 0.30  # 30% chance of 500 errors
+    seed:
+      - id: p1
+        amount: 99.99
+        status: pending
+
+staticEndpoints:
+  - method: GET
+    path: /health
+    response: "always healthy"
+    # No failure rate - always succeeds
+
+  - method: GET
+    path: /flaky-service
+    response: "sometimes works"
+    failureRate: 0.50  # 50% failure rate
+
+  - method: GET
+    path: /very-unreliable
+    response: "rarely works"
+    failureRate: 0.80  # 80% failure rate

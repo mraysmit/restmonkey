@@ -1,8 +1,8 @@
 # =============================================================================
-# TinyRest Configuration: Main Test Configuration
+# RESTMonkey Configuration: Main Test Configuration
 # =============================================================================
 #
-# Purpose: Primary test configuration for comprehensive TinyRest testing
+# Purpose: Primary test configuration for comprehensive RESTMonkey testing
 # Used by: UsersApiTest.java, AuthenticationTest.java, and other core tests
 #
 # Key Features Tested:
@@ -46,7 +46,7 @@ features:
   schemaValidation: strict
   recordReplay:
     mode: off             # off | record | replay
-    file: target/tinyrest.recordings.jsonl
+    file: target/RESTMonkey.recordings.jsonl
     replayOnMiss: fallback
 
 resources:

@@ -1,8 +1,8 @@
 # =============================================================================
-# TinyRest Configuration: Chaos Engineering Test
+# RESTMonkey Configuration: Chaos Engineering Test
 # =============================================================================
 #
-# Purpose: Tests TinyRest's chaos engineering capabilities for resilience testing
+# Purpose: Tests RESTMonkey's chaos engineering capabilities for resilience testing
 # Used by: ChaosEngineeringTest.java
 #
 # Key Features Tested:

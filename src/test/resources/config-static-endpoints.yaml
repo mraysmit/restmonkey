@@ -1,8 +1,8 @@
 # =============================================================================
-# TinyRest Configuration: Static Endpoints Test
+# RESTMonkey Configuration: Static Endpoints Test
 # =============================================================================
 # 
-# Purpose: Tests TinyRest's static endpoint capabilities with various response types
+# Purpose: Tests RESTMonkey's static endpoint capabilities with various response types
 # Used by: StaticEndpointsTest.java
 # 
 # Key Features Tested:

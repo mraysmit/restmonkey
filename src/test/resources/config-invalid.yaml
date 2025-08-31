@@ -1,8 +1,8 @@
 # =============================================================================
-# TinyRest Configuration: Invalid Configuration Test
+# RESTMonkey Configuration: Invalid Configuration Test
 # =============================================================================
 #
-# Purpose: Tests TinyRest's configuration validation and error handling
+# Purpose: Tests RESTMonkey's configuration validation and error handling
 # Used by: Configuration validation tests and error handling scenarios
 #
 # Key Features Tested:

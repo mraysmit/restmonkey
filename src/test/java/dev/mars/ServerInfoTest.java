@@ -16,7 +16,7 @@
 
 package dev.mars;
 
-import dev.mars.tinyrest.TinyRest;
+import dev.mars.restmonkey.RestMonkey;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -36,15 +36,15 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 2025-08-30
  * @version 1.0
  */
-@ExtendWith(TinyRest.JUnitTinyRestExtension.class)
-@TinyRest.UseTinyRest(configPath = "src/test/resources/config-server-info.yaml")
+@ExtendWith(RestMonkey.JUnitRestMonkeyExtension.class)
+@RestMonkey.UseRestMonkey(configPath = "src/test/resources/config-server-info.yaml")
 class ServerInfoTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ServerInfoTest.class);
     HttpClient client = HttpClient.newHttpClient();
 
     @Test
-    void shouldReturnSimpleTextResponse(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldReturnSimpleTextResponse(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         logger.info("Testing simple text health response");
 
         // Test simple "healthy" response
@@ -59,7 +59,7 @@ class ServerInfoTest {
     }
 
     @Test
-    void shouldReturnServerInfo(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldReturnServerInfo(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         logger.info("Testing server info endpoint");
 
         var request = HttpRequest.newBuilder()
@@ -74,7 +74,7 @@ class ServerInfoTest {
         logger.info("Server info response: {}", body);
 
         // Verify server information is present
-        assertTrue(body.contains("\"server\":\"TinyRest\""));
+        assertTrue(body.contains("\"server\":\"RestMonkey\""));
         assertTrue(body.contains("\"version\":\"1.0.0-SNAPSHOT\""));
         assertTrue(body.contains("\"java_version\""));
         assertTrue(body.contains("\"port\""));
@@ -90,7 +90,7 @@ class ServerInfoTest {
     }
 
     @Test
-    void shouldReturnRouteInfo(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldReturnRouteInfo(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         logger.info("Testing route info endpoint");
 
         var request = HttpRequest.newBuilder()
@@ -121,7 +121,7 @@ class ServerInfoTest {
     }
 
     @Test
-    void shouldReturnDetailedRoutesList(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldReturnDetailedRoutesList(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         logger.info("Testing detailed routes list endpoint");
 
         var request = HttpRequest.newBuilder()
@@ -152,7 +152,7 @@ class ServerInfoTest {
     }
 
     @Test
-    void shouldReturnResourceInfo(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldReturnResourceInfo(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         logger.info("Testing resource info endpoint");
 
         var request = HttpRequest.newBuilder()

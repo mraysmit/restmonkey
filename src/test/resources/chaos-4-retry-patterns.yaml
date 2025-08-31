@@ -1,0 +1,50 @@
+# Chaos Engineering Demo 4: Retry Patterns
+# Shows how to test retry logic and circuit breakers
+
+port: 8080
+authToken: retry-demo
+
+resources:
+  # Normal service (always works)
+  - name: users
+    idField: id
+    enableCrud: true
+    seed:
+      - id: u1
+        name: Alice
+
+  # Service that fails first 2 attempts, then succeeds
+  - name: circuit-breaker-test
+    idField: id
+    enableCrud: true
+    successAfterRetries: 2  # Fail attempts 1 and 2, succeed on attempt 3
+    seed:
+      - id: cb1
+        service: external-api
+        status: testing
+
+  # Service that fails for 3 seconds, then works
+  - name: eventually-consistent
+    idField: id
+    enableCrud: true
+    successAfterSeconds: 3  # Fail for 3 seconds, then succeed
+    maxRetryWindow: 60      # Track retries for 1 minute
+    seed:
+      - id: ec1
+        cache: user-sessions
+        status: warming
+
+staticEndpoints:
+  - method: GET
+    path: /health
+    response: "always works"
+
+  - method: GET
+    path: /retry-after-attempts
+    response: "success after retries"
+    successAfterRetries: 1  # Fail once, then succeed
+
+  - method: GET
+    path: /retry-after-time
+    response: "success after waiting"
+    successAfterSeconds: 2  # Fail for 2 seconds, then succeed

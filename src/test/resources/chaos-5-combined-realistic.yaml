@@ -1,0 +1,62 @@
+# Chaos Engineering Demo 5: Realistic Combined Scenarios
+# Shows realistic combinations for testing production-like conditions
+
+port: 8080
+authToken: realistic-demo
+
+resources:
+  # Fast user service (production-like)
+  - name: users
+    idField: id
+    enableCrud: true
+    seed:
+      - id: u1
+        name: Alice Johnson
+        email: alice@company.com
+
+  # Slow database with occasional failures
+  - name: large-reports
+    idField: id
+    enableCrud: true
+    latencyMs: 1200        # Slow database queries
+    failureRate: 0.05      # 5% failure rate (realistic)
+    seed:
+      - id: lr1
+        title: Annual Financial Report
+        size_mb: 45.2
+
+  # Flaky third-party integration
+  - name: external-payments
+    idField: id
+    enableCrud: true
+    randomLatencyMinMs: 500
+    randomLatencyMaxMs: 3000
+    failureRate: 0.15      # 15% failure rate
+    randomStatuses: [200, 429, 503]  # Success, rate limited, unavailable
+    randomStatusWeights: [0.8, 0.1, 0.1]
+    seed:
+      - id: ep1
+        provider: stripe
+        status: active
+
+staticEndpoints:
+  # Standard health check
+  - method: GET
+    path: /health
+    response: "healthy"
+
+  # Load balancer health with realistic failure rate
+  - method: GET
+    path: /health/lb
+    response:
+      status: "{{status == 200 ? 'healthy' : 'degraded'}}"
+      timestamp: "{{now}}"
+    randomStatuses: [200, 200, 200, 200, 503]  # 80% healthy
+    latencyMs: 50
+
+  # Circuit breaker endpoint (fails 3 times, then recovers)
+  - method: GET
+    path: /external/api-check
+    response: "external API available"
+    successAfterRetries: 3
+    latencyMs: 200

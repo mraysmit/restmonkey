@@ -1,0 +1,53 @@
+# Chaos Engineering Demo 1: Latency Simulation
+# Shows how to add different latency patterns to endpoints
+
+port: 8080
+authToken: latency-demo
+
+resources:
+  # Fast service (no latency)
+  - name: users
+    idField: id
+    enableCrud: true
+    seed:
+      - id: u1
+        name: Alice
+        email: alice@example.com
+
+  # Slow service (fixed 500ms latency)
+  - name: reports
+    idField: id
+    enableCrud: true
+    latencyMs: 500
+    seed:
+      - id: r1
+        title: Monthly Report
+        status: ready
+
+  # Variable latency service (random 100-800ms)
+  - name: analytics
+    idField: id
+    enableCrud: true
+    randomLatencyMinMs: 100
+    randomLatencyMaxMs: 800
+    seed:
+      - id: a1
+        metric: page_views
+        value: 1000
+
+staticEndpoints:
+  - method: GET
+    path: /health
+    response: "healthy"
+    # No latency - instant response
+
+  - method: GET
+    path: /health/slow
+    response: "healthy but slow"
+    latencyMs: 300
+
+  - method: GET
+    path: /health/variable
+    response: "variable response time"
+    randomLatencyMinMs: 50
+    randomLatencyMaxMs: 400

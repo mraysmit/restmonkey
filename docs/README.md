@@ -1,31 +1,33 @@
-# TinyRest
+# RestMonkey
+
+![RestMonkey](RESTMonkey.png)
 
 [![Java](https://img.shields.io/badge/Java-23-orange.svg)](https://openjdk.java.net/projects/jdk/23/)
 [![Maven](https://img.shields.io/badge/Maven-3.8+-blue.svg)](https://maven.apache.org/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 **Version:** 1.0
-**Date:** 2025-08-29
+**Date:** 2025-08-31
 **Author:** Mark Andrew Ray-Smith Cityline Ltd
 
-**Tiny, YAML-driven REST server for tests and dev** — a single Java class that spins up realistic HTTP endpoints backed by in-memory data. Define resources + seed data + static endpoints in YAML. Optional JUnit 5 extension boots it automatically for your test suites.
+**REST API server with chaos engineering for testing and prototyping** — a lightweight Java server that creates realistic HTTP endpoints with configurable failure patterns. Define resources, endpoints, and chaos behaviors in YAML or using a fluent builder API.
 
-No servlet container. No frameworks. Starts fast. Easy to bend to your will. **Comprehensive logging** with performance timing for excellent observability.
+No servlet container. No frameworks. Starts fast. Built for resilience testing. **Comprehensive chaos engineering** with latency simulation, failure injection, and retry patterns.
 
 ---
 
-## Why TinyRest?
+## Why RestMonkey?
 
-You need **real HTTP** behavior in tests without dragging in Tomcat/Jetty/WireMock DSLs. TinyRest is:
+You need **real HTTP** behavior with **chaos engineering** for testing resilient applications. RestMonkey provides:
 
-- **Self-contained**: one Java file (`TinyRest.java`) + Jackson.
-- **Declarative**: endpoints and seed data live in `tinyrest.yml`.
-- **Deterministic**: built-in paging, IDs, and simple routing.
-- **Practical**: auth on mutating operations, CORS, latency/chaos toggles.
+- **Self-contained**: one Java file (`RestMonkey.java`) + Jackson.
+- **Declarative**: endpoints and chaos patterns in `restmonkey.yml`.
+- **Chaos engineering**: latency simulation, failure injection, retry patterns.
+- **Fluent builder**: programmatic configuration alternative to YAML.
 - **Test-first**: JUnit 5 extension with base URL injection, port auto-binding.
-- **Observable**: comprehensive SLF4J/Logback logging with performance timing and specialized loggers.
+- **Observable**: comprehensive SLF4J/Logback logging with performance timing.
 
-If you want proxying, complex request matchers, or a giant DSL, use WireMock. If you want a **fake service** you control in Java, keep reading.
+If you want simple mocking, use WireMock. If you want **chaos engineering** and **resilience testing**, RestMonkey is perfect.
 
 ---
 
@@ -39,15 +41,15 @@ If you want proxying, complex request matchers, or a giant DSL, use WireMock. If
 ## Quick Start
 
 ```bash
-# 1) Put TinyRest.java in src/main/java
-# 2) Add tinyrest.yml to src/test/resources (see example below)
+# 1) Put RestMonkey.java in src/main/java
+# 2) Add restmonkey.yml to src/test/resources (see example below)
 # 3) Use the POM provided (Shade plugin builds a runnable JAR)
 
 mvn -q -DskipTests package
-java -jar target/tinyrest-1.0.0-SNAPSHOT.jar src/test/resources/tinyrest.yml
+java -jar target/restmonkey-1.0.0-SNAPSHOT.jar src/test/resources/restmonkey.yml
 ```
 
-Smoke it:
+Test it:
 
 ```bash
 # Replace <PORT> with the printed port (or set port: 8080 in YAML)
@@ -55,9 +57,9 @@ curl -s http://localhost:<PORT>/api/users | jq
 curl -s http://localhost:<PORT>/health | jq
 ```
 
-You'll see detailed, colorful logs like:
+You'll see detailed logs with chaos engineering in action:
 ```
-20:33:33.157 [main] INFO  TinyRest - HTTP server started successfully on port 8080
+20:33:33.157 [main] INFO  RestMonkey - RestMonkey server started successfully on port 8080
 20:33:33.379 [pool-2-thread-1] INFO  http - -> GET /health
 20:33:33.443 [pool-2-thread-1] INFO  http - <- 200 GET /health (65ms)
 ```
@@ -70,10 +72,10 @@ You'll see detailed, colorful logs like:
 your-project/
 ├─ pom.xml
 ├─ src/
-│  ├─ main/java/TinyRest.java
+│  ├─ main/java/RESTMonkey.java
 │  └─ test/
 │     ├─ java/example/UsersApiTest.java
-│     └─ resources/tinyrest.yml
+│     └─ resources/RESTMonkey.yml
 ```
 
 ---
@@ -89,7 +91,7 @@ Use this **copy-paste POM**. It pulls Jackson (JSON+YAML), SLF4J/Logback (loggin
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.example</groupId>
-  <artifactId>tinyrest</artifactId>
+  <artifactId>RESTMonkey</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
@@ -153,7 +155,7 @@ Use this **copy-paste POM**. It pulls Jackson (JSON+YAML), SLF4J/Logback (loggin
         </configuration>
       </plugin>
 
-      <!-- Fat JAR with TinyRest as Main-Class -->
+      <!-- Fat JAR with RESTMonkey as Main-Class -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -176,7 +178,7 @@ Use this **copy-paste POM**. It pulls Jackson (JSON+YAML), SLF4J/Logback (loggin
               </filters>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>TinyRest</mainClass>
+                  <mainClass>RESTMonkey</mainClass>
                 </transformer>
               </transformers>
               <shadedArtifactAttached>false</shadedArtifactAttached>
@@ -198,14 +200,14 @@ mvn -q -DskipTests package
 Run:
 
 ```bash
-java -jar target/tinyrest-1.0.0-SNAPSHOT.jar src/test/resources/tinyrest.yml
+java -jar target/RESTMonkey-1.0.0-SNAPSHOT.jar src/test/resources/RESTMonkey.yml
 ```
 
 ---
 
-## tinyrest.yml (starter)
+## RESTMonkey.yml (starter)
 
-`src/test/resources/tinyrest.yml`
+`src/test/resources/RESTMonkey.yml`
 
 ```yaml
 port: 0                   # 0 = auto-assign a free port; use 8080 for manual runs
@@ -225,7 +227,7 @@ features:
   schemaValidation: strict
   recordReplay:
     mode: off             # off | record | replay
-    file: target/tinyrest.recordings.jsonl
+    file: target/RESTMonkey.recordings.jsonl
     replayOnMiss: fallback
 
 resources:
@@ -261,7 +263,7 @@ staticEndpoints:
 
 ## JUnit 5 Integration
 
-TinyRest ships with an embedded JUnit 5 extension to boot and tear down the server per test class and inject the base URL.
+RESTMonkey ships with an embedded JUnit 5 extension to boot and tear down the server per test class and inject the base URL.
 
 ### Example test
 
@@ -277,9 +279,9 @@ import java.net.URI;
 import java.net.http.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(TinyRest.JUnitTinyRestExtension.class)
-@TinyRest.UseTinyRest(
-  configPath = "src/test/resources/tinyrest.yml",
+@ExtendWith(RESTMonkey.JUnitRESTMonkeyExtension.class)
+@RESTMonkey.UseRESTMonkey(
+  configPath = "src/test/resources/RESTMonkey.yml",
   port = 0 // auto-bind for parallel test safety
 )
 class UsersApiTest {
@@ -287,7 +289,7 @@ class UsersApiTest {
   HttpClient http = HttpClient.newHttpClient();
 
   @Test
-  void listUsers(@TinyRest.TinyRestBaseUrl URI baseUrl) throws Exception {
+  void listUsers(@RESTMonkey.RESTMonkeyBaseUrl URI baseUrl) throws Exception {
     var req = HttpRequest.newBuilder(baseUrl.resolve("/api/users")).GET().build();
     var resp = http.send(req, HttpResponse.BodyHandlers.ofString());
     assertEquals(200, resp.statusCode());
@@ -295,7 +297,7 @@ class UsersApiTest {
   }
 
   @Test
-  void createUserRequiresAuth(@TinyRest.TinyRestBaseUrl URI baseUrl) throws Exception {
+  void createUserRequiresAuth(@RESTMonkey.RESTMonkeyBaseUrl URI baseUrl) throws Exception {
     var req = HttpRequest.newBuilder(baseUrl.resolve("/api/users"))
       .header("Content-Type", "application/json")
       .POST(HttpRequest.BodyPublishers.ofString("{"name":"Grace","email":"g@navy"}"))
@@ -305,7 +307,7 @@ class UsersApiTest {
   }
 
   @Test
-  void createUserWithAuth(@TinyRest.TinyRestBaseUrl URI baseUrl) throws Exception {
+  void createUserWithAuth(@RESTMonkey.RESTMonkeyBaseUrl URI baseUrl) throws Exception {
     var req = HttpRequest.newBuilder(baseUrl.resolve("/api/users"))
       .header("Content-Type", "application/json")
       .header("Authorization", "Bearer test-token")
@@ -320,21 +322,21 @@ class UsersApiTest {
 
 **What the extension does**
 
-- Starts TinyRest before all tests in the class.
+- Starts RESTMonkey before all tests in the class.
 - Binds to a random free port by default (`port=0`).
-- Injects base URL into `@TinyRest.TinyRestBaseUrl` params (`String` or `URI`).
+- Injects base URL into `@RESTMonkey.RESTMonkeyBaseUrl` params (`String` or `URI`).
 - Exposes system props:
-  - `tinyrest.baseUrl` (e.g., `http://localhost:12345`)
-  - `tinyrest.port` (e.g., `12345`)
+  - `RESTMonkey.baseUrl` (e.g., `http://localhost:12345`)
+  - `RESTMonkey.port` (e.g., `12345`)
 - Stops the server after all tests.
 
 **Flip record/replay per suite (optional)**
 
 ```java
-@TinyRest.UseTinyRest(
-  configPath = "src/test/resources/tinyrest.yml",
+@RESTMonkey.UseRESTMonkey(
+  configPath = "src/test/resources/RESTMonkey.yml",
   recordReplayMode = "record",                      // or "replay"
-  recordReplayFile = "target/tinyrest.record.jsonl" // overrides YAML
+  recordReplayFile = "target/RESTMonkey.record.jsonl" // overrides YAML
 )
 class MySuite { ... }
 ```
@@ -360,7 +362,7 @@ class MySuite { ... }
 
 ## Comprehensive Logging
 
-TinyRest includes enterprise-grade logging with SLF4J/Logback providing detailed observability:
+RESTMonkey includes enterprise-grade logging with SLF4J/Logback providing detailed observability:
 
 ### Log Levels & Features
 - **TRACE**: Every internal operation (route matching, templating, data operations)
@@ -374,20 +376,20 @@ TinyRest includes enterprise-grade logging with SLF4J/Logback providing detailed
 - **Performance timing** for all HTTP requests: `<- 200 GET /health (65ms)`
 
 ### Specialized Loggers
-- **`dev.mars.tinyrest.http`** - Clean HTTP request/response logs
-- **`dev.mars.tinyrest.hotreload`** - Configuration change monitoring
-- **`dev.mars.tinyrest.recorder`** - Record/replay functionality
-- **`dev.mars.tinyrest.TinyRest`** - Main application events
+- **`dev.mars.RESTMonkey.http`** - Clean HTTP request/response logs
+- **`dev.mars.RESTMonkey.hotreload`** - Configuration change monitoring
+- **`dev.mars.RESTMonkey.recorder`** - Record/replay functionality
+- **`dev.mars.RESTMonkey.RESTMonkey`** - Main application events
 
 ### Log Files
-- **`logs/tinyrest.log`** - Complete application logs with automatic rotation
-- **`logs/tinyrest-http.log`** - Dedicated HTTP traffic logs
+- **`logs/RESTMonkey.log`** - Complete application logs with automatic rotation
+- **`logs/RESTMonkey-http.log`** - Dedicated HTTP traffic logs
 - **Daily rotation** with size limits and configurable retention
 
 ### Example Output
 ```
-20:33:33.129 [main] INFO  TinyRest$Engine - Engine configuration: templating=true, hotReload=true
-20:33:33.144 [main] INFO  TinyRest$Engine - Initialized resource 'users' with 2 seed records
+20:33:33.129 [main] INFO  RESTMonkey$Engine - Engine configuration: templating=true, hotReload=true
+20:33:33.144 [main] INFO  RESTMonkey$Engine - Initialized resource 'users' with 2 seed records
 20:33:33.379 [pool-2-thread-1] INFO  http - -> GET /health
 20:33:33.443 [pool-2-thread-1] INFO  http - <- 200 GET /health (65ms)
 20:33:33.668 [pool-2-thread-4] WARN  http - <- 401 POST /api/users (54ms) - Missing/invalid bearer token
@@ -426,22 +428,22 @@ staticEndpoints:
 features:
   recordReplay:
     mode: record|replay|off
-    file: target/tinyrest.recordings.jsonl
+    file: target/RESTMonkey.recordings.jsonl
     replayOnMiss: fallback|error
 ```
 
-- **record**: After a route produces a response, TinyRest appends a JSON object to the file.
-- **replay**: On each request, TinyRest tries to match a recorded entry (method, path, query, opt headers/body). If `replayOnMiss: fallback`, it routes normally; if `error`, it returns **501** so you notice gaps.
+- **record**: After a route produces a response, RESTMonkey appends a JSON object to the file.
+- **replay**: On each request, RESTMonkey tries to match a recorded entry (method, path, query, opt headers/body). If `replayOnMiss: fallback`, it routes normally; if `error`, it returns **501** so you notice gaps.
 
-> Matching knobs (`features.recordReplay.match`) are implemented in the `TinyRest.java` provided earlier. If you need body/header matching, add those keys in YAML accordingly.
+> Matching knobs (`features.recordReplay.match`) are implemented in the `RESTMonkey.java` provided earlier. If you need body/header matching, add those keys in YAML accordingly.
 
 ---
 
 ## CI Tips
 
 - Always bind to a **random port** in CI (`port: 0`) and let the **JUnit extension** inject the base URL.
-- Keep `tinyrest.yml` minimal and deterministic. If you use templating randomness, constrain it (e.g., `random.int(1,3)`).
-- Persist `target/tinyrest.recordings.jsonl` as an artifact if you rely on replay.
+- Keep `RESTMonkey.yml` minimal and deterministic. If you use templating randomness, constrain it (e.g., `random.int(1,3)`).
+- Persist `target/RESTMonkey.recordings.jsonl` as an artifact if you rely on replay.
 
 ---
 
@@ -452,7 +454,7 @@ features:
   Authorization: Bearer <token>
   ```
 - **“Port already in use”** → set `port: 0` and consume the injected base URL in tests; for manual runs, pick a fixed port.
-- **YAML edits not applied** → set `features.hotReload: true` or restart TinyRest.
+- **YAML edits not applied** → set `features.hotReload: true` or restart RESTMonkey.
 - **Replay misses** → set `replayOnMiss: fallback` while iterating; switch to `error` to lock it down.
 
 ---
@@ -472,7 +474,7 @@ features:
 A: Yes. Add more entries under `resources:`. Each gets CRUD under `/api/{name}`.
 
 **Q: Can I add custom logic per route?**  
-A: Yes. You own `TinyRest.java`. Add a route, call into your code, return a `Response`.
+A: Yes. You own `RESTMonkey.java`. Add a route, call into your code, return a `Response`.
 
 **Q: Does it support HTTPS?**  
 A: Not out of the box. For tests, plain HTTP is enough. If you need TLS, wrap behind a test reverse proxy or extend the server.
@@ -490,5 +492,5 @@ Pick whatever fits your org. MIT is typical for utility code like this.
 
 ## Final word
 
-TinyRest exists to **unblock testing**. It’s not a framework. If you’re fighting it, you’re solving the wrong problem — reach for a real service or WireMock. Otherwise, enjoy the speed and simplicity.
+RESTMonkey exists to **unblock testing**. It’s not a framework. If you’re fighting it, you’re solving the wrong problem — reach for a real service or WireMock. Otherwise, enjoy the speed and simplicity.
 

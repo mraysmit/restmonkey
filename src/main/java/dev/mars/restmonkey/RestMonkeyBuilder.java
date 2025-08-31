@@ -1,14 +1,15 @@
-package dev.mars.tinyrest;
+package dev.mars.restmonkey;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Fluent builder interface for creating TinyRest configurations programmatically.
- * Provides a clean, type-safe way to configure TinyRest without YAML files.
+ * Fluent builder interface for creating RESTMonkey configurations programmatically.
+ * Provides a clean, type-safe way to configure RESTMonkey without YAML files.
  * 
  * Example usage:
  * <pre>
- * var server = TinyRest.builder()
+ * var server = RestMonkey.builder()
  *     .port(8080)
  *     .authToken("my-secret-token")
  *     .enableTemplating()
@@ -32,25 +33,25 @@ import java.util.*;
  *     .build();
  * </pre>
  */
-public class TinyRestBuilder {
-    private final TinyRest.MockConfig config = new TinyRest.MockConfig();
-    
-    private TinyRestBuilder() {
+public class RestMonkeyBuilder {
+    private final RestMonkey.MockConfig config = new RestMonkey.MockConfig();
+
+    private RestMonkeyBuilder() {
         // Initialize with defaults
         config.port = 8080;
         config.artificialLatencyMs = 0L;
         config.chaosFailRate = 0.0;
-        config.features = new TinyRest.FeaturesConfig();
-        config.logging = new TinyRest.LoggingConfig();
+        config.features = new RestMonkey.FeaturesConfig();
+        config.logging = new RestMonkey.LoggingConfig();
         config.resources = new ArrayList<>();
         config.staticEndpoints = new ArrayList<>();
     }
     
     /**
-     * Create a new TinyRest builder instance.
+     * Create a new RESTMonkey builder instance.
      */
-    public static TinyRestBuilder create() {
-        return new TinyRestBuilder();
+    public static RestMonkeyBuilder create() {
+        return new RestMonkeyBuilder();
     }
     
     // ---------- Server Configuration ----------
@@ -58,7 +59,7 @@ public class TinyRestBuilder {
     /**
      * Set the server port. Use 0 for auto-assignment.
      */
-    public TinyRestBuilder port(int port) {
+    public RestMonkeyBuilder port(int port) {
         config.port = port;
         return this;
     }
@@ -66,7 +67,7 @@ public class TinyRestBuilder {
     /**
      * Set the authentication token. Omit or pass null to disable auth.
      */
-    public TinyRestBuilder authToken(String token) {
+    public RestMonkeyBuilder authToken(String token) {
         config.authToken = token;
         return this;
     }
@@ -74,7 +75,7 @@ public class TinyRestBuilder {
     /**
      * Disable authentication (same as authToken(null)).
      */
-    public TinyRestBuilder noAuth() {
+    public RestMonkeyBuilder noAuth() {
         config.authToken = null;
         return this;
     }
@@ -82,7 +83,7 @@ public class TinyRestBuilder {
     /**
      * Add artificial latency to all responses (for testing).
      */
-    public TinyRestBuilder artificialLatency(long milliseconds) {
+    public RestMonkeyBuilder artificialLatency(long milliseconds) {
         config.artificialLatencyMs = milliseconds;
         return this;
     }
@@ -90,7 +91,7 @@ public class TinyRestBuilder {
     /**
      * Set chaos failure rate (0.0 to 1.0) for random 500 errors.
      */
-    public TinyRestBuilder chaosFailRate(double rate) {
+    public RestMonkeyBuilder chaosFailRate(double rate) {
         config.chaosFailRate = Math.max(0.0, Math.min(1.0, rate));
         return this;
     }
@@ -100,7 +101,7 @@ public class TinyRestBuilder {
     /**
      * Enable template variable substitution ({{now}}, {{uuid}}, etc.).
      */
-    public TinyRestBuilder enableTemplating() {
+    public RestMonkeyBuilder enableTemplating() {
         config.features.templating = true;
         return this;
     }
@@ -108,7 +109,7 @@ public class TinyRestBuilder {
     /**
      * Disable template variable substitution.
      */
-    public TinyRestBuilder disableTemplating() {
+    public RestMonkeyBuilder disableTemplating() {
         config.features.templating = false;
         return this;
     }
@@ -116,7 +117,7 @@ public class TinyRestBuilder {
     /**
      * Enable hot reload of configuration files.
      */
-    public TinyRestBuilder enableHotReload() {
+    public RestMonkeyBuilder enableHotReload() {
         config.features.hotReload = true;
         return this;
     }
@@ -124,7 +125,7 @@ public class TinyRestBuilder {
     /**
      * Disable hot reload of configuration files.
      */
-    public TinyRestBuilder disableHotReload() {
+    public RestMonkeyBuilder disableHotReload() {
         config.features.hotReload = false;
         return this;
     }
@@ -132,7 +133,7 @@ public class TinyRestBuilder {
     /**
      * Set schema validation mode.
      */
-    public TinyRestBuilder schemaValidation(String mode) {
+    public RestMonkeyBuilder schemaValidation(String mode) {
         config.features.schemaValidation = mode;
         return this;
     }
@@ -140,14 +141,14 @@ public class TinyRestBuilder {
     /**
      * Use strict schema validation.
      */
-    public TinyRestBuilder strictValidation() {
+    public RestMonkeyBuilder strictValidation() {
         return schemaValidation("strict");
     }
     
     /**
      * Use lenient schema validation.
      */
-    public TinyRestBuilder lenientValidation() {
+    public RestMonkeyBuilder lenientValidation() {
         return schemaValidation("lenient");
     }
     
@@ -156,7 +157,7 @@ public class TinyRestBuilder {
     /**
      * Set logging level (TRACE, DEBUG, INFO, WARN, ERROR).
      */
-    public TinyRestBuilder logLevel(String level) {
+    public RestMonkeyBuilder logLevel(String level) {
         config.logging.level = level;
         return this;
     }
@@ -164,7 +165,7 @@ public class TinyRestBuilder {
     /**
      * Enable HTTP request/response logging.
      */
-    public TinyRestBuilder enableHttpLogging() {
+    public RestMonkeyBuilder enableHttpLogging() {
         config.logging.httpRequests = true;
         return this;
     }
@@ -172,7 +173,7 @@ public class TinyRestBuilder {
     /**
      * Disable HTTP request/response logging.
      */
-    public TinyRestBuilder disableHttpLogging() {
+    public RestMonkeyBuilder disableHttpLogging() {
         config.logging.httpRequests = false;
         return this;
     }
@@ -180,7 +181,7 @@ public class TinyRestBuilder {
     /**
      * Enable file logging.
      */
-    public TinyRestBuilder enableFileLogging() {
+    public RestMonkeyBuilder enableFileLogging() {
         config.logging.enableFileLogging = true;
         return this;
     }
@@ -188,7 +189,7 @@ public class TinyRestBuilder {
     /**
      * Set log directory.
      */
-    public TinyRestBuilder logDirectory(String directory) {
+    public RestMonkeyBuilder logDirectory(String directory) {
         config.logging.logDirectory = directory;
         return this;
     }
@@ -216,9 +217,9 @@ public class TinyRestBuilder {
     /**
      * Enable request recording to file.
      */
-    public TinyRestBuilder recordRequests(String filename) {
+    public RestMonkeyBuilder recordRequests(String filename) {
         if (config.features.recordReplay == null) {
-            config.features.recordReplay = new TinyRest.RecordReplay();
+            config.features.recordReplay = new RestMonkey.RecordReplay();
         }
         config.features.recordReplay.mode = "record";
         config.features.recordReplay.file = filename;
@@ -228,9 +229,9 @@ public class TinyRestBuilder {
     /**
      * Enable request replay from file.
      */
-    public TinyRestBuilder replayRequests(String filename) {
+    public RestMonkeyBuilder replayRequests(String filename) {
         if (config.features.recordReplay == null) {
-            config.features.recordReplay = new TinyRest.RecordReplay();
+            config.features.recordReplay = new RestMonkey.RecordReplay();
         }
         config.features.recordReplay.mode = "replay";
         config.features.recordReplay.file = filename;
@@ -240,9 +241,9 @@ public class TinyRestBuilder {
     /**
      * Set replay behavior when no match is found.
      */
-    public TinyRestBuilder replayOnMiss(String behavior) {
+    public RestMonkeyBuilder replayOnMiss(String behavior) {
         if (config.features.recordReplay == null) {
-            config.features.recordReplay = new TinyRest.RecordReplay();
+            config.features.recordReplay = new RestMonkey.RecordReplay();
         }
         config.features.recordReplay.replayOnMiss = behavior;
         return this;
@@ -251,26 +252,26 @@ public class TinyRestBuilder {
     // ---------- Build ----------
     
     /**
-     * Build the TinyRest configuration.
+     * Build the RestMonkey configuration.
      */
-    public TinyRest.MockConfig build() {
+    public RestMonkey.MockConfig build() {
         return config;
     }
     
     /**
-     * Build and start the TinyRest server.
+     * Build and start the RestMonkey server.
      */
-    public TinyRest start() throws Exception {
-        return new TinyRest(build());
+    public RestMonkey start() throws Exception {
+        return new RestMonkey(build());
     }
     
     // ---------- Internal Methods ----------
     
-    void addResource(TinyRest.Resource resource) {
+    void addResource(RestMonkey.Resource resource) {
         config.resources.add(resource);
     }
     
-    void addStaticEndpoint(TinyRest.StaticEndpoint endpoint) {
+    void addStaticEndpoint(RestMonkey.StaticEndpoint endpoint) {
         config.staticEndpoints.add(endpoint);
     }
 
@@ -280,10 +281,10 @@ public class TinyRestBuilder {
      * Builder for configuring a resource with CRUD endpoints.
      */
     public static class ResourceBuilder {
-        private final TinyRestBuilder parent;
-        private final TinyRest.Resource resource = new TinyRest.Resource();
+        private final RestMonkeyBuilder parent;
+        private final RestMonkey.Resource resource = new RestMonkey.Resource();
 
-        ResourceBuilder(TinyRestBuilder parent, String name) {
+        ResourceBuilder(RestMonkeyBuilder parent, String name) {
             this.parent = parent;
             this.resource.name = name;
             this.resource.idField = "id"; // default
@@ -340,10 +341,81 @@ public class TinyRestBuilder {
             return this;
         }
 
+        // ---------- Chaos Engineering for CRUD Endpoints ----------
+
+        /**
+         * Add fixed latency to all CRUD endpoints for this resource.
+         */
+        public ResourceBuilder withLatency(long milliseconds) {
+            resource.latencyMs = milliseconds;
+            return this;
+        }
+
+        /**
+         * Add random latency between min and max milliseconds to all CRUD endpoints.
+         */
+        public ResourceBuilder withRandomLatency(long minMs, long maxMs) {
+            resource.randomLatencyMinMs = minMs;
+            resource.randomLatencyMaxMs = maxMs;
+            return this;
+        }
+
+        /**
+         * Set failure rate (0.0 to 1.0) for random 500 errors on all CRUD endpoints.
+         */
+        public ResourceBuilder withFailureRate(double rate) {
+            resource.failureRate = Math.max(0.0, Math.min(1.0, rate));
+            return this;
+        }
+
+        /**
+         * Randomly return different status codes with equal probability on CRUD endpoints.
+         */
+        public ResourceBuilder withRandomStatuses(int... statusCodes) {
+            resource.randomStatuses = Arrays.stream(statusCodes).boxed().toArray(Integer[]::new);
+            return this;
+        }
+
+        /**
+         * Randomly return different status codes with specified weights on CRUD endpoints.
+         */
+        public ResourceBuilder withRandomStatuses(int[] statusCodes, double[] weights) {
+            if (statusCodes.length != weights.length) {
+                throw new IllegalArgumentException("Status codes and weights arrays must have same length");
+            }
+            resource.randomStatuses = Arrays.stream(statusCodes).boxed().toArray(Integer[]::new);
+            resource.randomStatusWeights = Arrays.stream(weights).boxed().toArray(Double[]::new);
+            return this;
+        }
+
+        /**
+         * CRUD endpoints succeed only after N retries (useful for testing retry logic).
+         */
+        public ResourceBuilder successAfterRetries(int retries) {
+            resource.successAfterRetries = retries;
+            return this;
+        }
+
+        /**
+         * CRUD endpoints succeed only after N seconds (useful for testing timeout logic).
+         */
+        public ResourceBuilder successAfterSeconds(int seconds) {
+            resource.successAfterSeconds = seconds;
+            return this;
+        }
+
+        /**
+         * Set maximum time window for retry tracking (default: 300 seconds).
+         */
+        public ResourceBuilder maxRetryWindow(int seconds) {
+            resource.maxRetryWindow = seconds;
+            return this;
+        }
+
         /**
          * Finish configuring this resource and return to the main builder.
          */
-        public TinyRestBuilder done() {
+        public RestMonkeyBuilder done() {
             parent.addResource(resource);
             return parent;
         }
@@ -355,10 +427,10 @@ public class TinyRestBuilder {
      * Builder for configuring static endpoints.
      */
     public static class StaticEndpointBuilder {
-        private final TinyRestBuilder parent;
-        private final TinyRest.StaticEndpoint endpoint = new TinyRest.StaticEndpoint();
+        private final RestMonkeyBuilder parent;
+        private final RestMonkey.StaticEndpoint endpoint = new RestMonkey.StaticEndpoint();
 
-        StaticEndpointBuilder(TinyRestBuilder parent) {
+        StaticEndpointBuilder(RestMonkeyBuilder parent) {
             this.parent = parent;
             this.endpoint.method = "GET"; // default
             this.endpoint.status = 200;   // default
@@ -486,15 +558,86 @@ public class TinyRestBuilder {
          * Require authentication for this endpoint.
          */
         public StaticEndpointBuilder requireAuth() {
-            // Auth is handled at the endpoint level in TinyRest
+            // Auth is handled at the endpoint level in RESTMonkey
             // This is a convenience method for documentation
+            return this;
+        }
+
+        // ---------- Chaos Engineering ----------
+
+        /**
+         * Add fixed latency to this endpoint.
+         */
+        public StaticEndpointBuilder withLatency(long milliseconds) {
+            endpoint.latencyMs = milliseconds;
+            return this;
+        }
+
+        /**
+         * Add random latency between min and max milliseconds.
+         */
+        public StaticEndpointBuilder withRandomLatency(long minMs, long maxMs) {
+            endpoint.randomLatencyMinMs = minMs;
+            endpoint.randomLatencyMaxMs = maxMs;
+            return this;
+        }
+
+        /**
+         * Set failure rate (0.0 to 1.0) for random 500 errors.
+         */
+        public StaticEndpointBuilder withFailureRate(double rate) {
+            endpoint.failureRate = Math.max(0.0, Math.min(1.0, rate));
+            return this;
+        }
+
+        /**
+         * Randomly return different status codes with equal probability.
+         */
+        public StaticEndpointBuilder withRandomStatuses(int... statusCodes) {
+            endpoint.randomStatuses = Arrays.stream(statusCodes).boxed().toArray(Integer[]::new);
+            return this;
+        }
+
+        /**
+         * Randomly return different status codes with specified weights.
+         */
+        public StaticEndpointBuilder withRandomStatuses(int[] statusCodes, double[] weights) {
+            if (statusCodes.length != weights.length) {
+                throw new IllegalArgumentException("Status codes and weights arrays must have same length");
+            }
+            endpoint.randomStatuses = Arrays.stream(statusCodes).boxed().toArray(Integer[]::new);
+            endpoint.randomStatusWeights = Arrays.stream(weights).boxed().toArray(Double[]::new);
+            return this;
+        }
+
+        /**
+         * Succeed only after N retries (useful for testing retry logic).
+         */
+        public StaticEndpointBuilder successAfterRetries(int retries) {
+            endpoint.successAfterRetries = retries;
+            return this;
+        }
+
+        /**
+         * Succeed only after N seconds (useful for testing timeout logic).
+         */
+        public StaticEndpointBuilder successAfterSeconds(int seconds) {
+            endpoint.successAfterSeconds = seconds;
+            return this;
+        }
+
+        /**
+         * Set maximum time window for retry tracking (default: 300 seconds).
+         */
+        public StaticEndpointBuilder maxRetryWindow(int seconds) {
+            endpoint.maxRetryWindow = seconds;
             return this;
         }
 
         /**
          * Finish configuring this endpoint and return to the main builder.
          */
-        public TinyRestBuilder done() {
+        public RestMonkeyBuilder done() {
             parent.addStaticEndpoint(endpoint);
             return parent;
         }

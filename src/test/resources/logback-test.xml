@@ -9,7 +9,7 @@
 
     <!-- File appender for detailed test logs -->
     <appender name="TEST_FILE" class="ch.qos.logback.core.FileAppender">
-        <file>target/test-logs/tinyrest-tests.log</file>
+        <file>target/test-logs/RESTMonkey-tests.log</file>
         <append>false</append>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
@@ -22,14 +22,14 @@
         <appender-ref ref="TEST_FILE"/>
     </logger>
 
-    <!-- TinyRest engine logging -->
-    <logger name="dev.mars.tinyrest.TinyRest" level="INFO" additivity="false">
+    <!-- RESTMonkey engine logging -->
+    <logger name="dev.mars.RESTMonkey.RESTMonkey" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="TEST_FILE"/>
     </logger>
 
     <!-- HTTP request/response logging -->
-    <logger name="dev.mars.tinyrest.http" level="INFO" additivity="false">
+    <logger name="dev.mars.RESTMonkey.http" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="TEST_FILE"/>
     </logger>

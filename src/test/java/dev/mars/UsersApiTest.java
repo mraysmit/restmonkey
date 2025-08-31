@@ -17,7 +17,7 @@ package dev.mars;
  */
 
 
-import dev.mars.tinyrest.TinyRest;
+import dev.mars.restmonkey.RestMonkey;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -29,15 +29,15 @@ import java.net.http.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * TinyRest UsersApiTest implementation.
+ * RestMonkey UsersApiTest implementation.
  *
  * @author Mark Andrew Ray-Smith Cityline Ltd
  * @since 2025-08-30
  * @version 1.0
  */
-@ExtendWith(TinyRest.JUnitTinyRestExtension.class)
-@TinyRest.UseTinyRest(
-        configPath = "src/test/resources/tinyrest.yaml",
+@ExtendWith(RestMonkey.JUnitRestMonkeyExtension.class)
+@RestMonkey.UseRestMonkey(
+        configPath = "src/test/resources/RestMonkey.yaml",
         port = 0 // auto-bind to a free port
 )
 class UsersApiTest {
@@ -56,7 +56,7 @@ class UsersApiTest {
     }
 
     @Test
-    void listUsers(@TinyRest.TinyRestBaseUrl URI baseUrl) throws Exception {
+    void listUsers(@RestMonkey.RestMonkeyBaseUrl URI baseUrl) throws Exception {
         logger.info("Starting listUsers test with baseUrl: {}", baseUrl);
 
         var req = HttpRequest.newBuilder(baseUrl.resolve("/api/users")).GET().build();
@@ -72,7 +72,7 @@ class UsersApiTest {
     }
 
     @Test
-    void createUserRequiresAuth(@TinyRest.TinyRestBaseUrl URI baseUrl) throws Exception {
+    void createUserRequiresAuth(@RestMonkey.RestMonkeyBaseUrl URI baseUrl) throws Exception {
         logger.info("Starting createUserRequiresAuth test with baseUrl: {}", baseUrl);
 
         var requestBody = "{\"name\":\"Grace Hopper\",\"email\":\"g@navy\"}";
@@ -92,7 +92,7 @@ class UsersApiTest {
     }
 
     @Test
-    void createUserWithAuth(@TinyRest.TinyRestBaseUrl URI baseUrl) throws Exception {
+    void createUserWithAuth(@RestMonkey.RestMonkeyBaseUrl URI baseUrl) throws Exception {
         logger.info("Starting createUserWithAuth test with baseUrl: {}", baseUrl);
 
         var requestBody = "{\"name\":\"Grace Hopper\",\"email\":\"g@navy\"}";
@@ -115,7 +115,7 @@ class UsersApiTest {
     }
 
     @Test
-    void healthCheck(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void healthCheck(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         logger.info("Starting healthCheck test with baseUrl: {}", baseUrl);
 
         var healthUrl = baseUrl + "/health";

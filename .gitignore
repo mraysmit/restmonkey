@@ -70,7 +70,7 @@ replay_pid*
 dependency-reduced-pom.xml
 
 ### Application Specific ###
-# TinyRest data files
+# RESTMonkey data files
 data/
 *.db
 *.sqlite

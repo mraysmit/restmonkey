@@ -12,9 +12,9 @@
 
     <!-- File appender for persistent logs -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/tinyrest-${bySecond:-startup}.log</file>
+        <file>logs/RESTMonkey-${bySecond:-startup}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/tinyrest-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/RESTMonkey-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
             <maxFileSize>10MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>100MB</totalSizeCap>
@@ -26,9 +26,9 @@
 
     <!-- Request/Response appender for HTTP traffic -->
     <appender name="HTTP_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/tinyrest-http-${bySecond}.log</file>
+        <file>logs/RESTMonkey-http-${bySecond}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/tinyrest-http-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/RESTMonkey-http-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
             <maxFileSize>5MB</maxFileSize>
             <maxHistory>14</maxHistory>
             <totalSizeCap>50MB</totalSizeCap>
@@ -39,16 +39,16 @@
     </appender>
 
     <!-- Logger for HTTP requests -->
-    <logger name="dev.mars.tinyrest.http" level="INFO" additivity="false">
+    <logger name="dev.mars.RESTMonkey.http" level="INFO" additivity="false">
         <appender-ref ref="HTTP_LOG"/>
         <appender-ref ref="CONSOLE"/>
     </logger>
 
     <!-- Hot reload appender -->
     <appender name="HOTRELOAD_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/tinyrest-hotreload-${bySecond}.log</file>
+        <file>logs/RESTMonkey-hotreload-${bySecond}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/tinyrest-hotreload-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/RESTMonkey-hotreload-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
             <maxFileSize>2MB</maxFileSize>
             <maxHistory>7</maxHistory>
             <totalSizeCap>10MB</totalSizeCap>
@@ -60,9 +60,9 @@
 
     <!-- Record/Replay appender -->
     <appender name="RECORDER_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/tinyrest-recorder-${bySecond}.log</file>
+        <file>logs/RESTMonkey-recorder-${bySecond}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/tinyrest-recorder-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/RESTMonkey-recorder-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
             <maxFileSize>5MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>50MB</totalSizeCap>
@@ -74,9 +74,9 @@
 
     <!-- Performance appender -->
     <appender name="PERFORMANCE_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/tinyrest-performance-${bySecond}.log</file>
+        <file>logs/RESTMonkey-performance-${bySecond}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/tinyrest-performance-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/RESTMonkey-performance-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
             <maxFileSize>5MB</maxFileSize>
             <maxHistory>14</maxHistory>
             <totalSizeCap>25MB</totalSizeCap>
@@ -88,9 +88,9 @@
 
     <!-- Security appender -->
     <appender name="SECURITY_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/tinyrest-security-${bySecond}.log</file>
+        <file>logs/RESTMonkey-security-${bySecond}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/tinyrest-security-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/RESTMonkey-security-%d{yyyy-MM-dd-HH-mm-ss}.%i.log</fileNamePattern>
             <maxFileSize>2MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>20MB</totalSizeCap>
@@ -101,27 +101,27 @@
     </appender>
 
     <!-- Logger for hot reload -->
-    <logger name="dev.mars.tinyrest.hotreload" level="INFO" additivity="false">
+    <logger name="dev.mars.RESTMonkey.hotreload" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="HOTRELOAD_LOG"/>
         <appender-ref ref="FILE"/>
     </logger>
 
     <!-- Logger for record/replay -->
-    <logger name="dev.mars.tinyrest.recorder" level="INFO" additivity="false">
+    <logger name="dev.mars.RESTMonkey.recorder" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="RECORDER_LOG"/>
         <appender-ref ref="FILE"/>
     </logger>
 
     <!-- Logger for performance metrics -->
-    <logger name="dev.mars.tinyrest.performance" level="INFO" additivity="false">
+    <logger name="dev.mars.RESTMonkey.performance" level="INFO" additivity="false">
         <appender-ref ref="PERFORMANCE_LOG"/>
         <appender-ref ref="FILE"/>
     </logger>
 
     <!-- Logger for security events -->
-    <logger name="dev.mars.tinyrest.security" level="WARN" additivity="false">
+    <logger name="dev.mars.RESTMonkey.security" level="WARN" additivity="false">
         <appender-ref ref="SECURITY_LOG"/>
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>

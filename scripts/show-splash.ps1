@@ -2,10 +2,10 @@
 
 <#
 .SYNOPSIS
-    Demonstrates TinyRest splash screen and startup behavior.
+    Demonstrates RestMonkey splash screen and startup behavior.
 
 .DESCRIPTION
-    This script shows various TinyRest startup scenarios to demonstrate
+    This script shows various RestMonkey startup scenarios to demonstrate
     the splash screen and different configuration behaviors.
 
 .PARAMETER ShowAll
@@ -13,7 +13,7 @@
 
 .EXAMPLE
     ./demo-splash.ps1
-    Shows successful TinyRest startup with splash screen
+    Shows successful RestMonkey startup with splash screen
 
 .EXAMPLE
     ./demo-splash.ps1 -ShowAll
@@ -31,23 +31,23 @@ $Yellow = "`e[33m"
 $Red = "`e[31m"
 $Reset = "`e[0m"
 
-Write-Host "${Blue}TinyRest Splash Screen Demo${Reset}" -ForegroundColor Blue
+Write-Host "${Blue}RestMonkey Splash Screen Demo${Reset}" -ForegroundColor Blue
 Write-Host "${Blue}===========================${Reset}" -ForegroundColor Blue
 Write-Host ""
 
 # Build the JAR if it doesn't exist
-if (!(Test-Path "target/tinyrest-1.0.0-SNAPSHOT.jar")) {
-    Write-Host "${Yellow}Building TinyRest JAR...${Reset}"
+if (!(Test-Path "target/restmonkey-1.0.0-SNAPSHOT.jar")) {
+    Write-Host "${Yellow}Building RestMonkey JAR...${Reset}"
     mvn package -q
     Write-Host ""
 }
 
 Write-Host "${Green}1. Successful Startup with Configuration${Reset}" -ForegroundColor Green
-Write-Host "${Blue}Command: java -jar target/tinyrest-1.0.0-SNAPSHOT.jar src/test/resources/tinyrest.yaml${Reset}"
+Write-Host "${Blue}Command: java -jar target/restmonkey-1.0.0-SNAPSHOT.jar src/test/resources/restmonkey.yaml${Reset}"
 Write-Host ""
 
-# Start TinyRest and let it run for a few seconds to show startup
-$process = Start-Process -FilePath "java" -ArgumentList "-jar", "target/tinyrest-1.0.0-SNAPSHOT.jar", "src/test/resources/tinyrest.yaml" -PassThru -NoNewWindow
+# Start RestMonkey and let it run for a few seconds to show startup
+$process = Start-Process -FilePath "java" -ArgumentList "-jar", "target/restmonkey-1.0.0-SNAPSHOT.jar", "src/test/resources/restmonkey.yaml" -PassThru -NoNewWindow
 
 Start-Sleep -Seconds 3
 
@@ -59,17 +59,17 @@ Write-Host "${Green}Server started successfully! (killed after 3 seconds)${Reset
 if ($ShowAll) {
     Write-Host ""
     Write-Host "${Red}2. Error: No Configuration File${Reset}" -ForegroundColor Red
-    Write-Host "${Blue}Command: java -jar target/tinyrest-1.0.0-SNAPSHOT.jar${Reset}"
+    Write-Host "${Blue}Command: java -jar target/restmonkey-1.0.0-SNAPSHOT.jar${Reset}"
     Write-Host ""
-    
-    java -jar target/tinyrest-1.0.0-SNAPSHOT.jar
-    
+
+    java -jar target/restmonkey-1.0.0-SNAPSHOT.jar
+
     Write-Host ""
     Write-Host "${Red}3. Error: Non-existent Configuration File${Reset}" -ForegroundColor Red
-    Write-Host "${Blue}Command: java -jar target/tinyrest-1.0.0-SNAPSHOT.jar missing.yaml${Reset}"
+    Write-Host "${Blue}Command: java -jar target/restmonkey-1.0.0-SNAPSHOT.jar missing.yaml${Reset}"
     Write-Host ""
-    
-    java -jar target/tinyrest-1.0.0-SNAPSHOT.jar missing.yaml
+
+    java -jar target/restmonkey-1.0.0-SNAPSHOT.jar missing.yaml
 }
 
 Write-Host ""

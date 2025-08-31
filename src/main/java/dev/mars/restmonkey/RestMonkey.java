@@ -1,5 +1,5 @@
 
-package dev.mars.tinyrest;
+package dev.mars.restmonkey;
 
 /*
  * Copyright 2025 Mark Andrew Ray-Smith Cityline Ltd
@@ -43,26 +43,38 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * Annotation for UseTinyRest configuration in TinyRest.
+ * RestMonkey - A lightweight HTTP server for mocking REST APIs with chaos engineering.
+ *
+ * Features:
+ * - CRUD operations for resources
+ * - Static endpoints with custom responses
+ * - Authentication with bearer tokens
+ * - Template variables ({{now}}, {{uuid}}, etc.)
+ * - Hot reload of configuration files
+ * - Request/response recording and replay
+ * - Schema validation
+ * - Comprehensive logging
+ * - Chaos engineering (latency, failures, retry patterns)
+ * - JUnit 5 test integration
  *
  * @author Mark Andrew Ray-Smith Cityline Ltd
  * @since 2025-08-30
  * @version 1.0
  */
-public class TinyRest {
-    private static final Logger log = LoggerFactory.getLogger(TinyRest.class);
+public class RestMonkey {
+    private static final Logger log = LoggerFactory.getLogger(RestMonkey.class);
 
     public static void main(String[] args) throws Exception {
         showSplashScreen();
 
-        log.debug("TinyRest starting with {} command line arguments", args.length);
+        log.debug("RestMonkey starting with {} command line arguments", args.length);
         if (args.length == 0) {
-            log.error("No configuration file specified. Usage: java TinyRest <tinyrest.yml|json>");
+            log.error("No configuration file specified. Usage: java RestMonkey <config.yml|json>");
             System.exit(1);
         }
 
         var path = Paths.get(args[0]).toAbsolutePath();
-        log.info("TinyRest initializing with configuration file: {}", path);
+        log.info("RestMonkey initializing with configuration file: {}", path);
         log.debug("Configuration file exists: {}, readable: {}", Files.exists(path), Files.isReadable(path));
 
         try {
@@ -72,18 +84,18 @@ public class TinyRest {
                     cfg.features != null && Boolean.TRUE.equals(cfg.features.templating),
                     cfg.features != null && Boolean.TRUE.equals(cfg.features.hotReload));
 
-            log.info("Starting TinyRest server with {} resources, {} static endpoints, and {} features enabled",
+            log.info("Starting RESTMonkey server with {} resources, {} static endpoints, and {} features enabled",
                     cfg.resources != null ? cfg.resources.size() : 0,
                     cfg.staticEndpoints != null ? cfg.staticEndpoints.size() : 0,
                     countEnabledFeatures(cfg));
 
             var handle = start(cfg, path);
-            log.info("TinyRest server successfully started on http://localhost:{}/", handle.boundAddress().getPort());
+            log.info("RestMonkey server successfully started on http://localhost:{}/", handle.boundAddress().getPort());
             log.info("Configuration file being watched: {}", path);
             log.debug("Server bound to address: {}, executor pool size: {}",
                     handle.boundAddress(), Runtime.getRuntime().availableProcessors());
         } catch (Exception e) {
-            log.error("Failed to start TinyRest server: {}", e.getMessage(), e);
+            log.error("Failed to start RestMonkey server: {}", e.getMessage(), e);
             throw e;
         }
     }
@@ -91,23 +103,23 @@ public class TinyRest {
     // ---------- Constructors ----------
 
     /**
-     * Create a TinyRest server with the given configuration.
+     * Create a RestMonkey server with the given configuration.
      * The server is not started automatically - call start() to begin serving requests.
      */
-    public TinyRest(MockConfig config) throws IOException {
+    public RestMonkey(MockConfig config) throws IOException {
         this.config = defaults(config);
         this.handle = start(this.config, null); // No config file path for programmatic usage
     }
 
     /**
-     * Start the TinyRest server and return the server handle.
+     * Start the RESTMonkey server and return the server handle.
      */
     public ServerHandle start() {
         return handle;
     }
 
     /**
-     * Stop the TinyRest server.
+     * Stop the RESTMonkey server.
      */
     public void stop() {
         if (handle != null) {
@@ -145,11 +157,11 @@ public class TinyRest {
     // ---------- Builder API ----------
 
     /**
-     * Create a new fluent builder for configuring TinyRest programmatically.
+     * Create a new fluent builder for configuring RESTMonkey programmatically.
      *
      * Example:
      * <pre>
-     * var server = TinyRest.builder()
+     * var server = RestMonkey.builder()
      *     .port(8080)
      *     .authToken("my-token")
      *     .enableTemplating()
@@ -164,8 +176,8 @@ public class TinyRest {
      *     .start();
      * </pre>
      */
-    public static TinyRestBuilder builder() {
-        return TinyRestBuilder.create();
+    public static RestMonkeyBuilder builder() {
+        return RestMonkeyBuilder.create();
     }
 
     // ---------- Public API ----------
@@ -248,8 +260,8 @@ public class TinyRest {
     // ---------- Engine ----------
     static class Engine {
         private static final Logger log = LoggerFactory.getLogger(Engine.class);
-        private static final Logger httpLog = LoggerFactory.getLogger("dev.mars.tinyrest.http");
-        private static final Logger hotReloadLog = LoggerFactory.getLogger("dev.mars.tinyrest.hotreload");
+        private static final Logger httpLog = LoggerFactory.getLogger("dev.mars.restmonkey.http");
+        private static final Logger hotReloadLog = LoggerFactory.getLogger("dev.mars.restmonkey.hotreload");
 
         volatile MockConfig cfg;
         final ObjectMapper om = jsonMapper();
@@ -645,6 +657,26 @@ public class TinyRest {
                     // GET /api/{resource} - List resources
                     log.debug("  Adding route: GET {} (list resources)", base);
                     newRoutes.add(new Route("GET", base, false, (ctx) -> {
+                        // Apply per-resource chaos engineering
+                        String clientId = getClientId(ctx);
+                        String endpointKey = "GET:" + base;
+
+                        try {
+                            applyResourceChaos(r, clientId, endpointKey);
+                        } catch (ChaosStatusException e) {
+                            log.debug("Chaos status override for GET {}: returning {}", base, e.status);
+                            return Response.json(e.status, Map.of("error", "chaos_status", "message", "Random status: " + e.status));
+                        } catch (RuntimeException e) {
+                            if (e.getMessage().startsWith("retry-chaos")) {
+                                String reason = e.getMessage().equals("retry-chaos-attempts") ? "retry attempts" : "time elapsed";
+                                log.debug("Retry chaos failure for GET {}: insufficient {}", base, reason);
+                                return Response.json(503, Map.of("error", "retry_chaos", "message", "Insufficient " + reason, "retry_after", "1"));
+                            } else {
+                                log.debug("Chaos failure for GET {}", base);
+                                return Response.json(500, Map.of("error", "chaos", "message", "Simulated failure"));
+                            }
+                        }
+
                         var store = stores.get(r.name);
                         var qp = ctx.query();
                         int limit = qp.getInt("limit", 50);
@@ -658,6 +690,26 @@ public class TinyRest {
                     // POST /api/{resource} - Create resource
                     log.debug("  Adding route: POST {} (create resource, auth required)", base);
                     newRoutes.add(new Route("POST", base, true, (ctx) -> {
+                        // Apply per-resource chaos engineering
+                        String clientId = getClientId(ctx);
+                        String endpointKey = "POST:" + base;
+
+                        try {
+                            applyResourceChaos(r, clientId, endpointKey);
+                        } catch (ChaosStatusException e) {
+                            log.debug("Chaos status override for POST {}: returning {}", base, e.status);
+                            return Response.json(e.status, Map.of("error", "chaos_status", "message", "Random status: " + e.status));
+                        } catch (RuntimeException e) {
+                            if (e.getMessage().startsWith("retry-chaos")) {
+                                String reason = e.getMessage().equals("retry-chaos-attempts") ? "retry attempts" : "time elapsed";
+                                log.debug("Retry chaos failure for POST {}: insufficient {}", base, reason);
+                                return Response.json(503, Map.of("error", "retry_chaos", "message", "Insufficient " + reason, "retry_after", "1"));
+                            } else {
+                                log.debug("Chaos failure for POST {}", base);
+                                return Response.json(500, Map.of("error", "chaos", "message", "Simulated failure"));
+                            }
+                        }
+
                         var store = stores.get(r.name);
                         Map<String,Object> in = ctx.readJsonMap();
                         Object id = in.get(store.idField);
@@ -748,6 +800,26 @@ public class TinyRest {
                             method, se.path, status, isEcho, hasTemplating, mutates);
 
                     newRoutes.add(new Route(method, se.path, mutates, true, (ctx) -> {
+                        // Apply per-endpoint chaos engineering
+                        String clientId = getClientId(ctx);
+                        String endpointKey = method + ":" + se.path;
+
+                        try {
+                            applyEndpointChaos(se, clientId, endpointKey);
+                        } catch (ChaosStatusException e) {
+                            log.debug("Chaos status override for {} {}: returning {}", method, se.path, e.status);
+                            return Response.json(e.status, Map.of("error", "chaos_status", "message", "Random status: " + e.status));
+                        } catch (RuntimeException e) {
+                            if (e.getMessage().startsWith("retry-chaos")) {
+                                String reason = e.getMessage().equals("retry-chaos-attempts") ? "retry attempts" : "time elapsed";
+                                log.debug("Retry chaos failure for {} {}: insufficient {}", method, se.path, reason);
+                                return Response.json(503, Map.of("error", "retry_chaos", "message", "Insufficient " + reason, "retry_after", "1"));
+                            } else {
+                                log.debug("Chaos failure for {} {}", method, se.path);
+                                return Response.json(500, Map.of("error", "chaos", "message", "Simulated failure"));
+                            }
+                        }
+
                         if (Boolean.TRUE.equals(se.echoRequest)) {
                             log.trace("Echoing request details for {} {}", method, se.path);
                             return Response.json(status, Map.of(
@@ -860,7 +932,7 @@ public class TinyRest {
                 } catch (Exception e) {
                     hotReloadLog.error("File watcher stopped unexpectedly: {}", e.getMessage(), e);
                 }
-            }, "tinyrest-hot-reload");
+            }, "RESTMonkey-hot-reload");
             t.setDaemon(true);
             t.start();
             hotReloadLog.debug("Hot reload thread started successfully");
@@ -978,7 +1050,7 @@ public class TinyRest {
 
     // ---------- Recorder / Replayer ----------
     static class Recorder {
-        private static final Logger recorderLog = LoggerFactory.getLogger("dev.mars.tinyrest.recorder");
+        private static final Logger recorderLog = LoggerFactory.getLogger("dev.mars.restmonkey.recorder");
 
         final RecordReplay rr;
         final ObjectMapper om;
@@ -1276,6 +1348,133 @@ public class TinyRest {
     }
     static void withLatency(Long ms) { if (ms == null || ms <= 0) return; try { Thread.sleep(ms); } catch (InterruptedException ignored) {} }
     static void maybeChaos(Double rate) { if (rate == null || rate <= 0) return; if (ThreadLocalRandom.current().nextDouble() < rate) throw new RuntimeException("chaos"); }
+
+    // Retry tracking for success-after-retries patterns
+    private static final Map<String, Map<String, Integer>> retryCounters = new ConcurrentHashMap<>();
+    private static final Map<String, Map<String, Long>> firstAttemptTimes = new ConcurrentHashMap<>();
+
+    /**
+     * Apply per-endpoint chaos engineering for static endpoints.
+     */
+    static void applyEndpointChaos(StaticEndpoint endpoint, String clientId, String endpointKey) {
+        applyLatencyChaos(endpoint.latencyMs, endpoint.randomLatencyMinMs, endpoint.randomLatencyMaxMs);
+        applyFailureChaos(endpoint.failureRate);
+        applyStatusChaos(endpoint.randomStatuses, endpoint.randomStatusWeights);
+        applyRetryChaos(endpoint.successAfterRetries, endpoint.successAfterSeconds,
+                       endpoint.maxRetryWindow, clientId, endpointKey);
+    }
+
+    /**
+     * Apply per-resource chaos engineering for CRUD endpoints.
+     */
+    static void applyResourceChaos(Resource resource, String clientId, String endpointKey) {
+        applyLatencyChaos(resource.latencyMs, resource.randomLatencyMinMs, resource.randomLatencyMaxMs);
+        applyFailureChaos(resource.failureRate);
+        applyStatusChaos(resource.randomStatuses, resource.randomStatusWeights);
+        applyRetryChaos(resource.successAfterRetries, resource.successAfterSeconds,
+                       resource.maxRetryWindow, clientId, endpointKey);
+    }
+
+    private static void applyLatencyChaos(Long fixedMs, Long minMs, Long maxMs) {
+        if (fixedMs != null && fixedMs > 0) {
+            withLatency(fixedMs);
+        } else if (minMs != null && maxMs != null && minMs > 0 && maxMs > minMs) {
+            long randomLatency = ThreadLocalRandom.current().nextLong(minMs, maxMs + 1);
+            withLatency(randomLatency);
+        }
+    }
+
+    private static void applyFailureChaos(Double failureRate) {
+        if (failureRate != null && failureRate > 0) {
+            maybeChaos(failureRate);
+        }
+    }
+
+    private static void applyStatusChaos(Integer[] statuses, Double[] weights) {
+        if (statuses == null || statuses.length == 0) return;
+
+        int selectedStatus;
+        if (weights != null && weights.length == statuses.length) {
+            // Weighted selection
+            double random = ThreadLocalRandom.current().nextDouble();
+            double cumulative = 0.0;
+            selectedStatus = statuses[0]; // fallback
+            for (int i = 0; i < weights.length; i++) {
+                cumulative += weights[i];
+                if (random <= cumulative) {
+                    selectedStatus = statuses[i];
+                    break;
+                }
+            }
+        } else {
+            // Equal probability
+            selectedStatus = statuses[ThreadLocalRandom.current().nextInt(statuses.length)];
+        }
+
+        if (selectedStatus != 200) {
+            throw new ChaosStatusException(selectedStatus);
+        }
+    }
+
+    private static void applyRetryChaos(Integer successAfterRetries, Integer successAfterSeconds,
+                                       Integer maxRetryWindow, String clientId, String endpointKey) {
+        if (successAfterRetries == null && successAfterSeconds == null) return;
+
+        long now = System.currentTimeMillis();
+        int windowSeconds = maxRetryWindow != null ? maxRetryWindow : 300; // 5 minutes default
+
+        // Track retry attempts per client+endpoint
+        String key = clientId + ":" + endpointKey;
+
+        if (successAfterRetries != null) {
+            retryCounters.computeIfAbsent(key, k -> new ConcurrentHashMap<>());
+            int attempts = retryCounters.get(key).merge("count", 1, Integer::sum);
+
+            if (attempts <= successAfterRetries) {
+                throw new RuntimeException("retry-chaos-attempts");
+            }
+            // Success! Reset counter
+            retryCounters.get(key).remove("count");
+        }
+
+        if (successAfterSeconds != null) {
+            firstAttemptTimes.computeIfAbsent(key, k -> new ConcurrentHashMap<>());
+            long firstAttempt = firstAttemptTimes.get(key).computeIfAbsent("time", k -> now);
+            long elapsedSeconds = (now - firstAttempt) / 1000;
+
+            if (elapsedSeconds < successAfterSeconds) {
+                throw new RuntimeException("retry-chaos-time");
+            }
+            // Success! Reset timer
+            firstAttemptTimes.get(key).remove("time");
+        }
+
+        // Cleanup old entries
+        cleanupRetryTracking(now, windowSeconds * 1000L);
+    }
+
+    private static void cleanupRetryTracking(long now, long windowMs) {
+        // Simple cleanup - remove entries older than window
+        firstAttemptTimes.entrySet().removeIf(entry -> {
+            Long firstTime = entry.getValue().get("time");
+            return firstTime != null && (now - firstTime) > windowMs;
+        });
+    }
+
+    // Custom exception for status chaos
+    static class ChaosStatusException extends RuntimeException {
+        final int status;
+        ChaosStatusException(int status) { this.status = status; }
+    }
+
+    /**
+     * Get a client identifier for retry tracking (IP + User-Agent hash).
+     */
+    private static String getClientId(Ctx ctx) {
+        String remoteAddr = ctx.exchange.getRemoteAddress().getAddress().getHostAddress();
+        String userAgent = ctx.exchange.getRequestHeaders().getFirst("User-Agent");
+        return remoteAddr + ":" + (userAgent != null ? userAgent.hashCode() : "unknown");
+    }
     static boolean isAuthorized(Ctx ctx) {
         if (blank(ctx.cfg.authToken)) return true;
         var h = ctx.header("Authorization");
@@ -1292,13 +1491,13 @@ public class TinyRest {
 
     static void showSplashScreen() {
         System.out.println();
-        System.out.println("  ████████ ██ ███    ██ ██    ██ ██████  ███████ ███████ ████████ ");
-        System.out.println("     ██    ██ ████   ██  ██  ██  ██   ██ ██      ██         ██    ");
-        System.out.println("     ██    ██ ██ ██  ██   ████   ██████  █████   ███████    ██    ");
-        System.out.println("     ██    ██ ██  ██ ██    ██    ██   ██ ██           ██    ██    ");
-        System.out.println("     ██    ██ ██   ████    ██    ██   ██ ███████ ███████    ██    ");
+        System.out.println("  ██████  ███████ ███████ ████████ ███    ███  ██████  ███    ██ ██   ██ ███████ ██    ██ ");
+        System.out.println("  ██   ██ ██      ██         ██    ████  ████ ██    ██ ████   ██ ██  ██  ██       ██  ██  ");
+        System.out.println("  ██████  █████   ███████    ██    ██ ████ ██ ██    ██ ██ ██  ██ █████   █████     ████   ");
+        System.out.println("  ██   ██ ██           ██    ██    ██  ██  ██ ██    ██ ██  ██ ██ ██  ██  ██         ██    ");
+        System.out.println("  ██   ██ ███████ ███████    ██    ██      ██  ██████  ██   ████ ██   ██ ███████    ██    ");
         System.out.println();
-        System.out.println("  Lightweight REST API Server for Rapid Prototyping & Testing");
+        System.out.println("  REST API Server with Chaos Engineering for Testing & Prototyping");
         System.out.println("  Version 1.0.0-SNAPSHOT | Built with Java " + System.getProperty("java.version"));
         System.out.println("  Copyright 2025 Mark Andrew Ray-Smith Cityline Ltd");
         System.out.println();
@@ -1354,6 +1553,19 @@ public class TinyRest {
         public String idField;
         public Boolean enableCrud;
         public List<Map<String,Object>> seed;
+
+        // Per-resource chaos engineering (applies to all CRUD endpoints)
+        public Long latencyMs;           // Fixed latency for this resource
+        public Long randomLatencyMinMs;  // Random latency range minimum
+        public Long randomLatencyMaxMs;  // Random latency range maximum
+        public Double failureRate;      // Probability of 500 errors (0.0 to 1.0)
+        public Integer[] randomStatuses; // Array of status codes to randomly return
+        public Double[] randomStatusWeights; // Weights for random status codes
+
+        // Retry-based success patterns
+        public Integer successAfterRetries;    // Succeed after N retries
+        public Integer successAfterSeconds;    // Succeed after N seconds
+        public Integer maxRetryWindow;         // Max time window for retry tracking (seconds)
     }
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class StaticEndpoint {
@@ -1362,6 +1574,19 @@ public class TinyRest {
         public Integer status;
         public Object response;  // Can be String, Map, List, or any JSON value
         public Boolean echoRequest;
+
+        // Per-endpoint chaos engineering
+        public Long latencyMs;           // Fixed latency for this endpoint
+        public Long randomLatencyMinMs;  // Random latency range minimum
+        public Long randomLatencyMaxMs;  // Random latency range maximum
+        public Double failureRate;      // Probability of 500 errors (0.0 to 1.0)
+        public Integer[] randomStatuses; // Array of status codes to randomly return
+        public Double[] randomStatusWeights; // Weights for random status codes
+
+        // Retry-based success patterns
+        public Integer successAfterRetries;    // Succeed after N retries
+        public Integer successAfterSeconds;    // Succeed after N seconds
+        public Integer maxRetryWindow;         // Max time window for retry tracking (seconds)
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -1510,7 +1735,7 @@ public class TinyRest {
         try {
             validateOrDie(c);
         } catch (Exception e) {
-            LoggerFactory.getLogger(TinyRest.class).warn("Configuration validation (lenient mode): {}", e.getMessage());
+            LoggerFactory.getLogger(RestMonkey.class).warn("Configuration validation (lenient mode): {}", e.getMessage());
         }
     }
 
@@ -1535,32 +1760,32 @@ public class TinyRest {
         return c;
     }
 
-    // ===== JUnit 5 Integration (TinyRest) =====
+    // ===== JUnit 5 Integration (RestMonkey) =====
     // Place this file under src/main/java and add JUnit 5 as a test-scoped dependency.
-    // Tests can then: @ExtendWith(TinyRest.JUnitTinyRestExtension.class) and @UseTinyRest(...)
-    // Params can be injected with @TinyRestBaseUrl on String or URI.
+    // Tests can then: @ExtendWith(RestMonkey.JUnitRestMonkeyExtension.class) and @UseRestMonkey(...)
+    // Params can be injected with @RestMonkeyBaseUrl on String or URI.
 
     // (Imports for JUnit are at top-level in your test compile; here we fully-qualify to avoid extra imports.)
 
-    public static class JUnitTinyRestExtension implements org.junit.jupiter.api.extension.BeforeAllCallback,
+    public static class JUnitRestMonkeyExtension implements org.junit.jupiter.api.extension.BeforeAllCallback,
             org.junit.jupiter.api.extension.AfterAllCallback,
             org.junit.jupiter.api.extension.ParameterResolver {
 
         private static final org.junit.jupiter.api.extension.ExtensionContext.Namespace NS =
-                org.junit.jupiter.api.extension.ExtensionContext.Namespace.create("TinyRest");
+                org.junit.jupiter.api.extension.ExtensionContext.Namespace.create("RESTMonkey");
         private static final String STORE_KEY = "serverHandle";
 
         @Override
         public void beforeAll(org.junit.jupiter.api.extension.ExtensionContext context) throws Exception {
             var store = context.getStore(NS);
 
-            UseTinyRest cfgAnn = findAnnotation(context, UseTinyRest.class);
+            UseRestMonkey cfgAnn = findAnnotation(context, UseRestMonkey.class);
             if (cfgAnn == null) {
-                throw new IllegalStateException("@UseTinyRest is required on the test class when using JUnitTinyRestExtension.");
+                throw new IllegalStateException("@UseRestMonkey is required on the test class when using JUnitRestMonkeyExtension.");
             }
 
-            String configPath = cfgAnn.configPath().isBlank() ? "src/test/resources/tinyrest.yml" : cfgAnn.configPath();
-            TinyRest.MockConfig cfg = TinyRest.loadConfig(configPath);
+            String configPath = cfgAnn.configPath().isBlank() ? "src/test/resources/restmonkey.yml" : cfgAnn.configPath();
+            RestMonkey.MockConfig cfg = RestMonkey.loadConfig(configPath);
 
             if (cfgAnn.port() >= 0) cfg.port = cfgAnn.port(); // 0 => auto-bind
             if (!cfgAnn.authTokenOverride().isBlank()) cfg.authToken = cfgAnn.authTokenOverride();
@@ -1572,18 +1797,18 @@ public class TinyRest {
                 if (!cfgAnn.recordReplayFile().isBlank()) cfg.features.recordReplay.file = cfgAnn.recordReplayFile();
             }
 
-            var handle = TinyRest.start(cfg, java.nio.file.Paths.get(configPath));
+            var handle = RestMonkey.start(cfg, java.nio.file.Paths.get(configPath));
             store.put(STORE_KEY, handle);
 
             String baseUrl = "http://localhost:" + handle.boundAddress().getPort();
-            System.setProperty("tinyrest.baseUrl", baseUrl);
-            System.setProperty("tinyrest.port", String.valueOf(handle.boundAddress().getPort()));
+            System.setProperty("restmonkey.baseUrl", baseUrl);
+            System.setProperty("restmonkey.port", String.valueOf(handle.boundAddress().getPort()));
         }
 
         @Override
         public void afterAll(org.junit.jupiter.api.extension.ExtensionContext context) throws Exception {
             var store = context.getStore(NS);
-            var handle = (TinyRest.ServerHandle) store.remove(STORE_KEY);
+            var handle = (RestMonkey.ServerHandle) store.remove(STORE_KEY);
             if (handle != null) handle.stop(0);
         }
 
@@ -1592,9 +1817,9 @@ public class TinyRest {
         public boolean supportsParameter(org.junit.jupiter.api.extension.ParameterContext pc,
                                          org.junit.jupiter.api.extension.ExtensionContext ec)
                 throws org.junit.jupiter.api.extension.ParameterResolutionException {
-            boolean wantBaseUrl = pc.isAnnotated(TinyRestBaseUrl.class) &&
+            boolean wantBaseUrl = pc.isAnnotated(RestMonkeyBaseUrl.class) &&
                     (pc.getParameter().getType().equals(String.class) || pc.getParameter().getType().equals(URI.class));
-            boolean wantHandle = pc.getParameter().getType().equals(TinyRest.ServerHandle.class);
+            boolean wantHandle = pc.getParameter().getType().equals(RestMonkey.ServerHandle.class);
             return wantBaseUrl || wantHandle;
         }
 
@@ -1603,10 +1828,10 @@ public class TinyRest {
                                        org.junit.jupiter.api.extension.ExtensionContext ec)
                 throws org.junit.jupiter.api.extension.ParameterResolutionException {
             var store = ec.getStore(NS);
-            var handle = (TinyRest.ServerHandle) store.get(STORE_KEY, TinyRest.ServerHandle.class);
-            if (handle == null) throw new org.junit.jupiter.api.extension.ParameterResolutionException("TinyRest server not initialized.");
+            var handle = (RestMonkey.ServerHandle) store.get(STORE_KEY, RestMonkey.ServerHandle.class);
+            if (handle == null) throw new org.junit.jupiter.api.extension.ParameterResolutionException("RestMonkey server not initialized.");
 
-            if (pc.getParameter().getType().equals(TinyRest.ServerHandle.class)) return handle;
+            if (pc.getParameter().getType().equals(RestMonkey.ServerHandle.class)) return handle;
             String base = "http://localhost:" + handle.boundAddress().getPort();
             if (pc.getParameter().getType().equals(URI.class)) return URI.create(base);
             return base; // String
@@ -1623,8 +1848,8 @@ public class TinyRest {
 
     @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
     @java.lang.annotation.Target(java.lang.annotation.ElementType.TYPE)
-    public @interface UseTinyRest {
-        String configPath() default "src/test/resources/tinyrest.yml";
+    public @interface UseRestMonkey {
+        String configPath() default "src/test/resources/restmonkey.yml";
         int port() default 0;                       // 0 => random free port
         String authTokenOverride() default "";
         String recordReplayMode() default "";       // "", "record", "replay"
@@ -1633,7 +1858,7 @@ public class TinyRest {
 
     @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
     @java.lang.annotation.Target(java.lang.annotation.ElementType.PARAMETER)
-    public @interface TinyRestBaseUrl {}
+    public @interface RestMonkeyBaseUrl {}
 }
 
 

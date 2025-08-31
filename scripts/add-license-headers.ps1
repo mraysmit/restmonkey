@@ -2,10 +2,10 @@
 
 <#
 .SYNOPSIS
-    Adds Apache License 2.0 headers to Java files in the TinyRest project.
+    Adds Apache License 2.0 headers to Java files in the RESTMonkey project.
 
 .DESCRIPTION
-    This script adds proper Apache License 2.0 headers to all Java files in TinyRest,
+    This script adds proper Apache License 2.0 headers to all Java files in RESTMonkey,
     preserving existing JavaDoc comments and author information.
 
 .PARAMETER DryRun

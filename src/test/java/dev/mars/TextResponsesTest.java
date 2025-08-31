@@ -16,7 +16,7 @@
 
 package dev.mars;
 
-import dev.mars.tinyrest.TinyRest;
+import dev.mars.restmonkey.RestMonkey;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -36,15 +36,15 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 2025-08-30
  * @version 1.0
  */
-@ExtendWith(TinyRest.JUnitTinyRestExtension.class)
-@TinyRest.UseTinyRest(configPath = "src/test/resources/config-text-responses.yaml")
+@ExtendWith(RestMonkey.JUnitRestMonkeyExtension.class)
+@RestMonkey.UseRestMonkey(configPath = "src/test/resources/config-text-responses.yaml")
 class TextResponsesTest {
 
     private static final Logger logger = LoggerFactory.getLogger(TextResponsesTest.class);
     HttpClient client = HttpClient.newHttpClient();
 
     @Test
-    void shouldReturnSimpleTextResponses(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldReturnSimpleTextResponses(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         logger.info("Testing simple text responses");
 
         // Test various simple text endpoints
@@ -55,7 +55,7 @@ class TextResponsesTest {
     }
 
     @Test
-    void shouldReturnCustomStatusCodes(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldReturnCustomStatusCodes(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         logger.info("Testing custom status codes with text responses");
 
         assertTextResponse(baseUrl, "/created", 201, "Resource created");

@@ -17,7 +17,7 @@ package dev.mars;
  */
 
 
-import dev.mars.tinyrest.TinyRest;
+import dev.mars.restmonkey.RestMonkey;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -27,21 +27,21 @@ import java.net.http.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * TinyRest LoggingDemoTest implementation.
+ * RestMonkey LoggingDemoTest implementation.
  *
  * @author Mark Andrew Ray-Smith Cityline Ltd
  * @since 2025-08-30
  * @version 1.0
  */
-@ExtendWith(TinyRest.JUnitTinyRestExtension.class)
-@TinyRest.UseTinyRest(
-        configPath = "src/test/resources/tinyrest-trace.yaml",
+@ExtendWith(RestMonkey.JUnitRestMonkeyExtension.class)
+@RestMonkey.UseRestMonkey(
+        configPath = "src/test/resources/RestMonkey-trace.yaml",
         recordReplayFile = "target/demo-recordings.jsonl"
 )
 class LoggingDemoTest {
 
     @Test
-    void demonstrateDetailedLogging(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void demonstrateDetailedLogging(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         HttpClient client = HttpClient.newHttpClient();
         
         // Test 1: Health check (static endpoint with templating)

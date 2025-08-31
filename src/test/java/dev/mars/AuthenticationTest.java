@@ -17,7 +17,7 @@ package dev.mars;
  */
 
 
-import dev.mars.tinyrest.TinyRest;
+import dev.mars.restmonkey.RestMonkey;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -41,12 +41,12 @@ class AuthenticationTest {
     HttpClient client = HttpClient.newHttpClient();
 
     @Nested
-    @ExtendWith(TinyRest.JUnitTinyRestExtension.class)
-    @TinyRest.UseTinyRest(configPath = "src/test/resources/tinyrest.yaml") // Has authToken: test-token
+    @ExtendWith(RestMonkey.JUnitRestMonkeyExtension.class)
+    @RestMonkey.UseRestMonkey(configPath = "src/test/resources/RestMonkey.yaml") // Has authToken: test-token
     class WithAuthConfiguredTest {
         
         @Test
-        void getMutationsShouldNotRequireAuth(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void getMutationsShouldNotRequireAuth(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             // GET operations should work without auth
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/api/users"))
@@ -57,7 +57,7 @@ class AuthenticationTest {
         }
         
         @Test
-        void postWithoutAuthShouldFail(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void postWithoutAuthShouldFail(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/api/users"))
                     .header("Content-Type", "application/json")
@@ -69,7 +69,7 @@ class AuthenticationTest {
         }
         
         @Test
-        void postWithValidAuthShouldSucceed(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void postWithValidAuthShouldSucceed(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             logger.info("Testing POST with valid Bearer token authentication");
 
             var requestBody = "{\"name\":\"Test User\"}";
@@ -91,7 +91,7 @@ class AuthenticationTest {
         }
         
         @Test
-        void postWithInvalidAuthShouldFail(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void postWithInvalidAuthShouldFail(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/api/users"))
                     .header("Content-Type", "application/json")
@@ -103,7 +103,7 @@ class AuthenticationTest {
         }
         
         @Test
-        void putWithoutAuthShouldFail(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void putWithoutAuthShouldFail(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/api/users/u1"))
                     .header("Content-Type", "application/json")
@@ -114,7 +114,7 @@ class AuthenticationTest {
         }
         
         @Test
-        void deleteWithoutAuthShouldFail(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void deleteWithoutAuthShouldFail(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/api/users/u1"))
                     .DELETE()
@@ -124,7 +124,7 @@ class AuthenticationTest {
         }
         
         @Test
-        void authHeaderVariationsShouldWork(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void authHeaderVariationsShouldWork(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             // Test different Authorization header formats
             // Note: Currently only "Bearer" (capital B) is supported
             String[] validHeaders = {
@@ -144,7 +144,7 @@ class AuthenticationTest {
         }
         
         @Test
-        void invalidAuthFormatsShouldFail(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void invalidAuthFormatsShouldFail(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             String[] invalidHeaders = {
                 "test-token",           // Missing Bearer
                 "bearer test-token",    // Wrong case (lowercase)
@@ -169,12 +169,12 @@ class AuthenticationTest {
     }
 
     @Nested
-    @ExtendWith(TinyRest.JUnitTinyRestExtension.class)
-    @TinyRest.UseTinyRest(configPath = "src/test/resources/config-no-auth.yaml") // No authToken configured
+    @ExtendWith(RestMonkey.JUnitRestMonkeyExtension.class)
+    @RestMonkey.UseRestMonkey(configPath = "src/test/resources/config-no-auth.yaml") // No authToken configured
     class NoAuthConfiguredTest {
         
         @Test
-        void mutationsShouldWorkWithoutAuth(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void mutationsShouldWorkWithoutAuth(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             // When no authToken is configured, mutations should work without auth
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/api/products"))
@@ -186,7 +186,7 @@ class AuthenticationTest {
         }
         
         @Test
-        void authHeaderShouldBeIgnored(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+        void authHeaderShouldBeIgnored(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
             // Even with auth header, should work since no auth is configured
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl + "/api/products"))

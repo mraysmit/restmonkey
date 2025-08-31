@@ -1,0 +1,45 @@
+# Chaos Engineering Demo 3: Random Status Codes
+# Shows how to return different HTTP status codes randomly
+
+port: 8080
+authToken: status-demo
+
+resources:
+  # Normal service (always 200)
+  - name: users
+    idField: id
+    enableCrud: true
+    seed:
+      - id: u1
+        name: Alice
+
+  # Service with random success/error codes
+  - name: orders
+    idField: id
+    enableCrud: true
+    randomStatuses: [200, 201, 400, 500]  # Equal probability
+    seed:
+      - id: o1
+        item: laptop
+        price: 999
+
+staticEndpoints:
+  - method: GET
+    path: /health
+    response: "always 200"
+    # Always returns 200
+
+  - method: GET
+    path: /load-balancer
+    response: 
+      node: "server-1"
+      status: "{{status}}"
+    randomStatuses: [200, 200, 200, 503]  # 75% healthy, 25% down
+
+  - method: GET
+    path: /api-gateway
+    response:
+      gateway: "primary"
+      message: "{{status == 200 ? 'success' : 'error'}}"
+    randomStatuses: [200, 502, 503, 504]
+    randomStatusWeights: [0.7, 0.1, 0.1, 0.1]  # 70% success, 30% gateway errors

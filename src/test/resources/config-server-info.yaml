@@ -1,8 +1,8 @@
 # =============================================================================
-# TinyRest Configuration: Server Information Endpoints Test
+# RESTMonkey Configuration: Server Information Endpoints Test
 # =============================================================================
 # 
-# Purpose: Tests TinyRest's server introspection and information endpoints
+# Purpose: Tests RESTMonkey's server introspection and information endpoints
 # Used by: ServerInfoTest.java
 # 
 # Key Features Tested:
@@ -66,7 +66,7 @@ staticEndpoints:
     path: /server/info
     status: 200
     response:
-      server: "TinyRest"
+      server: "RestMonkey"
       version: "1.0.0-SNAPSHOT"
       java_version: "{{java.version}}"
       port: "{{server.port}}"

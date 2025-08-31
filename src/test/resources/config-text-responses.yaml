@@ -1,8 +1,8 @@
 # =============================================================================
-# TinyRest Configuration: Simple Text Responses Test
+# RESTMonkey Configuration: Simple Text Responses Test
 # =============================================================================
 # 
-# Purpose: Tests TinyRest's ability to return simple text strings
+# Purpose: Tests RESTMonkey's ability to return simple text strings
 # Used by: TextResponsesTest.java
 # 
 # Key Features Tested:

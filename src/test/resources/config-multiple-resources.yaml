@@ -1,8 +1,8 @@
 # =============================================================================
-# TinyRest Configuration: Multiple Resources Test
+# RESTMonkey Configuration: Multiple Resources Test
 # =============================================================================
 #
-# Purpose: Tests TinyRest with multiple resources and selective CRUD enablement
+# Purpose: Tests RESTMonkey with multiple resources and selective CRUD enablement
 # Used by: YamlConfigurationTest.MultipleResourcesTest
 #
 # Key Features Tested:
@@ -80,7 +80,7 @@ staticEndpoints:
     method: GET
     status: 200
     response:
-      service: tinyrest
+      service: RESTMonkey
       resources: ["users", "posts", "categories"]
       timestamp: "{{now}}"
       

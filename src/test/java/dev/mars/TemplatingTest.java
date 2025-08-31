@@ -17,7 +17,7 @@ package dev.mars;
  */
 
 
-import dev.mars.tinyrest.TinyRest;
+import dev.mars.restmonkey.RestMonkey;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -38,15 +38,15 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 2025-08-30
  * @version 1.0
  */
-@ExtendWith(TinyRest.JUnitTinyRestExtension.class)
-@TinyRest.UseTinyRest(configPath = "src/test/resources/config-templating.yaml")
+@ExtendWith(RestMonkey.JUnitRestMonkeyExtension.class)
+@RestMonkey.UseRestMonkey(configPath = "src/test/resources/config-templating.yaml")
 class TemplatingTest {
 
     private static final Logger logger = LoggerFactory.getLogger(TemplatingTest.class);
     HttpClient client = HttpClient.newHttpClient();
 
     @Test
-    void shouldRenderNowTemplate(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldRenderNowTemplate(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         logger.info("Testing {{now}} template rendering");
 
         var request = HttpRequest.newBuilder()
@@ -72,7 +72,7 @@ class TemplatingTest {
     }
 
     @Test
-    void shouldRenderRandomTemplates(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldRenderRandomTemplates(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/random"))
                 .GET()
@@ -98,7 +98,7 @@ class TemplatingTest {
     }
 
     @Test
-    void shouldRenderComplexNestedTemplates(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldRenderComplexNestedTemplates(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/complex-template"))
                 .GET()
@@ -124,7 +124,7 @@ class TemplatingTest {
     }
 
     @Test
-    void shouldHandleTemplatingInEchoEndpoint(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldHandleTemplatingInEchoEndpoint(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/template-echo"))
                 .header("Authorization", "Bearer template-token")
@@ -148,7 +148,7 @@ class TemplatingTest {
     }
 
     @Test
-    void multipleRequestsShouldHaveDifferentTemplatedValues(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void multipleRequestsShouldHaveDifferentTemplatedValues(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         // Make two requests and verify they have different random/time values
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/random"))
@@ -167,7 +167,7 @@ class TemplatingTest {
     }
 
     @Test
-    void shouldWorkWithCrudEndpoints(@TinyRest.TinyRestBaseUrl String baseUrl) throws Exception {
+    void shouldWorkWithCrudEndpoints(@RestMonkey.RestMonkeyBaseUrl String baseUrl) throws Exception {
         // Verify that templating doesn't interfere with CRUD operations
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/api/events"))

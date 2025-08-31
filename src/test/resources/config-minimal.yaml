@@ -1,8 +1,8 @@
 # =============================================================================
-# TinyRest Configuration: Minimal Setup Test
+# RESTMonkey Configuration: Minimal Setup Test
 # =============================================================================
 #
-# Purpose: Tests TinyRest with absolute minimum configuration
+# Purpose: Tests RESTMonkey with absolute minimum configuration
 # Used by: YamlConfigurationTest.MinimalConfigurationTest
 #
 # Key Features Tested:
