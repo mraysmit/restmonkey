@@ -1,6 +1,6 @@
 # RestMonkey
 
-![RestMonkey](RESTMonkey.png)
+<img src="RESTMonkey.png" alt="RestMonkey" width="200" style="border-radius: 50%; border: 3px solid #ddd;">
 
 [![Java](https://img.shields.io/badge/Java-23-orange.svg)](https://openjdk.java.net/projects/jdk/23/)
 [![Maven](https://img.shields.io/badge/Maven-3.8+-blue.svg)](https://maven.apache.org/)
