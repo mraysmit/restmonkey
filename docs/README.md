@@ -1,6 +1,6 @@
 # RestMonkey
 
-<img src="RESTMonkey.png" alt="RestMonkey" width="200" style="border-radius: 50%; border: 3px solid #ddd;">
+<img src="RESTMonkey-transparent.png" alt="RestMonkey" width="200">
 
 [![Java](https://img.shields.io/badge/Java-23-orange.svg)](https://openjdk.java.net/projects/jdk/23/)
 [![Maven](https://img.shields.io/badge/Maven-3.8+-blue.svg)](https://maven.apache.org/)
@@ -20,14 +20,27 @@ No servlet container. No frameworks. Starts fast. Built for resilience testing. 
 
 You need **real HTTP** behavior with **chaos engineering** for testing resilient applications. RestMonkey provides:
 
-- **Self-contained**: one Java file (`RestMonkey.java`) + Jackson.
-- **Declarative**: endpoints and chaos patterns in `restmonkey.yml`.
-- **Chaos engineering**: latency simulation, failure injection, retry patterns.
-- **Fluent builder**: programmatic configuration alternative to YAML.
-- **Test-first**: JUnit 5 extension with base URL injection, port auto-binding.
-- **Observable**: comprehensive SLF4J/Logback logging with performance timing.
+- **Self-contained**: Single Java file (`RestMonkey.java`) + Jackson - no external dependencies
+- **Chaos Engineering**: Advanced failure simulation with configurable patterns
+  - **Latency injection**: Fixed delays (`latencyMs: 500`) or random ranges (`randomLatencyMinMs/MaxMs`)
+  - **Failure rates**: Configurable error percentages (`failureRate: 0.30` = 30% failures)
+  - **Random status codes**: Weighted distributions (`randomStatuses: [200, 503, 504]`)
+  - **Retry patterns**: Test circuit breakers (`successAfterRetries`, `successAfterSeconds`)
+- **Fluent Builder API**: Type-safe programmatic configuration alternative to YAML
+- **CRUD Resources**: Auto-generated REST endpoints with seed data and authentication
+- **JUnit 5 Integration**: `@UseRestMonkey` annotation with dependency injection
+- **Production-Ready Logging**: Structured SLF4J logging with performance metrics
 
 If you want simple mocking, use WireMock. If you want **chaos engineering** and **resilience testing**, RestMonkey is perfect.
+
+## 🚀 Latest Features (v1.0)
+
+- **🐒 Advanced Chaos Engineering**: 5 focused YAML configurations demonstrating different failure patterns
+- **⏱️ Latency Simulation**: Fixed delays, random ranges, and variable response times
+- **💥 Failure Injection**: Configurable error rates with realistic failure distributions
+- **🔄 Retry Pattern Testing**: Circuit breaker simulation with attempt-based and time-based recovery
+- **🎯 Production Scenarios**: Realistic combinations for testing microservice resilience
+- **📊 Enhanced Logging**: Chaos events logged with detailed timing and failure reasons
 
 ---
 
