@@ -545,7 +545,7 @@ java -jar target/restmonkey-1.0.0-SNAPSHOT.jar src/test/resources/restmonkey.yml
 
 ## License
 
-Pick whatever fits your org. MIT is typical for utility code like this.
+Licensed under the Apache License, Version 2.0. See LICENSE file for details.
 
 ---
 
