@@ -37,7 +37,7 @@ If you want simple mocking, use WireMock. If you want **chaos engineering** and 
 
 ## 🚀 Latest Features (v1.0)
 
-- **🐒 Advanced Chaos Engineering**: 5 focused YAML configurations demonstrating different failure patterns
+- **🐒 Advanced Chaos Monkey Engineering**: 5 focused YAML configurations demonstrating different failure patterns
 - **⏱️ Latency Simulation**: Fixed delays, random ranges, and variable response times
 - **💥 Failure Injection**: Configurable error rates with realistic failure distributions
 - **🔄 Retry Pattern Testing**: Circuit breaker simulation with attempt-based and time-based recovery
