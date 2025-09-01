@@ -12,7 +12,7 @@
 **Date:** 2025-08-31
 **Author:** Mark Andrew Ray-Smith Cityline Ltd
 
-**REST API server with chaos engineering for testing and prototyping** — a lightweight Java server that creates realistic HTTP endpoints with configurable failure patterns. Define resources, endpoints, and chaos behaviours in YAML or using a fluent builder API.
+**REST API server with chaos monkey engineering for testing and prototyping** — a lightweight Java server that creates realistic HTTP endpoints with configurable failure patterns. Define resources, endpoints, and chaos behaviours in YAML or using a fluent builder API.
 
 No servlet container. No frameworks. Starts fast. Built for resilience testing. **Comprehensive chaos monkey engineering** with latency simulation, failure injection, and retry patterns.
 
