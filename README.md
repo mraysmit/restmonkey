@@ -1,7 +1,7 @@
 # RestMonkey
 
 <div align="center">
-  <img src="docs/restmonkey-with-cap.png" alt="RestMonkey" width="200">
+  <img src="docs/restmonkey-cigar.png" alt="RestMonkey" width="200">
 </div>
 
 [![Java](https://img.shields.io/badge/Java-23-orange.svg)](https://openjdk.java.net/projects/jdk/23/)
