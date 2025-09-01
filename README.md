@@ -1,6 +1,6 @@
 # RestMonkey
 
-<img src="RESTMonkey-transparent.png" alt="RestMonkey" width="200">
+<img src="docs/RESTMonkey-transparent.png" alt="RestMonkey" width="200">
 
 [![Java](https://img.shields.io/badge/Java-23-orange.svg)](https://openjdk.java.net/projects/jdk/23/)
 [![Maven](https://img.shields.io/badge/Maven-3.8+-blue.svg)](https://maven.apache.org/)
@@ -10,7 +10,7 @@
 **Date:** 2025-08-31
 **Author:** Mark Andrew Ray-Smith Cityline Ltd
 
-**REST API server with chaos engineering for testing and prototyping** — a lightweight Java server that creates realistic HTTP endpoints with configurable failure patterns. Define resources, endpoints, and chaos behaviors in YAML or using a fluent builder API.
+**REST API server with chaos engineering for testing and prototyping** — a lightweight Java server that creates realistic HTTP endpoints with configurable failure patterns. Define resources, endpoints, and chaos behaviours in YAML or using a fluent builder API.
 
 No servlet container. No frameworks. Starts fast. Built for resilience testing. **Comprehensive chaos engineering** with latency simulation, failure injection, and retry patterns.
 
@@ -79,142 +79,48 @@ You'll see detailed logs with chaos engineering in action:
 
 ---
 
-## Project Layout (suggested)
 
-```
-your-project/
-├─ pom.xml
-├─ src/
-│  ├─ main/java/RESTMonkey.java
-│  └─ test/
-│     ├─ java/example/UsersApiTest.java
-│     └─ resources/RESTMonkey.yml
-```
 
----
+## Fluent Builder API
 
-## Installation (Maven)
+RestMonkey provides a type-safe fluent builder API as an alternative to YAML configuration:
 
-Use this **copy-paste POM**. It pulls Jackson (JSON+YAML), SLF4J/Logback (logging), JUnit, and builds a **fat JAR** with Shade.
+```java
+// Simple server with chaos engineering
+var server = RestMonkey.builder()
+    .port(8080)
+    .authToken("my-secret-token")
+    .enableTemplating()
 
-```xml
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    // Add a resource with chaos patterns
+    .resource("payments")
+        .idField("id")
+        .enableCrud()
+        .latency(500)                    // 500ms delay
+        .failureRate(0.20)              // 20% failure rate
+        .seed("id", "p1", "amount", 99.99, "status", "pending")
+        .done()
 
-  <groupId>com.example</groupId>
-  <artifactId>RESTMonkey</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+    // Add static endpoint with retry pattern
+    .staticEndpoint()
+        .get("/external-api")
+        .response("status", "available")
+        .successAfterRetries(2)         // Fail twice, then succeed
+        .done()
 
-  <properties>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <junit.version>5.10.2</junit.version>
-    <jackson.version>2.17.2</jackson.version>
-  </properties>
+    .start(); // Returns running RestMonkey instance
 
-  <dependencies>
-    <!-- Runtime -->
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.dataformat</groupId>
-      <artifactId>jackson-dataformat-yaml</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
-
-    <!-- Logging -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>2.0.9</version>
-    </dependency>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.4.11</version>
-    </dependency>
-
-    <!-- Tests -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-
-  <build>
-    <plugins>
-      <!-- JUnit 5 -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.2.5</version>
-        <configuration>
-          <useModulePath>false</useModulePath>
-        </configuration>
-      </plugin>
-
-      <!-- Fat JAR with RESTMonkey as Main-Class -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.5.3</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals><goal>shade</goal></goals>
-            <configuration>
-              <createDependencyReducedPom>true</createDependencyReducedPom>
-              <filters>
-                <filter>
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                  </excludes>
-                </filter>
-              </filters>
-              <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>RESTMonkey</mainClass>
-                </transformer>
-              </transformers>
-              <shadedArtifactAttached>false</shadedArtifactAttached>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-</project>
+// Use in tests
+String baseUrl = server.getBaseUrl();
+// Make HTTP calls to test resilience...
 ```
 
-Build:
-
-```bash
-mvn -q -DskipTests package
-```
-
-Run:
-
-```bash
-java -jar target/RESTMonkey-1.0.0-SNAPSHOT.jar src/test/resources/RESTMonkey.yml
-```
+**Key Builder Features:**
+- **Type-safe configuration**: Compile-time validation of settings
+- **Chaos engineering methods**: `.latency()`, `.failureRate()`, `.successAfterRetries()`
+- **Fluent resource building**: Chain resource configuration with `.resource().done()`
+- **Immediate startup**: `.start()` returns running server instance
+- **Perfect for tests**: No external YAML files needed
 
 ---
 
@@ -494,6 +400,145 @@ A: Not out of the box. For tests, plain HTTP is enough. If you need TLS, wrap be
 
 **Q: Does it work with virtual threads?**  
 A: The JDK server uses a thread-per-request model. For test loads, that’s fine. If you want virtual threads, swap the executor or move to a server that supports it — but you probably don’t need it for this use case.
+
+---
+
+## Project Layout (suggested)
+
+```
+your-project/
+├─ pom.xml
+├─ src/
+│  ├─ main/java/dev/mars/restmonkey/RestMonkey.java
+│  └─ test/
+│     ├─ java/example/UsersApiTest.java
+│     └─ resources/restmonkey.yml
+```
+
+---
+
+## Installation (Maven)
+
+Use this **copy-paste POM**. It pulls Jackson (JSON+YAML), SLF4J/Logback (logging), JUnit, and builds a **fat JAR** with Shade.
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example</groupId>
+  <artifactId>restmonkey</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>RestMonkey</name>
+  <description>A lightweight HTTP server for mocking REST APIs with chaos engineering capabilities</description>
+
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <junit.version>5.10.2</junit.version>
+    <jackson.version>2.17.2</jackson.version>
+  </properties>
+
+  <dependencies>
+    <!-- Runtime -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-yaml</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <!-- Logging -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>2.0.9</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.4.11</version>
+    </dependency>
+
+    <!-- Tests -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- JUnit 5 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+        <configuration>
+          <useModulePath>false</useModulePath>
+        </configuration>
+      </plugin>
+
+      <!-- Fat JAR with RestMonkey as Main-Class -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.5.3</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals><goal>shade</goal></goals>
+            <configuration>
+              <createDependencyReducedPom>true</createDependencyReducedPom>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>dev.mars.restmonkey.RestMonkey</mainClass>
+                </transformer>
+              </transformers>
+              <shadedArtifactAttached>false</shadedArtifactAttached>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+```
+
+**Build and Run:**
+
+```bash
+# Build the JAR
+mvn -q -DskipTests package
+
+# Run with configuration
+java -jar target/restmonkey-1.0.0-SNAPSHOT.jar src/test/resources/restmonkey.yml
+```
 
 ---
 
