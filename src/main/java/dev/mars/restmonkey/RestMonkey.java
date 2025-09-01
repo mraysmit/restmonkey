@@ -611,7 +611,7 @@ public class RestMonkey {
                             row.put(idField, id);
                             log.trace("Generated ID '{}' for seed record in resource '{}'", id, r.name);
                         }
-                        store.put(id.toString(), (Map<String,Object>) deepCopy(row));
+                        store.put(id.toString(), deepCopy(row));
                         seededCount++;
                         log.trace("Seeded record with ID '{}' in resource '{}'", id, r.name);
                     }
@@ -1045,7 +1045,7 @@ public class RestMonkey {
             Object cur = m;
             for (String seg : dotted.split("\\.")) {
                 if (!(cur instanceof Map<?,?> map)) return "";
-                cur = ((Map<String,Object>) map).get(seg);
+                cur = ((Map<String,Object>) map).get(seg); // Safe cast due to instanceof check above
                 if (cur == null) return "";
             }
             return String.valueOf(cur);
@@ -1488,9 +1488,10 @@ public class RestMonkey {
 
     static ObjectMapper jsonMapper() { return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); }
     static ObjectMapper yamlMapper() { return new ObjectMapper(new YAMLFactory()).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); }
-    static Object deepCopy(Object obj) {
+    @SuppressWarnings("unchecked")
+    static <T> T deepCopy(T obj) {
         if (obj == null) return null;
-        return jsonMapper().convertValue(obj, Object.class);
+        return (T) jsonMapper().convertValue(obj, obj.getClass());
     }
     static boolean blank(String s){ return s==null || s.isBlank(); }
 
@@ -1519,7 +1520,7 @@ public class RestMonkey {
         }
         
         void put(String id, Map<String,Object> row){
-            data.put(id, (Map<String,Object>) deepCopy(row));
+            data.put(id, deepCopy(row));
         }
         
         Map<String,Object> get(String id){ 
@@ -1535,7 +1536,7 @@ public class RestMonkey {
                 .sorted(Comparator.comparing(o -> String.valueOf(o.getOrDefault(idField, ""))))
                 .skip(Math.max(0, offset))
                 .limit(Math.max(1, limit))
-                .map(row -> (Map<String,Object>) deepCopy(row))
+                .map(row -> deepCopy(row))
                 .collect(Collectors.toList());
         }
     }

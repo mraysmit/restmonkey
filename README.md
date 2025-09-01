@@ -1,6 +1,8 @@
 # RestMonkey
 
-<img src="docs/RESTMonkey-transparent.png" alt="RestMonkey" width="200">
+<div align="center">
+  <img src="docs/restmonkey-with-cap.png" alt="RestMonkey" width="200">
+</div>
 
 [![Java](https://img.shields.io/badge/Java-23-orange.svg)](https://openjdk.java.net/projects/jdk/23/)
 [![Maven](https://img.shields.io/badge/Maven-3.8+-blue.svg)](https://maven.apache.org/)
