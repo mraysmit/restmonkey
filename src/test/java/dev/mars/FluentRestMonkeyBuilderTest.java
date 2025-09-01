@@ -981,4 +981,39 @@ class FluentRestMonkeyBuilderTest {
             assertTrue(duration >= 15); // Should have random latency
         }
     }
+
+    @Test
+    void shouldHandleHotReloadGracefullyWithFluentAPI() {
+        // This test verifies that enabling hot reload with fluent API doesn't crash
+        var config = RestMonkey.builder()
+                .port(0)
+                .enableHotReload() // This should not crash even though there's no config file
+                .staticEndpoint()
+                    .get("/test")
+                    .status(200)
+                    .response("message", "test")
+                    .done()
+                .build();
+
+        // Should not throw an exception
+        assertNotNull(config);
+
+        // Test that the server can start without crashing
+        RestMonkey server = null;
+        try {
+            server = new RestMonkey(config);
+            assertNotNull(server.getAddress());
+
+            // Wait a moment to ensure hot reload thread doesn't crash
+            Thread.sleep(100);
+
+            // If we get here, hot reload was handled gracefully
+        } catch (Exception e) {
+            fail("Hot reload should be handled gracefully for fluent API: " + e.getMessage());
+        } finally {
+            if (server != null) {
+                server.stop();
+            }
+        }
+    }
 }

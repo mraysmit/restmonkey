@@ -862,6 +862,11 @@ public class RestMonkey {
 
         // ---- Hot reload ----
         void startFileWatcher() {
+            if (configPath == null) {
+                hotReloadLog.info("Hot reload disabled - no configuration file path available (fluent API usage)");
+                return;
+            }
+
             hotReloadLog.info("Starting file watcher for configuration hot reload: {}", configPath);
             Thread t = new Thread(() -> {
                 try (WatchService ws = FileSystems.getDefault().newWatchService()) {
