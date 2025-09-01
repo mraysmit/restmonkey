@@ -61,6 +61,7 @@ import java.util.stream.Collectors;
  * @since 2025-08-30
  * @version 1.0
  */
+
 public class RestMonkey {
     private static final Logger log = LoggerFactory.getLogger(RestMonkey.class);
 
