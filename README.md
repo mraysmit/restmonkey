@@ -23,11 +23,11 @@ No servlet container. No frameworks. Starts fast. Built for resilience testing. 
 You need **real HTTP** behavior with **chaos engineering** for testing resilient applications. RestMonkey provides:
 
 - **Self-contained**: Single Java file (`RestMonkey.java`) + Jackson - no external dependencies
-- **Chaos Engineering**: Advanced failure simulation with configurable patterns
-  - **Latency injection**: Fixed delays (`latencyMs: 500`) or random ranges (`randomLatencyMinMs/MaxMs`)
-  - **Failure rates**: Configurable error percentages (`failureRate: 0.30` = 30% failures)
-  - **Random status codes**: Weighted distributions (`randomStatuses: [200, 503, 504]`)
-  - **Retry patterns**: Test circuit breakers (`successAfterRetries`, `successAfterSeconds`)
+- **Chaos Engineering**: 4 core patterns with global/resource/endpoint scoping
+  - **🕐 Latency Patterns**: Fixed delays (`latencyMs: 500`) or random ranges (`randomLatencyMinMs/MaxMs`)
+  - **💥 Failure Injection**: Configurable error rates (`failureRate: 0.30` = 30% return 500 errors)
+  - **🎲 Random Status Codes**: Equal or weighted distributions (`randomStatuses: [200, 503, 504]`)
+  - **🔄 Retry Patterns**: Circuit breaker simulation (`successAfterRetries`, `successAfterSeconds`)
 - **Fluent Builder API**: Type-safe programmatic configuration alternative to YAML
 - **CRUD Resources**: Auto-generated REST endpoints with seed data and authentication
 - **JUnit 5 Integration**: `@UseRestMonkey` annotation with dependency injection
@@ -35,14 +35,15 @@ You need **real HTTP** behavior with **chaos engineering** for testing resilient
 
 If you want simple mocking, use WireMock. If you want **chaos engineering** and **resilience testing**, RestMonkey is perfect.
 
-## 🚀 Latest Features (v1.0)
+## 🚀 Latest Features
 
-- **🐒 Advanced Chaos Monkey Engineering**: 15 focused YAML configurations demonstrating different failure patterns
-- **⏱️ Latency Simulation**: Fixed delays, random ranges, and variable response times
-- **💥 Failure Injection**: Configurable error rates with realistic failure distributions
-- **🔄 Retry Pattern Testing**: Circuit breaker simulation with attempt-based and time-based recovery
-- **🎯 Production Scenarios**: Realistic combinations for testing microservice resilience
-- **📊 Enhanced Logging**: Chaos events logged with detailed timing and failure reasons
+- **🐒 4 Core Chaos Patterns**: Latency, Failures, Random Status Codes, and Retry Patterns
+- **🎯 3-Level Scoping**: Global (all endpoints), Resource (all CRUD), or Endpoint (specific routes)
+- **⏱️ Latency Simulation**: Fixed delays (`500ms`) or random ranges (`50-150ms`)
+- **💥 Failure Injection**: Configurable error rates (`0.30` = 30% return 500 errors)
+- **🎲 Status Code Chaos**: Equal probability or weighted distributions with custom status codes
+- **🔄 Retry Pattern Testing**: Attempt-based (`successAfterRetries: 2`) and time-based (`successAfterSeconds: 3`) recovery
+- **📊 Detailed Logging**: Chaos events logged with timing, reasons, and client tracking
 
 ---
 
@@ -92,13 +93,16 @@ var server = RestMonkey.builder()
     .port(8080)
     .authToken("my-secret-token")
     .enableTemplating()
+    .artificialLatency(10)              // Global 10ms base latency
+    .chaosFailRate(0.05)                // Global 5% failure rate
 
     // Add a resource with chaos patterns
     .resource("payments")
         .idField("id")
         .enableCrud()
-        .latency(500)                    // 500ms delay
-        .failureRate(0.20)              // 20% failure rate
+        .withLatency(500)               // Additional 500ms delay
+        .withFailureRate(0.20)          // 20% failure rate (overrides global)
+        .withRandomStatuses(200, 429, 503)  // Success, rate limit, unavailable
         .seed("id", "p1", "amount", 99.99, "status", "pending")
         .done()
 
@@ -106,6 +110,7 @@ var server = RestMonkey.builder()
     .staticEndpoint()
         .get("/external-api")
         .response("status", "available")
+        .withRandomLatency(50, 150)     // Random 50-150ms latency
         .successAfterRetries(2)         // Fail twice, then succeed
         .done()
 
