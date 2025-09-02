@@ -60,6 +60,26 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Resilience4J for chaos vs resilience demo (test scope only) -->
+        <dependency>
+            <groupId>io.github.resilience4j</groupId>
+            <artifactId>resilience4j-circuitbreaker</artifactId>
+            <version>2.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.resilience4j</groupId>
+            <artifactId>resilience4j-retry</artifactId>
+            <version>2.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.resilience4j</groupId>
+            <artifactId>resilience4j-timelimiter</artifactId>
+            <version>2.1.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 

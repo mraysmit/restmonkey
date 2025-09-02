@@ -128,6 +128,47 @@ String baseUrl = server.getBaseUrl();
 - **Immediate startup**: `.start()` returns running server instance
 - **Perfect for tests**: No external YAML files needed
 
+## Chaos vs Resilience Demo
+
+Test your resilience patterns against RestMonkey's chaos attacks:
+
+```java
+// 🐒 RestMonkey: The Chaos Attacker
+var chaosServer = RestMonkey.builder()
+    .port(0)
+    .resource("payments")
+        .withFailureRate(0.30)           // 30% failure rate
+        .withRandomLatency(100, 500)     // 100-500ms delays
+        .withRandomStatuses(200, 429, 503, 504)
+        .done()
+    .start();
+
+// 🛡️ Resilience4J: The Defense System
+var circuitBreaker = CircuitBreaker.of("payments", CircuitBreakerConfig.custom()
+    .failureRateThreshold(50)           // Open at 50% failures
+    .waitDurationInOpenState(Duration.ofSeconds(2))
+    .build());
+
+var retry = Retry.of("payments", RetryConfig.custom()
+    .maxAttempts(3)
+    .waitDuration(Duration.ofMillis(100))
+    .build());
+
+// ⚔️ Battle: Chaos vs Resilience
+var resilientCall = circuitBreaker.decorateSupplier(
+    retry.decorateSupplier(() -> {
+        // Your HTTP call to chaosServer.getBaseUrl() + "/api/payments"
+        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    })
+);
+
+// Circuit breaker protects against cascading failures
+// Retry recovers from transient errors
+// RestMonkey validates your defensive patterns work!
+```
+
+**Perfect for testing**: Circuit breakers, retries, timeouts, bulkheads against realistic failure patterns.
+
 ---
 
 ## RESTMonkey.yml (starter)
